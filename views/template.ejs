@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroMania</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Bellefair&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-blue: #28517D;
+            --darker-blue: #192430;
+            --light-text: #666666;
+            --white: #FFFFFF;
+            --accent-blue: #4D44AD;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #28517D 0%, #192430 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {   
+            background: #878181;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 80px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .brand-name {
+            font-family: 'Bellefair', serif;
+            font-size: 48px;
+            font-weight: normal;
+            text-decoration: none;
+            color: white;
+            line-height: 1;
+            margin-right: 60px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-top: 5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+            margin: 0 20px;
+            height: 100%;
+            position: relative;
+            padding-top: 5px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 50px;
+            padding: 0 10px;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            z-index: 1000;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 5px;
+        }
+
+        .dropdown-content::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            box-shadow: -2px -2px 5px rgba(0,0,0,0.05);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+            position: relative;
+            z-index: 1;
+            font-size: 14px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f5f5f5;
+            opacity: 1;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            height: 100%;
+            position: relative;
+            padding-top: 5px;
+        }
+
+        .search-bar {
+            padding: 0 15px;
+            border: none;
+            border-radius: 4px;
+            width: 240px;
+            font-family: 'Outfit', sans-serif;
+            margin-right: 8px;
+            font-size: 14px;
+            height: 50px;
+        }
+
+        .search-btn, .signup-btn {
+            background: #4D44AD;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            font-size: 15px;
+        }
+
+        .search-btn {
+            padding: 0;
+            width: 50px;
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-btn:hover, .signup-btn:hover {
+            opacity: 0.9;
+        }
+
+        .cart-btn {
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .cart-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .page-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .footer {
+            background: #D9D9D9;
+            padding: 60px 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            padding: 0 40px;
+        }
+
+        .footer h4 {
+            color: #192430;
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer p {
+            margin: 10px 0;
+        }
+
+        .footer a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer a:hover {
+            color: #28517D;
+        }
+
+        .footer i {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="brand-name">ElectroMania</a>
+        <div class="nav-links">
+            <a href="/home">Home</a>
+            <div class="dropdown">
+                <a href="#">Shop <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/shop/electronics">Electronics</a>
+                    <a href="/shop/gadgets">Gadgets</a>
+                    <a href="/shop/accessories">Accessories</a>
+                </div>
+            </div>
+            <a href="/offers">Deals/Offers</a>
+        </div>
+        <div class="nav-right">
+            <input type="search" class="search-bar" placeholder="Search products...">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+            <a href="/cart" class="cart-btn"><i class="fas fa-shopping-cart"></i></a>
+            <button class="signup-btn">Sign Up</button>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="main-content">
+            <!-- Content goes here -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4>ElectroMania</h4>
+                <p><a href="/about">About Us</a></p>
+                <p><a href="/contact">Contact</a></p>
+                <p><a href="/blog">Blog</a></p>
+            </div>
+            <div>
+                <h4>Customer Service</h4>
+                <p><a href="/shipping">Shipping Policy</a></p>
+                <p><a href="/returns">Returns & Exchanges</a></p>
+                <p><a href="/faq">FAQs</a></p>
+            </div>
+            <div>
+                <h4>Categories</h4>
+                <p><a href="/electronics">Electronics</a></p>
+                <p><a href="/accessories">Accessories</a></p>
+                <p><a href="/gadgets">Gadgets</a></p>
+            </div>
+            <div>
+                <h4>Connect With Us</h4>
+                <p><a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></p>
+                <p><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a></p>
+                <p><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

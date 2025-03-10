@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | ElectroMania</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            background: #192430;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .error-container {
+            width: 700px;
+            margin: 0 auto;
+            padding: 50px;
+            background: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .error-image-container {
+            flex: 1;
+        }
+
+        .error-image {
+            width: 280px;
+            height: auto;
+        }
+
+        .error-content {
+            flex: 1;
+        }
+
+        .error-title {
+            font-size: 20px;
+            color: #192430;
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+        }
+
+        .error-title span {
+            color: #28517D;
+        }
+
+        .error-message {
+            font-size: 15px;
+            color: #666;
+            margin: 0 0 16px 0;
+        }
+
+        .home-link {
+            color: #28517D;
+            text-decoration: none;
+        }
+
+        .home-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-image-container">
+            <img src="/images/404.png" alt="404 Error" class="error-image">
+        </div>
+        <div class="error-content">
+            <h1 class="error-title">Page not found<br><span>ERROR 404</span></h1>
+            <p class="error-message">Looks like the page doesn't exist</p>
+            <p>Back to <a href="/" class="home-link">home</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -43,7 +43,6 @@ const couponModel = new Schema({
         ref : "user",
         required : true
     },
-    }
     limit : {
         type : Number,
         required : true

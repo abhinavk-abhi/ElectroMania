@@ -17,14 +17,19 @@ const userModel = new Schema({
     },
     password : {
         type : String,
-        required : true
+        required : false
+    },
+    googeId : {
+        type : String,
+        required : false
     },
     phoneNumber : {
         type : String,
-        required : true
+        required : false
     },
     isBlocked : {
         type : Boolean,
+        default : false,
         required : true
     },
     gender : {
@@ -32,20 +37,17 @@ const userModel = new Schema({
         required : true,
         enum : ["Male","Female"]
     },
-    cart : {
+    cart : [{
         type : Schema.Types.ObjectId,
-        ref : "cart",
-        required: true
-    },
+        ref : "cart"
+    }],
     wishlist : {
         type : Schema.Types.ObjectId,
-         ref : "wishlist",
-        required : true
+         ref : "wishlist"
     },
     ordersIds : {
         type : Schema.Types.ObjectId,
-        ref : "orders",
-        required : true
+        ref : "orders"
     },
     address : {
         type : Schema.Types.ObjectId,
@@ -54,8 +56,7 @@ const userModel = new Schema({
     },
     couponOwned : {
         type : Schema.Types.ObjectId,
-        ref : "coupon",
-        required : true
+        ref : "coupon"
     }
 },{timestamps:true})
 

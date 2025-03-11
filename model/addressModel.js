@@ -34,10 +34,12 @@ const addressModel = Schema({
         required : true
     },
     landMark : {
-        type : String
+        type : String,
+        required : true
     },
     altPhoneNumber : {
-        type : String
+        type : String,
+        required : true
     },
     addressType : {
         type : String,

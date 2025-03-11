@@ -9,29 +9,46 @@ const couponModel = new Schema({
     },
     couponName : {
         type : String,
-        required : true
+        required : true,
+        unique : true
     },
     couponCode : {
         type : String,
         required : true,
         unique : true
     },
-    activateDate : {
-        type : date,
+    createdOn : {
+        type : Date,
+        default : Date.now,
         required : true
     },
     expiryDate : {
-        type : date,
-        required : true
-    },
-    limit : {
-        type : Number,
+        type : Date,
         required : true
     },
     discountPrice : {
         type : Number,
         required : true
+    },
+    minimumPrice : {
+        type : Number,
+        required : true
+    },
+    isList : {
+        type : Boolean,
+        default : true
+    },
+    userId : {
+        type : Schema.Types.ObjectId,
+        ref : "user",
+        required : true
+    },
     }
+    limit : {
+        type : Number,
+        required : true
+    },
+   
 },{timestamps : true})
 
 export default mongoose.model("Coupon",couponModel)

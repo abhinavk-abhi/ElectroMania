@@ -11,7 +11,7 @@ const productModel = new Schema({
         required : true
     },
     images : {
-        type : String,
+        type : [String],
         required : true
     },
     basePrice : {
@@ -34,7 +34,20 @@ const productModel = new Schema({
         type : String,
         required : true,
         enum : ["active","inActive"]
-    }
+    },
+    productOffer : {
+        type : String,
+        default : 0
+    },
+    isBlocked : {
+        type : Boolean,
+        default : false
+    },
+    category : {
+        type : String,
+        required : true
+    },
+    
 },{timestamps : true})
 
 export default mongoose.model("product",productModel)

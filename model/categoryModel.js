@@ -2,14 +2,11 @@ import mongoose from "mongoose";
 const {Schema} = mongoose;
 
 const categoryModel = new Schema({
-    productId : {
-        type : Schema.Types.ObjectId,
-        ref : "products",
-        required : true
-    },
+  
     categoryName : {
         type : String,
-        required : true
+        required : true,
+        unique : true
     },
     categoryDescription : {
         type : String,

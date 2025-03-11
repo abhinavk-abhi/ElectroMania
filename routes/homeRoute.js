@@ -4,5 +4,6 @@ import homeController from '../controller/user/userController.js';
 
 
 router.get('/',homeController.loadHome);
+router.get('/signup',homeController.loadRegister);
 
 export default router;

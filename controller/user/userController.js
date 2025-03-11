@@ -10,4 +10,16 @@ const loadHome = async (req,res)=>{
     }
 }
 
-export default {loadHome};
+const loadRegister = async (req,res)=>{
+    try{
+        return res.render('user/register');
+    }catch(error){
+        console.log(error);
+        res.status(500).send('Server error');
+        res.redirect('/home');
+    }
+}
+
+export default {loadHome,
+    loadRegister
+};

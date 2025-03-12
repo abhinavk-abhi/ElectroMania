@@ -1,14 +1,204 @@
-<body class="d-flex align-items-center justify-content-center min-vh-100 l-body">
-    <div class="container log-container row">
-        <div class="d-flex login-div flex-md-row align-items-center">
-            <!-- Left Side - Login Form -->
-            <div class="w-50 px-5 py-5 py-md-3">
-                <h2 class="fw-bold mb-md-4 mb-3 mt-3 text-center">Create Account</h2>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400&family=Bellefair&display=swap" rel="stylesheet">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - ElectroMania</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400&family=Bellefair&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(to top, #2A5788, #0D1B2A); /* Theme gradient: lighter on top, darker on bottom */
+            min-height: 70vh; /* Kept to minimize scrolling */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Adds padding for smaller screens */
+        }
+
+        .log-container {
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px; /* Wider container as requested */
+            padding: 10px; /* Kept to fit content */
+            text-align: center; /* Centers all content inside */
+        }
+
+        h2 {
+            font-family: 'outfit', serif;
+            font-size: 48px; /* Unchanged */
+            color: #1E2A44; /* Matches the original theme's heading color */
+            margin-bottom: 5px; /* Reduced as per previous request */
+        }
+
+        .google-btn {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto 2.5px auto; /* Reduced as per previous request */
+            width: 100%;
+            max-width: 250px;
+            font-family: 'Outfit', sans-serif;
+            text-align: center;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .google-btn::before {
+            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20"><path fill="%234285F4" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.5l6.7-6.7C35.7 2.8 29.9 0 24 0 14.6 0 6.8 5.2 2.9 12.5l7.4 5.7c1.6-4.8 5.6-8.5 10.7-9.7z"/><path fill="%2334A853" d="M46.3 24.3c0-1.4-.1-2.8-.4-4.1H24v7.7h10.6c-.5 2.6-1.9 4.8-4.1 6.3l6.7 5.2c3.9-3.6 6.1-8.9 6.1-15.1z"/><path fill="%23FBBC05" d="M13.8 28.8c-1.6-1.2-2.6-2.9-2.6-4.8s1-3.6 2.6-4.8l-7.4-5.7C4.2 14.5 2 18.9 2 24s2.2 9.5 5.4 12.5l7.4-5.7z"/><path fill="%23EA4335" d="M24 47c6.2 0 11.4-2 15.2-5.4l-6.7-5.2c-1.9 1.3-4.3 2.1-7.5 2.1-5.7 0-10.5-3.8-12.2-9l-7.4 5.7C6.8 42.8 14.6 47 24 47z"/></svg>');
+            margin-right: 10px;
+        }
+
+        .divider {
+            margin: 2.5px 0; /* Reduced as per previous request */
+            color: #666;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0 10px;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #ccc;
+            z-index: -1;
+        }
+
+        #registerForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers form elements */
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 1400px; /* Doubled from 700px to 1400px */
+            margin: 2.5px 0; /* Reduced as per previous request */
+            padding: 14px; /* Increased from 12px for better proportionality with doubled size */
+            border: 1px solid #ccc;
+            border-radius: 10px; /* Increased from 5px to 10px */
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px; /* Increased from 16px for better readability with doubled size */
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 14px;
+            margin-bottom: 2.5px; /* Reduced as per previous request */
+        }
+
+        .d-none {
+            display: none;
+        }
+
+        .send-btn {
+            background: #6B46C1; /* Theme button color: purple */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            width: 100%;
+            max-width: 350px; /* Decreased from 700px to 350px (halved) */
+            margin-top: 2.5px; /* Reduced as per previous request */
+        }
+
+        .send-btn:hover {
+            background: #5A36A4; /* Darker purple on hover */
+        }
+
+        .signup-text {
+            margin-top: 2.5px; /* Reduced as per previous request */
+            font-size: 14px;
+            color: #666;
+        }
+
+        .signup-text a {
+            color: #6B46C1; /* Purple for the link */
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .log-container {
+                padding: 10px; /* Reduced padding for smaller screens */
+                max-width: 90%; /* Adjusted for smaller screens */
+            }
+
+            h2 {
+                font-size: 36px; /* Slightly smaller heading on mobile */
+            }
+
+            .form-control,
+            .send-btn {
+                max-width: 100%; /* Full width on smaller screens */
+                font-size: 14px; /* Slightly smaller font for mobile */
+                padding: 10px; /* Adjusted padding for mobile */
+            }
+
+            .google-btn {
+                max-width: 200px; /* Slightly smaller for mobile */
+                padding: 8px 16px; /* Adjusted padding for mobile */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .log-container {
+                padding: 8px; /* Further reduced padding for very small screens */
+            }
+
+            h2 {
+                font-size: 28px; /* Smaller heading on very small screens */
+            }
+
+            .form-control,
+            .send-btn {
+                font-size: 12px; /* Smaller font for very small screens */
+                padding: 8px; /* Further adjusted padding */
+            }
+
+            .google-btn {
+                max-width: 180px; /* Further reduced for very small screens */
+                padding: 6px 12px; /* Further adjusted padding */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container log-container">
+        <div class="login-div">
+            <div class="px-3 py-3">
+                <h2 class="fw-bold mb-4 text-center">Create Account</h2>
 
                 <!-- Google Login -->
-                <div class="google-btn mt-3 bg-white">
-                    <a style="text-decoration: none; color: #000;" href="/auth/google"><img src="/google-logo.png" alt="Google Logo" >
-                    Signup with Google</a>
+                <div class="google-btn bg-white">
+                    <a href="/auth/google">Signup with Google</a>
                 </div>
 
                 <!-- Divider -->
@@ -16,7 +206,7 @@
                     <span>or</span>
                 </div>
 
-                <!-- register Form -->
+                <!-- Register Form -->
                 <form id="registerForm">
                     <!-- Error Message Display -->
                     <p id="errorMessageContainer" class="text-danger text-center <%= errorMessage ? '' : 'd-none' %>">
@@ -34,34 +224,28 @@
                     <div class="mb-3">
                         <input type="email" class="form-control" placeholder="Email Address" id="email" name="email">
                     </div>
+
                     <div class="mb-3">
                         <input type="text" class="form-control" placeholder="Phone Number" id="phone" name="phone">
                     </div>
+
                     <div class="mb-3">
-                        <input type="password" class="form-control" placeholder="Password" id="password"
-                            name="password">
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" placeholder="Confirm Password" id="confirmPassword"
-                            name="confirmPassword">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password">
                     </div>
 
-                    <button type="submit" class="btn send-btn mt-3">Signup</button>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" placeholder="Confirm Password" id="confirmPassword" name="confirmPassword">
+                    </div>
+
+                    <button type="submit" class="btn send-btn">Signup</button>
                 </form>
 
                 <!-- Sign Up -->
-                <p class="signup-text mt-3">Already have an account? <a href="/user/login">Log in now..!</a></p>
-            </div>
-
-            <!-- Right Side - Image -->
-            <div class="w-50 d-flex justify-content-center">
-                <div class="register-image">
-                    <img src="/image3.png" alt="Running Illustration">
-                </div>
+                <p class="signup-text">Already have an account? <a href="/user/login">Log in now..!</a></p>
             </div>
         </div>
     </div>
-
+</body>
     <script>
         document.getElementById("registerForm").addEventListener("submit", async function (event) {
             event.preventDefault();
@@ -137,10 +321,6 @@
                     timer: 2000,
                     showConfirmButton: false
                 });
-
-                setTimeout(() => {
-                    window.location.href = "/user/otpverify";
-                }, 2000);
 
             } catch (error) {
                 errorText.innerText = error.message;

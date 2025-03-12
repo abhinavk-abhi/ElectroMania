@@ -1,0 +1,12 @@
+{
+    "emmet.preferences": {
+        "editor.quickSuggestions": {
+  "other": true,
+  "comments": false,
+  "strings": false
+},
+"editor.suggestOnTriggerCharacters": false,
+"editor.parameterHints.enabled": false
+
+    }
+}

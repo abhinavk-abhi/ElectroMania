@@ -2,11 +2,7 @@ import mongoose from "mongoose";
 const {Schema} = mongoose;
 
 const userModel = new Schema({
-    firstName : {
-        type : String,
-        required : true
-    },
-    lastName : {
+    name : {
         type : String,
         required : true
     },
@@ -21,11 +17,12 @@ const userModel = new Schema({
     },
     googeId : {
         type : String,
-        required : false
+        unique : true,
+        sparse : true
     },
-    phoneNumber : {
+    phone : {
         type : String,
-        required : false
+        required : true
     },
     isBlocked : {
         type : Boolean,
@@ -34,7 +31,7 @@ const userModel = new Schema({
     },
     gender : {
         type : String,
-        required : true,
+        required : false,
         enum : ["Male","Female"]
     },
     cart : [{
@@ -52,7 +49,7 @@ const userModel = new Schema({
     address : {
         type : Schema.Types.ObjectId,
         ref : "address",
-        required : true
+        required : false
     },
     couponOwned : {
         type : Schema.Types.ObjectId,

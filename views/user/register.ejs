@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account - ElectroMania</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400&family=Bellefair&display=swap" rel="stylesheet">
     <style>
         * {
@@ -312,7 +313,7 @@
 
                 if (!response.ok) {
                     throw new Error(data.error || "Something went wrong");
-                }
+                }else{
 
                 Swal.fire({
                     icon: "success",
@@ -321,6 +322,10 @@
                     timer: 2000,
                     showConfirmButton: false
                 });
+                setTimeout(()=>{
+                    window.location.href = '/user/signUpOtp'
+                },2000)
+            }
 
             } catch (error) {
                 errorText.innerText = error.message;

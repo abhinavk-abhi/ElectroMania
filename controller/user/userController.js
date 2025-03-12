@@ -14,15 +14,7 @@ const loadLogin = async (req, res) => {
   }
 };
 
-const otpLoader = async (req, res) => {
-    try {
-      res.render("user/signupOtp", { errorMessage: " " });
-    } catch (error) {
-      res.status(500).json({
-        message : "Server error while loading the page",
-      });
-    }
-  };
+
 
 const otpGenerator = () => Math.floor(1000 + Math.random() * 9000);
 
@@ -32,13 +24,15 @@ const userIdGenerator = () => {
   return `${prefix}${timestamp}`;
 };
 
+
 const registerUser = async (req, res) => {
   try {
     const { fullName, email, phone, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (user)
-      res.redirect("/user/register", {errorMessage: "User already exist in this email address"});
+    if (user){
+      return res.render("user/register", {errorMessage: "User already exist in this email address"});
+    }
 
     //Generate hashed password and userId
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -67,10 +61,7 @@ const registerUser = async (req, res) => {
 
     if (!process.env.EMAIL || !process.env.PASSWORD) {
       console.error("Missing email credential in environment variables.");
-      res.status(500)
-        .json({
-          Error: "Server email configuration error, Please try again later",
-        });
+      return res.status(500).render('user/register',{errorMessage:"Server error, Please try again later"})
     }
 
     //Configure the nodemailer
@@ -111,12 +102,10 @@ const registerUser = async (req, res) => {
       res.status(200).json({ message: "OTP has been sent to your mail" });
     } catch (error) {
       console.error("Error sending otp :", error);
-      res
-        .status(500)
-        .json({ messsage: "Internal server error. Please try again later." });
-    }
+      return res.render('user/register',{errorMessage: "Server error while sending OTP"})
+      }
 
-    otpLoader()
+    // return res.redirect('/signUpOtp');
 
   } catch (error) {
     console.log(error);
@@ -125,9 +114,19 @@ const registerUser = async (req, res) => {
 };
 
 
+const otpLoader = async (req, res) => {
+  try {
+    res.render("user/signupOtp", { errorMessage: " " });
+  } catch (error) {
+    res.status(500).json({
+      message : "Server error while loading the page",
+    });
+  }
+};
+
 const otpVerify = async (req,res)=>{
 
 }
 
 
-export default { registerUser, loadLogin,otpVerify };
+export default { registerUser, loadLogin,otpVerify ,otpLoader};

@@ -14,6 +14,31 @@ const loadLogin = async (req, res) => {
   }
 };
 
+const login = async (req,res)=>{
+
+  try {
+    
+    const {email,password} = req.body;
+    const user = await User.find({email});
+    if(!user){
+      return res.render('user/login').json({error:"Email doesn't exist . Please signup"})
+    }
+
+    const isMatch = await bcrypt.compare(password,user.password);
+    if(!isMatch){
+      return res.render('user/login').json({error:"Incorrect password. Try again."})
+    }
+
+    req.session.user = true;
+    res.status(200).json({
+      success : true,
+      message : "Logged in succefully",
+      redirectUrl : '/'
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 
 const otpGenerator = () => Math.floor(1000 + Math.random() * 9000);
@@ -31,7 +56,7 @@ const registerUser = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (user){
-      return res.render("user/register", {errorMessage: "User already exist in this email address"});
+      return res.status(400).json({error: "User already exist in this email address"});
     }
 
     //Generate hashed password and userId
@@ -39,16 +64,16 @@ const registerUser = async (req, res) => {
     const userId = await userIdGenerator();
 
     //Creates new user
-    const newUser = new User({
+    const newUser = {
       userId,
       email,
       name: fullName,
       password: hashedPassword,
       phone,
-    });
+    };
 
-    //Saves in the body to save to the database after otp validation
-    req.body = newUser;
+    //Saves in the session to save to the database after otp validation
+    req.session.newUser = newUser;
 
     //Generates otp
     const otp = otpGenerator(); 
@@ -102,31 +127,110 @@ const registerUser = async (req, res) => {
       res.status(200).json({ message: "OTP has been sent to your mail" });
     } catch (error) {
       console.error("Error sending otp :", error);
-      return res.render('user/register',{errorMessage: "Server error while sending OTP"})
+      res.status(500).json({ message: "Server error while sending OTP" });
+      // return res.render('user/register',{errorMessage: "Server error while sending OTP"})
       }
 
-    // return res.redirect('/signUpOtp');
 
   } catch (error) {
     console.log(error);
-    res.status(500);
-  }
-};
-
-
-const otpLoader = async (req, res) => {
-  try {
-    res.render("user/signupOtp", { errorMessage: " " });
-  } catch (error) {
     res.status(500).json({
-      message : "Server error while loading the page",
+      message: "Error occured on our side. Please try again later.",
     });
   }
 };
 
-const otpVerify = async (req,res)=>{
 
+const otpLoader = async (req,res)=>{
+    try {
+      res.render('user/signupOtp',{errorMessage:" "})
+    } catch (error) {
+      res.status(500).json({
+        message:'Failed to load the page'
+      })
+    }
 }
 
 
-export default { registerUser, loadLogin,otpVerify ,otpLoader};
+
+const otpVerify = async (req,res)=>{
+  try {
+    const sentOtp = req.session.otp;
+    const otpEmail = req.session.email;
+    const requestForm = req.session.requestForm;
+
+    const formOtp = req.body.otp;
+    console.log(req.session.newUser)
+
+    const {userId,email,password,name,phone} = req.session.newUser;
+
+    console.log("Session OTP:", sentOtp);
+    console.log("Form OTP:", formOtp);
+    console.log(requestForm)
+
+    if(!sentOtp || !formOtp){
+      return res.status(404).json({
+        message : "Invalid OTP , Please try again."
+      })
+    }
+
+    if(sentOtp == formOtp){
+      console.log('OTP matched. Verification completed.')
+
+      if(requestForm === 'register'){
+        const newUser = new User ({
+          userId,
+          email,
+          password,
+          name,
+          phone
+        })
+
+        await newUser.save()
+        console.log('User created')
+        return res.status(200).json({
+          success:true,
+          message : 'OTP verification completed',
+          redirectUrl : '/user/login'
+        })
+
+      }
+
+      else if(requestForm === 'forgotPass'){
+        return res.status(200).json({
+          success : true,
+          message : 'OTP verified successfully',
+          redirectUrl : '/user/forgotPass'
+        })
+      }else{
+        return res.status(400).json({
+          success : false,
+          message : 'Credentials are missing',
+          redirectUrl : '/user/login'
+        })
+      }
+    }
+    else{
+      return res.status(400).json({
+        success : false,
+        message : "OTP doesn't match. Please try again"
+      })
+    }
+
+  } catch (error) {
+    console.log(error)
+    return   res.status(500).json({
+      message: "Error occured on our side. Please try again later.",
+      
+    });
+  }
+}
+
+
+
+export default { registerUser,
+                loadLogin,
+                otpLoader,
+                otpVerify,
+                login,
+              };

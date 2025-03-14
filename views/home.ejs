@@ -18,6 +18,7 @@
         }
 
         .navbar {
+            z-index: 1;
             background: #8781813f;
             padding: 0 40px;
             display: flex;
@@ -27,7 +28,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             height: 80px;
             box-sizing: border-box;
-            position: relative;
+            position: sticky;
         }
 
         .brand-name {
@@ -192,18 +193,20 @@
         }
 
         .hero-section {
-            background: url('/images/hero.png') center/cover;
-            padding: 120px 40px;
+            background: url('/images/hero.png') center/cover no-repeat ;
+            padding: 50px;
             text-align: center;
-            position: relative;
+            /* position: relative; */
             overflow: hidden;
-            max-width: 1200px;
-            margin: 40px auto 0;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 100vw;
+            z-index: 0;
+            margin: 0;
+            border-radius: 0;
+            box-shadow:none;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 400px;
         }
 
         .hero-section::before {
@@ -223,23 +226,24 @@
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
+            padding: 120px 20px 0;
         }
 
         .hero-text h1 {
-            color: black;
+            color: rgba(0, 0, 0, 0);
             font-size: 3.5em;
             margin-bottom: 25px;
             font-weight: 800;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0);
             letter-spacing: -0.5px;
         }
 
         .hero-text p {
-            color: black;
+            color: rgba(0, 0, 0, 0);
             font-size: 1.3em;
             margin-bottom: 35px;
             font-weight: 600;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
             line-height: 1.6;
             max-width: 600px;
             margin-left: auto;
@@ -247,8 +251,8 @@
         }
 
         .shop-now-btn {
-            background: #4D44AD;
-            color: #192430;
+            background: #4d44ad00;
+            color: #19243000;
             padding: 15px 40px;
             border: none;
             border-radius: 5px;
@@ -256,7 +260,7 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); */
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -269,9 +273,10 @@
 
         .main-wrapper {
             background: linear-gradient(135deg, #28517D, #192430);
-            padding: 20px;
+            padding: -20px;
             min-height: calc(100vh - 40px);
-            margin-top: -40px;
+            margin-left: -15px;
+            margin-top: -100px;
         }
 
         .content-section {

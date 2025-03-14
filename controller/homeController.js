@@ -1,7 +1,18 @@
+import User from '../model/userModel.js'
+
+
 const loadHome = async (req,res)=>{
     try {
-        return res.render('home')
+        const user = req.session.user;
+
+        if(user){
+            const userData = await User.findOne({_id:user})
+            res.render('home.ejs',{user:userData})
+        }else{
+        return res.render('home.ejs')
+        }
     } catch (error) {
+        console.log(error)
         console.log('Home page not found')
         res.status(500).send('Server error')
     }

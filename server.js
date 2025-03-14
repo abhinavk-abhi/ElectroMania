@@ -10,13 +10,10 @@ import session from "express-session";
 env.config();
 connectDB();
 
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "yourSecretKey",
@@ -25,6 +22,10 @@ app.use(
     cookie: { maxAge: 18 * 60 * 60 * 1000 }, // 18 hour
   })
 );
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 const port = process.env.PORT || 3000;
 const publicPath = join(__dirname, "public");

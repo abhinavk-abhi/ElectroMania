@@ -1,5 +1,14 @@
+
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -7,24 +16,26 @@
             background: linear-gradient(135deg, #28517D, #192430);
             min-height: 100vh;
         }
-        .navbar {   
-            background: #878181;
+
+        .navbar {
+            background: #8781813f;
             padding: 0 40px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-evenly;
             align-items: center;
             color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             height: 80px;
             box-sizing: border-box;
             position: relative;
         }
+
         .brand-name {
             font-family: 'Bellefair', serif;
-            font-size: 48px;
+            font-size: 45px;
             font-weight: normal;
             text-decoration: none;
-            color: white;
+            color: black;
             line-height: 1;
             margin-right: 60px;
             display: flex;
@@ -32,6 +43,7 @@
             height: 100%;
             padding-top: 5px;
         }
+
         .nav-links {
             display: flex;
             gap: 50px;
@@ -45,6 +57,7 @@
             position: relative;
             padding-top: 5px;
         }
+
         .nav-links a {
             color: white;
             text-decoration: none;
@@ -57,28 +70,33 @@
             padding: 0 10px;
             font-size: 15px;
         }
+
         .nav-links a:hover {
             opacity: 0.8;
         }
+
         .dropdown {
             position: relative;
             display: inline-flex;
             align-items: center;
             height: 100%;
         }
+
         .dropdown-content {
             display: none;
             position: absolute;
             background-color: white;
             min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
             z-index: 1000;
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
             margin-top: 5px;
+            padding: 5px 0;
         }
+
         .dropdown-content::before {
             content: '';
             position: absolute;
@@ -88,25 +106,26 @@
             width: 12px;
             height: 12px;
             background-color: white;
-            box-shadow: -2px -2px 5px rgba(0,0,0,0.05);
+            box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.05);
         }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
         .dropdown-content a {
             color: #333;
             padding: 12px 20px;
             text-decoration: none;
             display: block;
             transition: background-color 0.3s ease;
-            position: relative;
-            z-index: 1;
             font-size: 14px;
         }
+
         .dropdown-content a:hover {
             background-color: #f5f5f5;
-            opacity: 1;
         }
+
         .nav-right {
             display: flex;
             gap: 20px;
@@ -115,6 +134,21 @@
             position: relative;
             padding-top: 5px;
         }
+
+        /* Remove underline from all links in nav-right */
+        .nav-right a {
+            color: white;
+            text-decoration: none; /* Explicitly remove underline */
+            display: flex;
+            align-items: center;
+            height: 50px;
+        }
+
+        /* Ensure dropdown-toggle (username) also has no underline */
+        .nav-right .dropdown-toggle {
+            text-decoration: none; /* Remove underline from username */
+        }
+
         .search-bar {
             padding: 0 15px;
             border: none;
@@ -125,11 +159,12 @@
             font-size: 14px;
             height: 50px;
         }
-        .search-btn, .signup-btn {
+
+        .search-btn, .signup-btn, .icon-btn {
             background: #4D44AD;
             color: white;
             border: none;
-            padding: 0 25px;
+            padding: 0 10px;
             border-radius: 4px;
             cursor: pointer;
             font-family: 'Outfit', sans-serif;
@@ -138,9 +173,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 50px;
+            height: 30px;
             font-size: 15px;
+            text-decoration: none;
         }
+
         .search-btn {
             padding: 0;
             width: 50px;
@@ -149,9 +186,11 @@
             align-items: center;
             justify-content: center;
         }
-        .search-btn:hover, .signup-btn:hover {
+
+        .search-btn:hover, .signup-btn:hover, .icon-btn:hover {
             opacity: 0.9;
         }
+
         .hero-section {
             background: url('/images/hero.png') center/cover;
             padding: 120px 40px;
@@ -166,6 +205,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .hero-section::before {
             content: '';
             position: absolute;
@@ -173,9 +213,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(40, 81, 125, 0.85), rgba(25, 36, 48, 0.95));
+            /* background: linear-gradient(135deg, rgba(40, 81, 125, 0.85), rgba(25, 36, 48, 0.95)); */
             z-index: 1;
         }
+
         .hero-content {
             position: relative;
             z-index: 2;
@@ -183,34 +224,30 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        .hero-text {
-            text-align: center;
-        }
+
         .hero-text h1 {
-            color: white;
+            color: black;
             font-size: 3.5em;
             margin-bottom: 25px;
             font-weight: 800;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
             letter-spacing: -0.5px;
         }
+
         .hero-text p {
-            color: white;
+            color: black;
             font-size: 1.3em;
             margin-bottom: 35px;
             font-weight: 600;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
             line-height: 1.6;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
-        .hero-image {
-            flex: 1;
-            position: relative;
-        }
+
         .shop-now-btn {
-            background: white;
+            background: #4D44AD;
             color: #192430;
             padding: 15px 40px;
             border: none;
@@ -219,21 +256,24 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .shop-now-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
             background: #f8f8f8;
         }
+
         .main-wrapper {
             background: linear-gradient(135deg, #28517D, #192430);
             padding: 20px;
             min-height: calc(100vh - 40px);
             margin-top: -40px;
         }
+
         .content-section {
             background: #FFFFFF;
             padding: 40px;
@@ -241,13 +281,14 @@
             margin: 30px auto;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            position: relative;
         }
+
         .content-section h2 {
             color: #192430;
             margin-bottom: 30px;
             font-size: 1.8em;
         }
+
         .trending-items {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -255,6 +296,7 @@
             margin: 30px 0;
             padding: 10px;
         }
+
         .item-card {
             background: #FFFFFF;
             padding: 20px;
@@ -265,14 +307,17 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
+
         .item-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         .item-card img {
             max-width: 100%;
             height: auto;
         }
+
         .banner-section {
             background: #FFFFFF;
             padding: 40px;
@@ -280,13 +325,36 @@
             border-radius: 10px;
             color: #192430;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
         }
+
+        .banner-section h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .banner-section p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+
+        .banner-section img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
         .footer {
             background: #D9D9D9;
             padding: 40px 0;
             margin-top: 50px;
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
         }
+
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -295,26 +363,30 @@
             gap: 30px;
             padding: 0 20px;
         }
+
         .footer h4 {
             font-size: 20px;
             margin-bottom: 20px;
             color: #192430;
             font-weight: 600;
         }
+
         .footer p {
             margin: 10px 0;
             color: #666;
             font-size: 15px;
-            line-height: 1.6;
         }
+
         .footer a {
             color: #666;
             text-decoration: none;
             transition: color 0.3s ease;
         }
+
         .footer a:hover {
             color: #28517D;
         }
+
         .see-more {
             background: #28517D;
             color: white;
@@ -324,6 +396,7 @@
             cursor: pointer;
             margin: 20px 0;
         }
+
         .explore-btn {
             background: linear-gradient(135deg, #28517D, #192430);
             color: white;
@@ -334,77 +407,160 @@
             display: inline-block;
             margin-top: 15px;
         }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 30px;
+            }
+
+            .nav-right {
+                gap: 15px;
+            }
+
+            .search-bar {
+                width: 180px;
+            }
+
+            .banner-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 20px;
+            }
+
+            .brand-name {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+                margin: 0;
+            }
+
+            .dropdown-content {
+                left: 0;
+                transform: none;
+                width: 100%;
+            }
+
+            .nav-right {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .search-bar {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .trending-items {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
     </style>
 </head>
-
+<body>
     <nav class="navbar">
         <a href="/" class="brand-name">ElectroMania</a>
         <div class="nav-links">
-            <a href="/home">Home</a>
+            <a href="/home" style="color: black;">Home</a>
             <div class="dropdown">
-                <a href="/shop">Shop <i style="font-size: 12px; margin-top: 2px;"></i></a>
-            </div>
-            <a href="/offers">Deals/Offers</a>
+                <a href="/shop" style="color: black;">Shop <i class="bi bi-chevron-down" style="font-size: 12px; margin-top: 2px;"></i></a>
+                </div>
+            <a href="/offers" style="color: black;">Deals/Offers</a>
         </div>
         <div class="nav-right">
             <input type="search" class="search-bar" placeholder="Search products...">
-            <button class="search-btn"><i class="fas fa-search" style="font-size: 18px;"></i></button>
-            <a href="/cart" style="color: white; margin: 0 25px; font-size: 22px; display: flex; align-items: center; height: 50px;"><i class="fas fa-shopping-cart"></i></a>
-            <a href="/register"><button class="signup-btn">Sign Up</button></a>
+            <button class="search-btn"><i class="bi bi-search" style="font-size: 18px;"></i></button>
+            <a href="/wishlist" style="color: white; margin: 0 25px; font-size: 22px; display: flex; align-items: center; height: 50px; text-decoration: none;"><i class="fas fa-heart"></i></a>
+            <a href="/cart" style="color: white; margin: 0 25px; font-size: 22px; display: flex; align-items: center; height: 50px; text-decoration: none;"><i class="fas fa-shopping-cart"></i></a>
+            <div class="d-none d-lg-flex align-items-center">
+                <% if (locals.user) { %>
+                    <div class="dropdown">
+                        <a href="/profile" class="dropdown-toggle" style="color: white; font-size: 15px; font-weight: 500; height: 50px; display: flex; align-items: center; text-decoration: none;"><i class="fas fa-user" style="margin-right: 8px;"></i><%= locals.user.name %></a>
+                        <div class="dropdown-content">
+                            <a href="user/logout" style="color: #333; font-size: 14px;">Logout</a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <a href="/register" class="icon-btn">SignUp</a>
+                    <!-- <a href="/user/login" class="">Login</a> -->
+                <% } %>
+            </div>
         </div>
     </nav>
     
+
     <div class="main-wrapper">
         <div class="hero-section">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Your One-Stop Electronics Shop</h1>
-                <p>Discover premium electronics, from gaming gear to professional equipment. Get the best deals on trusted brands and cutting-edge technology.</p>
-                <button class="shop-now-btn">Shop Now</button>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Your One-Stop Electronics Shop</h1>
+                    <p>Discover premium electronics, from gaming gear to professional equipment. Get the best deals on trusted brands and cutting-edge technology.</p>
+                    <button class="shop-now-btn">Shop Now</button>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <div class="content-section">
-        <h2>Trending Items</h2>
-        <div class="trending-items">
-            <div class="item-card">
-                <img src="/images/placeholder.jpg" alt="Product 1">
-                <h3 style="color: #192430; margin: 10px 0;">Logitech Smart Board</h3>
-                <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 1,299</p>
-            </div>
-            <div class="item-card">
-                <img src="/images/placeholder.jpg" alt="Product 2">
-                <h3 style="color: #192430; margin: 10px 0;">Logitech Mouse Pro+</h3>
-                <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 899</p>
-            </div>
-            <div class="item-card">
-                <img src="/images/placeholder.jpg" alt="Product 3">
-                <h3 style="color: #192430; margin: 10px 0;">A Gaming Keyboard</h3>
-                <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 2,499</p>
-            </div>
-            <div class="item-card">
-                <img src="/images/placeholder.jpg" alt="Product 4">
-                <h3 style="color: #192430; margin: 10px 0;">Mechanical KB</h3>
-                <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 3,499</p>
-            </div>
-            <div class="item-card">
-                <img src="/images/placeholder.jpg" alt="Product 5">
-                <h3 style="color: #192430; margin: 10px 0;">RGB Gaming Mouse</h3>
-                <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 1,999</p>
-            </div>
-            <div class="item-card">
-                <img src="/images/placeholder.jpg" alt="Product 6">
-                <h3 style="color: #192430; margin: 10px 0;">Logitech Mouse White</h3>
-                <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 799</p>
-            </div>
-        </div>
-        <div style="text-align: center;">
-            <button class="see-more">See more</button>
         </div>
 
-        <div class="banner-section">
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 40px;">
+        <div class="content-section">
+            <h2>Trending Items</h2>
+            <div class="trending-items">
+                <div class="item-card">
+                    <img src="/images/placeholder.jpg" alt="Product 1">
+                    <h3 style="color: #192430; margin: 10px 0;">Logitech Smart Board</h3>
+                    <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 1,299</p>
+                </div>
+                <div class="item-card">
+                    <img src="/images/placeholder.jpg" alt="Product 2">
+                    <h3 style="color: #192430; margin: 10px 0;">Logitech Mouse Pro+</h3>
+                    <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 899</p>
+                </div>
+                <div class="item-card">
+                    <img src="/images/placeholder.jpg" alt="Product 3">
+                    <h3 style="color: #192430; margin: 10px 0;">A Gaming Keyboard</h3>
+                    <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 2,499</p>
+                </div>
+                <div class="item-card">
+                    <img src="/images/placeholder.jpg" alt="Product 4">
+                    <h3 style="color: #192430; margin: 10px 0;">Mechanical KB</h3>
+                    <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 3,499</p>
+                </div>
+                <div class="item-card">
+                    <img src="/images/placeholder.jpg" alt="Product 5">
+                    <h3 style="color: #192430; margin: 10px 0;">RGB Gaming Mouse</h3>
+                    <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 1,999</p>
+                </div>
+                <div class="item-card">
+                    <img src="/images/placeholder.jpg" alt="Product 6">
+                    <h3 style="color: #192430; margin: 10px 0;">Logitech Mouse White</h3>
+                    <p style="color: #28517D; font-weight: bold; font-size: 1.2em; margin: 5px 0;">₹ 799</p>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="see-more">See more</button>
+            </div>
+
+            <div class="banner-section">
                 <div style="flex: 1; text-align: left;">
                     <h2 style="font-size: 2em; color: #192430; margin-bottom: 15px;">GREAT OFFERS</h2>
                     <p style="color: #666; font-size: 1.1em; margin-bottom: 25px;">EXPLORE THE WEEKEND OFFERS</p>
@@ -416,33 +572,33 @@
             </div>
         </div>
 
+        <footer class="footer">
+            <div class="footer-content">
+                <div>
+                    <h4>ElectroMania</h4>
+                    <p><a href="/about">About Us</a></p>
+                    <p><a href="/contact">Contact</a></p>
+                    <p><a href="/blog">Blog</a></p>
+                </div>
+                <div>
+                    <h4>Customer Service</h4>
+                    <p><a href="/shipping">Shipping Policy</a></p>
+                    <p><a href="/returns">Returns & Exchanges</a></p>
+                    <p><a href="/faq">FAQs</a></p>
+                </div>
+                <div>
+                    <h4>Categories</h4>
+                    <p><a href="/electronics">Electronics</a></p>
+                    <p><a href="/accessories">Accessories</a></p>
+                    <p><a href="/gadgets">Gadgets</a></p>
+                </div>
+                <div>
+                    <h4>Connect With Us</h4>
+                    <p><a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></p>
+                    <p><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a></p>
+                    <p><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></p>
+                </div>
+            </div>
+        </footer>
     </div>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div>
-                <h4>ElectroMania</h4>
-                <p><a href="/about">About Us</a></p>
-                <p><a href="/contact">Contact</a></p>
-                <p><a href="/blog">Blog</a></p>
-            </div>
-            <div>
-                <h4>Customer Service</h4>
-                <p><a href="/shipping">Shipping Policy</a></p>
-                <p><a href="/returns">Returns & Exchanges</a></p>
-                <p><a href="/faq">FAQs</a></p>
-            </div>
-            <div>
-                <h4>Categories</h4>
-                <p><a href="/electronics">Electronics</a></p>
-                <p><a href="/accessories">Accessories</a></p>
-                <p><a href="/gadgets">Gadgets</a></p>
-            </div>
-            <div>
-                <h4>Connect With Us</h4>
-                <p><a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></p>
-                <p><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a></p>
-                <p><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></p>
-            </div>
-        </div>
-    </footer>
+</body>

@@ -19,7 +19,7 @@ const login = async (req,res)=>{
   try {
     
     const {email,password} = req.body;
-    const user = await User.find({email});
+    const user = await User.findOne({email});
     if(!user){
       return res.render('user/login').json({error:"Email doesn't exist . Please signup"})
     }
@@ -29,7 +29,8 @@ const login = async (req,res)=>{
       return res.render('user/login').json({error:"Incorrect password. Try again."})
     }
 
-    req.session.user = true;
+    req.session.user = user._id;
+    // res.redirect('/')
     res.status(200).json({
       success : true,
       message : "Logged in succefully",
@@ -226,6 +227,11 @@ const otpVerify = async (req,res)=>{
   }
 }
 
+const logout = (req,res)=>{
+  res.set('Cache-controle','no-store');
+  req.session.destroy();
+  res.redirect('/user/login')
+}
 
 
 export default { registerUser,
@@ -233,4 +239,5 @@ export default { registerUser,
                 otpLoader,
                 otpVerify,
                 login,
+                logout
               };

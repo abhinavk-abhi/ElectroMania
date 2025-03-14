@@ -1,4 +1,8 @@
+<head>
+    <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+</head>
     <style>
         * {
             margin: 0;
@@ -286,17 +290,18 @@
 
         if(!response.ok){
             throw new Error(data.error || 'Something went wrong');
-        }else{
+        }
+        else{
             Swal.fire({
                 icon : 'success',
                 text : data.message || 'Login successful',
                 timer :1500,
-                showConfimationButton : false
+                showConfimButton : false
             })
 
             setTimeout(()=>{
                 window.location.href = data.redirectUrl || '/'
-            })
+            },2000)
         }
     })
     </script>

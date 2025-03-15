@@ -1,0 +1,365 @@
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .brand-name {
+            font-family: 'Bellefair', serif;
+            font-size: 28px;
+            font-weight: normal;
+            text-decoration: none;
+            color: #192430;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-right input {
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            width: 200px;
+            font-size: 14px;
+            background: #f5f5f5;
+        }
+
+        .nav-right a {
+            color: #666;
+            font-size: 18px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-right a:hover {
+            color: #28517D;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #f9f9f9; /* White-related color */
+            padding: 20px 0;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            z-index: 999;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            margin-left: 5px;
+            padding: 15px 30px;
+            color: #192430; /* Dark text for white background */
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s ease; /* Transition effect for background */
+            position: relative;
+            border-radius: 15px;
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .sidebar a.active {
+            background: #3b6da1; /* Blue background for selected tag */
+            color: white; /* White text for contrast */
+        }
+
+        .sidebar a:hover {
+            background: #d9dbdd; /*  Light gray hover effect */
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 30px 30px;
+            flex: 1;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            color: #192430;
+            margin-bottom: 20px;
+        }
+
+        /* Today's Sales Cards */
+        .sales-cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            text-align: center;
+        }
+
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .card.yellow { background: #e0cc17; }
+        .card.green { background: #62bd65; }
+        .card.pink { background: #c5869c; }
+        .card.purple { background: #a195b8; }
+
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-card h4 {
+            font-size: 18px;
+            color: #192430;
+            margin-bottom: 15px;
+        }
+
+        .chart-placeholder {
+            height: 150px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .order-summary h4 {
+            font-size: 18px;
+            color: #192430;
+            margin-bottom: 15px;
+        }
+
+        .order-summary .chart-placeholder {
+            height: 200px;
+        }
+
+        /* Customer Map and Total Revenue */
+        .bottom-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .total-revenue, .customer-map {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .total-revenue h4, .customer-map h4 {
+            font-size: 18px;
+            color: #192430;
+            margin-bottom: 15px;
+        }
+
+        .total-revenue .chart-placeholder, .customer-map .chart-placeholder {
+            height: 200px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 200px;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .bottom-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: static;
+                top: auto;
+                padding: 10px 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sales-cards {
+                flex-direction: column;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-right input {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="brand-name">ElectroMania</a>
+        <div class="nav-right">
+            <input type="search" placeholder="Search...">
+            <a href="#"><i class="bi bi-search"></i></a>
+            <a href="#"><i class="bi bi-envelope"></i></a>
+            <a href="#"><i class="bi bi-person-circle"></i></a>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="active"><i class="bi bi-grid"></i> Dashboard</a>
+        <a href="#"><i class="bi bi-box"></i> Products</a>
+        <a href="#"><i class="bi bi-people"></i> Customer</a>
+        <a href="#"><i class="bi bi-tag"></i> Category</a>
+        <a href="#"><i class="bi bi-cart"></i> Order</a>     
+        <a href="#"><i class="bi bi-bar-chart"></i> Sales Report</a>
+        <a href="#"><i class="bi bi-ticket"></i> Coupon</a>
+        <a href="#"><i class="bi bi-image"></i> Banner</a>
+        <a href="#"><i class="bi bi-arrow-left-right"></i> Refund/Return</a>
+        <a href="#"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2 class="dashboard-title">Dashboard</h2>
+
+        <!-- Today's Sales -->
+        <div class="sales-cards">
+            <div class="card yellow">
+                <h3>₹70K</h3>
+                <p>Total Sales<br>48% over yesterday</p>
+            </div>
+            <div class="card green">
+                <h3>300</h3>
+                <p>Total Orders<br>58% over yesterday</p>
+            </div>
+            <div class="card pink">
+                <h3>50</h3>
+                <p>Products Sold<br>18% over yesterday</p>
+            </div>
+            <div class="card purple">
+                <h3>15</h3>
+                <p>New Customers<br>68% over yesterday</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <h4>Total Order</h4>
+                <div class="chart-placeholder">Pie Chart Placeholder (78%)</div>
+            </div>
+            <div class="chart-card">
+                <h4>Customer Growth</h4>
+                <div class="chart-placeholder">Pie Chart Placeholder (22%)</div>
+            </div>
+            <div class="chart-card">
+                <h4>Total Revenue</h4>
+                <div class="chart-placeholder">Pie Chart Placeholder (62%)</div>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h4>Order Summary <a href="#" style="float: right; color: #28517D; font-size: 14px; text-decoration: none;">Save Report</a></h4>
+            <div class="chart-placeholder">Line Chart Placeholder (468 Orders)</div>
+        </div>
+
+        <!-- Total Revenue and Customer Map -->
+        <div class="bottom-section">
+            <div class="total-revenue">
+                <h4>Total Revenue</h4>
+                <div class="chart-placeholder">Line Chart Placeholder (₹65K)</div>
+            </div>
+            <div class="customer-map">
+                <h4>Customer Map</h4>
+                <div class="chart-placeholder">Bar Chart Placeholder</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                e.preventDefault(); // Remove if you want navigation
+            });
+        });
+    </script>
+</body>

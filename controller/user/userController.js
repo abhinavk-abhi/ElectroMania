@@ -21,12 +21,25 @@ const login = async (req,res)=>{
     const {email,password} = req.body;
     const user = await User.findOne({email});
     if(!user){
-      return res.render('user/login').json({error:"Email doesn't exist . Please signup"})
+      // return res.redirect('user/login',{errorMessage : 'Incorrect email or password'})
+      // return res.status(200).render('user/login', { errorMessage: 'Incorrect email or password' });
+      return res.status(200).json({
+        success : false,
+        message : "Incorrect Email or Password",
+        redirectUrl : '/user/login'
+      })
     }
 
     const isMatch = await bcrypt.compare(password,user.password);
     if(!isMatch){
-      return res.render('user/login').json({error:"Incorrect password. Try again."})
+      // return res.redirect('user/login',{errorMessage : 'Incorrect email or password'})
+      // return res.status(200).render('user/login', { errorMessage: 'Incorrect email or password' });
+      return res.status(200).json({
+        success : false,
+        message : "Incorrect Email or Password",
+        redirectUrl : '/user/login'
+      })
+
     }
 
     req.session.user = user._id;
@@ -57,8 +70,12 @@ const registerUser = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (user){
-      return res.status(400).json({error: "User already exist in this email address"});
-    }
+      return res.status(400).json({
+          success : false,
+          message : "User in this email already exists.",
+          redirectUrl : '/user/login'
+    })
+  }
 
     //Generate hashed password and userId
     const hashedPassword = await bcrypt.hash(password, 10);

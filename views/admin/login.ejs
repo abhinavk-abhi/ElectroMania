@@ -1,0 +1,270 @@
+<head>
+    <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(to top, #2A5788, #0D1B2A); /* Theme gradient */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .log-container {
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px; /* Narrower container to match the image */
+            padding: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: 'outfit', serif;
+            font-size: 40px;
+            color: #1E2A44;
+            margin-bottom: 20px;
+        }
+
+
+        #loginForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 350px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+        }
+
+        .forgot-password {
+            position: absolute;
+            right: 0;
+            top: 120%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #6B46C1;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .d-none {
+            display: none;
+        }
+
+        .send-btn {
+            background: #6B46C1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            width: 100%;
+            max-width: 350px;
+            margin-top: 20px;
+        }
+
+        .send-btn:hover {
+            background: #5A36A4;
+        }
+
+        .signup-text {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .signup-text a {
+            color: #6B46C1;
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
+        .branding {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+            font-family: 'Bellefair', serif;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 576px) {
+            .log-container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 36px;
+            }
+
+            .form-control,
+            .send-btn,
+            .google-btn {
+                max-width: 100%;
+            }
+
+            .google-btn {
+                padding: 8px 16px;
+            }
+
+            .forgot-password {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container log-container">
+        <div class="login-div">
+            <div class="px-3 py-3">
+                <h2 class="fw-bold mb-4 text-center">Login as Admin</h2>
+
+                <!-- Login Form -->
+                <form id="loginForm">
+                    <!-- Error Message Display -->
+                    <p id="errorMessageContainer" class="text-danger text-center <%= errorMessage ? '' : 'd-none' %>">
+                        <% if (errorMessage) { %>
+                            <span id="errorText"><%= errorMessage %></span>
+                        <% } else { %>
+                            <span id="errorText"></span>
+                        <% } %>
+                    </p>
+
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Email" id="email" name="email">
+                    </div>
+
+                    <div class="form-group">
+                        <br>
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+                       
+                    </div>
+
+                    <button type="submit" class="btn send-btn">Login</button>
+                </form>
+
+
+
+                <!-- Branding -->
+                <p class="branding">ElectroMania</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+         document.getElementById("loginForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessageContainer = document.getElementById("errorMessageContainer");
+            const errorText = document.getElementById("errorText");
+
+
+            errorText.innerText = "";
+            errorMessageContainer.classList.add("d-none");
+
+            if (!email || !password) {
+                errorText.innerText = "Email and password are required";
+                errorMessageContainer.classList.remove("d-none");
+                return;
+            }
+            
+            let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                errorText.innerText = "Invalid email format";
+                errorMessageContainer.classList.remove("d-none");
+                return;
+            }
+            
+            if (password.length < 6) {
+                errorText.innerText = "Password must be at least 6 characters";
+                errorMessageContainer.classList.remove("d-none");
+                return;
+            }
+
+       
+
+
+        const loginData = {email,password};
+
+        const response = await fetch('/admin/login',{
+            method : 'POST',
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify(loginData)
+        })
+
+        const data = await response.json();
+
+        if(!response.ok){
+            throw new Error(data.error || 'Something went wrong');
+        }
+        else if(data.success){
+            Swal.fire({
+                icon : 'success',
+                text : data.message || 'Login successful',
+                timer :1500,
+                showConfimButton : false,
+                didOpen: () => {
+                const confirmBtn = Swal.getConfirmButton();
+                if (confirmBtn) confirmBtn.style.display = 'none';
+    }
+            })
+
+            setTimeout(()=>{
+                window.location.href = data.redirectUrl || 'admin/dashboard'
+            },2000)
+        }else{
+            Swal.fire({
+                icon : 'error',
+                text : data.message || 'Incorrect email or password',
+                timer : 1500,
+                showConfimButton : false,
+                didOpen: () => {
+                const confirmBtn = Swal.getConfirmButton();
+                if (confirmBtn) confirmBtn.style.display = 'none';
+    }
+            })
+        }
+    })
+    </script>
+
+</body>

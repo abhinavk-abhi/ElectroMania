@@ -313,26 +313,44 @@
 
                 if (!response.ok) {
                     throw new Error(data.error || "Something went wrong");
-                }else{
-                    // console.log(data)
+                }else if(data.success === 'true'){
                 Swal.fire({
                     icon: "success",
                     text: data.message,
                     timer: 2000,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    didOpen: () => {
+                const confirmBtn = Swal.getConfirmButton();
+                if (confirmBtn) confirmBtn.style.display = 'none';
+              }
                 });
                 setTimeout(()=>{
                     window.location.href = '/user/signUpOtp'
                 },2000)
+            }else{
+                Swal.fire({
+                    icon : 'error',
+                    message : data.message,
+                    timer : 2000,
+                    showConfirmButton : false,
+                    didOpen: () => {
+                const confirmBtn = Swal.getConfirmButton();
+                if (confirmBtn) confirmBtn.style.display = 'none';
+              }
+                })
             }
 
             } catch (error) {
                 console.log(error)
                 Swal.fire({
                     icon: "error",
-                    text: error,
+                    text: data.error,
                     timer: 2000,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    didOpen: () => {
+                const confirmBtn = Swal.getConfirmButton();
+                if (confirmBtn) confirmBtn.style.display = 'none';
+              }
                 });
             }
         });

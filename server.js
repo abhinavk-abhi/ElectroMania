@@ -1,6 +1,7 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+import path from "path"
 import env from "dotenv";
 import userRoute from "./routes/user.js";
 import adminRoute from "./routes/admin.js";
@@ -33,6 +34,7 @@ const publicPath = join(__dirname, "public");
 app.use(express.static(publicPath));
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
+app.use(express.static(path.join(__dirname,"assets")))
 
 app.use("/user", userRoute);
 app.use("/admin", adminRoute);

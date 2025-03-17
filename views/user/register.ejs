@@ -313,7 +313,7 @@
 
                 if (!response.ok) {
                     throw new Error(data.error || "Something went wrong");
-                }else if(data.success === 'true'){
+                }else if(data.success){
                 Swal.fire({
                     icon: "success",
                     text: data.message,
@@ -330,7 +330,7 @@
             }else{
                 Swal.fire({
                     icon : 'error',
-                    message : data.message,
+                    text : data.message,
                     timer : 2000,
                     showConfirmButton : false,
                     didOpen: () => {

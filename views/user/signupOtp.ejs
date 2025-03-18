@@ -234,13 +234,14 @@
                     <input type="text" class="otp-input" maxlength="4" placeholder="Enter OTP" id="otp" name="otp">
 
                     <!-- Confirm Button -->
-                    <button type="submit" class="btn send-btn">Confirm</button>
+                    <button type="submit" id="submitBtn" class="btn send-btn">Confirm</button>
 
                     <!-- Resend OTP Link (Instead of Button) -->
                     <p class="mt-3">
                         <span id="timerText" class="text-center me-3" style="font-size: 0.8em; color: #ff0000;"></span>
-              
-                        <button type="button" id="resendBtn" class="btn send-btn-1" onclick="resendOTP()">Resend OTP</button>
+
+                        <button type="button" id="resendBtn" class="btn send-btn-1" onclick="resendOTP()">Resend
+                            OTP</button>
 
                     </p>
 
@@ -254,55 +255,87 @@
     </div>
 
     <script>
-         let timerSeconds = 10;
-            let countdown;
+        let timerSeconds = 10;
+        let countdown;
 
-            function startOTPTimer(duration) {
-                let timeLeft = duration;
-                const timerDisplay = document.getElementById("timerDisplay");
-                const resendBtn = document.getElementById("resendBtn");
+        function startOTPTimer(duration) {
+            let timeLeft = duration;
+            const timerDisplay = document.getElementById("timerDisplay");
+            const resendBtn = document.getElementById("resendBtn");
+            const submitBtn = document.getElementById("submitBtn");
 
-                resendBtn.disabled = true; // Disable resend initially
+            resendBtn.disabled = true; // Disable resend initially
 
-                countdown = setInterval(() => {
-                    const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                    const seconds = (timeLeft % 60).toString().padStart(2, '0');
-                    timerDisplay.innerText = `${minutes}:${seconds}`;
+            countdown = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const seconds = (timeLeft % 60).toString().padStart(2, '0');
+                timerDisplay.innerText = `${minutes}:${seconds}`;
 
-                    timeLeft--;
+                timeLeft--;
 
-                    if (timeLeft < 0) {
-                        clearInterval(countdown);
-                        timerDisplay.innerText = "00:00";
-                        resendBtn.disabled = false;
-                        document.getElementById("timerText").innerText = "Didn't get the OTP?";
-                    }
-                }, 1000);
+                if (timeLeft < 0) {
+                    clearInterval(countdown);
+                    timerDisplay.innerText = "00:00";
+                    submitBtn.disabled = true;
+                    resendBtn.disabled = false;
+                    document.getElementById("timerText").innerText = "Didn't get the OTP?";
+                }
+            }, 1000);
+        }
+
+        // Call this on page load
+        window.onload = () => {
+            startOTPTimer(timerSeconds);
+        };
+
+        async function resendOTP() {
+            clearInterval(countdown);
+
+            document.getElementById("timerText").innerHTML = `Resend OTP in <span id="timerDisplay">00:10</span>`;
+
+            startOTPTimer(timerSeconds);
+            try {
+                const response = await fetch('/user/resendOtp', {
+                    method: "POST",
+                    headers: { "Content-type": "application/json" },
+                })
+
+                const data = await response.json();
+
+                if (!response.ok) {
+
+                    Swal.fire({
+                        icon: "error",
+                        text: "Failed to sent OTP . Please try again later.",
+                        timer: 1500,
+                        showConfirmButton: false
+                    })
+                    return;
+                }
+
+                Swal.fire({
+                    icon: "success",
+                    text: "OTP sented successfully.",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+
+                submitBtn.disabled = false;
+
+            } catch (error) {
+                console.log(error)
+                Swal.fire({
+                    icon: "error",
+                    text: data.message || "Failed to sent OTP",
+                    timer : 1500,
+                    showConfirmButton : false
+                });
             }
 
-            // Call this on page load
-            window.onload = () => {
-                startOTPTimer(timerSeconds);
-            };
-
-            function resendOTP() {
-                clearInterval(countdown);
-
-                document.getElementById("timerText").innerHTML = `Resend OTP in <span id="timerDisplay">00:10</span>`;
-
-                startOTPTimer(timerSeconds);
-                // Send OTP request via fetch or form submit
-               Swal.fire({
-                icon : "success",
-                text : "OTP sent successfully",
-                timer : 1500,
-                showConfirmButton : false
-               })
-
-        
-              
-               
-            }
+            setTimeout(() => {
+                    window.location.href = data.redirectUrl || '/user/verifyOtp';
+                }, 2000);
+        }
 
         document.getElementById("otpVerifyForm").addEventListener("submit", async function (event) {
             event.preventDefault();

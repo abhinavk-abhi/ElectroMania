@@ -69,7 +69,7 @@ const loadHome = async (req,res)=>{
 
 const loadCustomer = async (req,res)=>{
     try {
-        res.send("customer page")
+      res.render('admin/customers')
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -80,4 +80,38 @@ const loadCustomer = async (req,res)=>{
     }
 }
 
-export default { loadLogin, login, loadHome, loadCustomer }
+const loadProducts = async (req,res)=>{
+    try {
+        res.render('admin/products')
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success : false,
+            message : "Error loading the page",
+            redirectUrl : '/admin/dashboard'
+        })
+        
+    }
+}
+
+const loadCategories = async (req,res)=>{
+    try {
+        res.render('admin/categories')
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success : false,
+            message : "Error loading the page",
+            redirectUrl : '/admin/dashboard'
+        })
+    }
+}
+
+export default { 
+                loadLogin, 
+                login, 
+                loadHome, 
+                loadCustomer , 
+                loadProducts,
+                loadCategories
+            }

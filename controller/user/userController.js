@@ -250,11 +250,37 @@ const logout = (req,res)=>{
   res.redirect('/user/login')
 }
 
+const resendOtp = async (req,res)=>{
+  try {
+    const otp = otpGenerator();
+  if(req.session.otp === otp){
+    otp = otpGenerator()
+  }else{
+    req.session.otp = otp;
+  }
+
+  res.status(200).json({
+    success : true,
+    message : "OTP sent successfully",
+  })
+
+  } catch (error) {
+    
+    console.log(error);
+    res.status(302).json({
+      success : false,
+      message : "Failed to sent OTP. Please try again",
+      redirectUrl : "/user/verifyOtp"
+    })
+  }
+}
+
 
 export default { registerUser,
                 loadLogin,
                 otpLoader,
                 otpVerify,
                 login,
-                logout
+                logout,
+                resendOtp
               };

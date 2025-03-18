@@ -9,5 +9,6 @@ router.post('/register',userController.registerUser)
 router.get('/signUpOtp',userController.otpLoader)
 router.post('/verifyOtp',userController.otpVerify)
 router.get('/logout',userController.logout)
+router.post('/resendOtp',userController.resendOtp)
 
 export default router;                  

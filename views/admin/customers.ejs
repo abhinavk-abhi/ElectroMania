@@ -1,10 +1,18 @@
 
 <head>
+    
+
+
+
+
+
     <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         * {
             margin: 0;
@@ -19,6 +27,31 @@
             display: flex;
             overflow-x: hidden;
         }
+
+        .stock-btn1 {
+    width: 75px;
+    border: 1px solid #0CAF60;
+    background-color: #8af5bf;
+    color: #0CAF60;
+    border-radius: 10px;
+}
+
+.stock-btn2 {
+    width: 75px;
+    border: 1px solid #ffa601;
+    background-color: #f7fb0496;
+    color: #ffa601;
+    border-radius: 10px;
+}
+
+.stock-btn3 {
+    width: 75px;
+    border: 1px solid #FD6A6A;
+    background-color: #f9d3d3;
+    color: #FD6A6A;
+    border-radius: 10px;
+}
+
 
         /* Navbar */
         .navbar {
@@ -354,6 +387,8 @@
             .pagination-custom .page-nav {
                 justify-content: center;
             }
+
+            
         }
     </style>
 </head>
@@ -362,10 +397,6 @@
     <nav class="navbar">
         <a href="/admin" class="brand-name">ElectroMania</a>
         <div class="nav-right">
-            <div class="search-container">
-                <input type="search" placeholder="Search here...">
-                <i class="bi bi-search search-icon"></i>
-            </div>
             <button class="export-btn">Export</button>
             <a href="#" class="filter-btn"><i class="bi bi-funnel"></i></a>
             <a href="#" class="profile-icon"><i class="bi bi-person-circle"></i></a>
@@ -389,6 +420,29 @@
     <div class="main-content">
         <h2 class="dashboard-title">Customer</h2>
 
+                        <!-- Filters and Add Product Button -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                            <!-- Filter by Category -->
+                            <div class="d-flex gap-2">
+                                <div class="flex-grow-1" style="max-width: 180px;">
+                                    <select class="form-select filter-select">
+                                        <option value="all" <%= selectedFilter === "all" ? "selected" : "" %>>All</option>
+                                        <option value="false" <%= selectedFilter === "false" ? "selected" : "" %>>Active</option>
+                                        <option value="true" <%= selectedFilter === "true" ? "selected" : "" %>>Blocked</option>
+                                    </select>
+                                </div>
+                                
+                            </div>
+        
+                            <!-- Search Bar -->
+                            <form class="d-flex search-container flex-grow-1" id="searchForm" style="max-width: 300px;">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchval">
+                                <button class="btn" type="submit" style="background-color: #3e29a8;">
+                                    <i class="bi bi-search text-white"></i>
+                                </button>
+                            </form>
+                        </div>  
+
         <!-- Customer Table -->
         <div class="customer-table">
             <table class="table">
@@ -404,11 +458,12 @@
                 </thead>
                 <tbody>
                     <% customer.reverse().forEach((customer,index)=>{ %>
+                        
                         <tr>
-                            <td><% customer.userId %></td>
-                            <td><% customer.name %></td>
-                            <td><% customer.email %></td>
-                            <td><% customer.phone%></td>
+                            <td><%= customer.userId %></td>
+                            <td><%= customer.name %></td>
+                            <td><%= customer.email %></td>
+                            <td><%= customer.phone%></td>
                             <td>
                                 <% if (customer.isBlocked) { %>
                                     <span class="badge stock-btn3">Blocked</span>
@@ -419,29 +474,30 @@
                             <td>
                                 <% if (customer.isBlocked) { %>
                                     <a href="#" class="toggle-block me-2" data-id="<%= customer.userId %>" data-blocked="true">
-                                        <i class="fa-solid fa-circle-xmark fa-xl" style="color: #ff0000;"></i>
+                                        <i class="bi bi-toggle-on text-danger fs-3"></i>
                                     </a>
                                 <% } else { %>
                                     <a href="#" class="toggle-block me-2" data-id="<%= customer.userId %>" data-blocked="false">
-                                        <i class="fa-solid fa-circle-check fa-xl" style="color: #0a8f3b;"></i>
+                                        <i class="bi bi-toggle-off text-success fs-3"></i>
                                     </a>
-                                <% } %>    
+                                <% } %>
+                                <!-- <a href="/admin/viewcustomers?user=<%= customer.userId %>" class="btn btn-dark px-2 py-1" style="font-size: 0.8em;">View</a> -->
                             </td>                                        
                         </tr>
                     <% }) %>  
                 </tbody>
             </table>
-            <div class="pagination-custom">
-                <span>Show result 2 - 9</span>
-                <div class="page-nav">
-                    <a href="#">1</a>
-                    <a href="#" class="active">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">...</a>
-                    <a href="#">20</a>
-                </div>
-            </div>
+            
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+    </ul>
+  </nav>
         </div>
     </div>
 
@@ -468,6 +524,104 @@
                     link.classList.add('active');
                 }
             });
+        });
+
+        document.querySelectorAll(".toggle-block").forEach((button)=>{
+            button.addEventListener("click", async (event)=>{
+                event.preventDefault();
+
+                const customerId = button.getAttribute("data-id");
+                const isBlocked = button.getAttribute("data-blocked") === "true";
+
+                const confirmAction = await Swal.fire({
+                    title : 'Are you sure ?',
+                    text : `Do you want to ${isBlocked ? "unblock" : "block"} this customer.`,
+                    icon : "warning",
+                    showCancelButton : true,
+                    confirmButtonColor : "#d33",
+                    cancelButtonColor : "3085d6",
+                    confirmButtonText : `Yes, ${isBlocked ? "unblock": "block"}`,
+                    cancelButtonText : "Cancel"
+                });
+
+                if(confirmAction.isConfirmed){
+                    try {
+                        const response = await fetch(`/admin/customers?users=${customerId}`,{
+                            method : 'PUT',
+                            headers : {"Content-Type" : "application/json"},
+                            body : JSON.stringify({isBlocked : !isBlocked})
+                        });
+
+                        const result = await response.json();
+                         
+                        if(response.ok){
+                            Swal.fire({
+                                position : "top-center",
+                                icon : "success",
+                                text : `Customer ${!isBlocked ?"Blocked" : "Unblocked" } successfully`,
+                                showConfirmButton : false,
+                                timer : 1500
+                            }).then(()=>{
+                                location.reload();//To reload after success message
+                            })
+                        }else{
+                            Swal.fire({
+                                icon : "error",
+                                title : "Failed to update status",
+                                text : result.error || "Something went wrong try again."
+                            })
+                        }
+                    } catch (error) {
+                        console.log('isBlock-error:',error);
+                        Swal.fire({
+                            icon : 'error',
+                            title : "request failed",
+                            text : "Something went wrong. Please try again later."
+                        })
+                    }
+                }
+            })
+        })
+
+
+        document.querySelector('.filter-select').addEventListener('change',function (){
+            const filterValue = this.value;
+            let query = '';
+
+            if(filterValue === 'false'){
+                query = '?isBlocked=false';
+            }else if(filterValue === 'true'){
+                query = '?isBlocked=true';
+            }
+
+            window.location.href =`/admin/customers${query}`;
+        })
+
+        document.getElementById('searchForm').addEventListener('submit', (event)=>{
+            event.preventDefault();
+
+            const searchQuery = document.getElementById('searchval').value.trim();
+            const currentUrl = new URL(window.location.href);
+            
+            const isBlocked = currentUrl.searchParams.get("isBlocked") || "all";
+            const page = currentUrl.searchParams.get("page") || 1;
+
+            try {
+                let queryParams = new URLSearchParams();
+                 
+                if(searchQuery){
+                    queryParams.set("query",searchQuery);
+                }
+                if(isBlocked !== "all"){
+                    queryParams.set("isBlocked", isBlocked);
+                }
+
+                queryParams.set("page",page)
+
+                window.location.href = `/admin/customers?${queryParams.toString()}`
+            } catch (error) {
+                console.log(error)
+            }
         });
     </script>
 </body>

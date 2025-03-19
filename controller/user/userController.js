@@ -57,10 +57,9 @@ const login = async (req,res)=>{
 
 const otpGenerator = () => Math.floor(1000 + Math.random() * 9000);
 
-const userIdGenerator = () => {
-  const prefix = "USR";
-  const timestamp = Date.now();
-  return `${prefix}${timestamp}`;
+const userIdGenerator = async () => {
+  const count = await User.countDocuments();
+    return `USR${1000 + count + 1}`;
 };
 
 
@@ -90,6 +89,7 @@ const registerUser = async (req, res) => {
       phone,
     };
 
+    console.log(newUser);
     //Saves in the session to save to the database after otp validation
     req.session.newUser = newUser;
 
@@ -110,6 +110,9 @@ const registerUser = async (req, res) => {
     //Configure the nodemailer
     const transporter = nodemailer.createTransport({
       service: "gmail",
+      port : 587,
+      secure : false,
+      requireTLS : true,
       auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSWORD,
@@ -142,7 +145,11 @@ const registerUser = async (req, res) => {
     //Send Email
     try {
       await transporter.sendMail(mailer);
-      res.status(200).json({ message: "OTP has been sent to your mail" });
+      res.status(200).json({ 
+        success : true,
+        message: "OTP has been sent to your mail" ,
+        redirectUrl : '/user/signUpOtp'
+      });
     } catch (error) {
       console.error("Error sending otp :", error);
       res.status(500).json({ message: "Server error while sending OTP" });
@@ -257,6 +264,7 @@ const resendOtp = async (req,res)=>{
     otp = otpGenerator()
   }else{
     req.session.otp = otp;
+    console.log(otp)
   }
 
   res.status(200).json({

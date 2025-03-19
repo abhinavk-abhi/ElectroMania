@@ -405,17 +405,16 @@
                     
                 </tbody>
             </table>
-            <div class="pagination-custom">
-                <span>Show result 2 - 9</span>
-                <div class="page-nav">
-                    <a href="#">1</a>
-                    <a href="#" class="active">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">...</a>
-                    <a href="#">20</a>
-                </div>
-            </div>
+           <!-- Pagination Controls -->                                        ----------------------------------------
+<!-- <nav aria-label="Page navigation">                                        |                                       |
+    <ul class="pagination">                                                    |          PAGINATION CORRECTED         |
+      <% for (let i = 1; i <= totalPages; i++) { %>                            |                                       |
+        <li class="page-item <%= i === currentPage ? 'active' : '' %>">        ----------------------------------------
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+    </ul>
+  </nav> -->
         </div>
     </div>
 

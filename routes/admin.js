@@ -10,5 +10,7 @@ router.get('/dashboard',adminController.loadHome)
 router.get('/customers',adminAuth.isLogged,customerController.userInfo)
 router.get('/products',adminAuth.isLogged,adminController.loadProducts)
 router.get('/categories',adminAuth.isLogged,adminController.loadCategories)
+router.put('/customers',adminAuth.isLogged,customerController.userBlock)
+router.get('/customers/filter',adminAuth.isLogged, customerController.filterCustomers);
 
 export default router;

@@ -4,7 +4,7 @@ const {Schema} = mongoose;
 const userModel = new Schema({
     userId : {
         type : String,
-        required : true,
+        required : false,
     },
     name : {
         type : String,
@@ -26,7 +26,10 @@ const userModel = new Schema({
     },
     phone : {
         type : String,
-        required : true
+        required : false,
+        unique : true,
+        sparse : true,
+        default : null,
     },
     isBlocked : {
         type : Boolean,

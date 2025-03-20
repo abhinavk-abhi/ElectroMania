@@ -31,7 +31,6 @@ const login = async (req,res)=>{
 
         const isMatch = await bcrypt.compare(password,admin.password);
         if(!isMatch){
-            console.log("shjkfhj")
         return res.status(401).json({
             success : false,
             message : "Email or Password is incorrect",
@@ -52,7 +51,7 @@ const login = async (req,res)=>{
         console.log(error);
         return res.status(500).json({
             success: false,
-            message: "Server error during login"
+            error: "Server error during login"
         });
     }
 }
@@ -94,18 +93,7 @@ const loadProducts = async (req,res)=>{
     }
 }
 
-const loadCategories = async (req,res)=>{
-    try {
-        res.render('admin/categories')
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            success : false,
-            message : "Error loading the page",
-            redirectUrl : '/admin/dashboard'
-        })
-    }
-}
+
 
 export default { 
                 loadLogin, 
@@ -113,5 +101,4 @@ export default {
                 loadHome, 
                 loadCustomer , 
                 loadProducts,
-                loadCategories
             }

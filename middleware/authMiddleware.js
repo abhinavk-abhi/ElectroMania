@@ -1,11 +1,17 @@
-const isLogged = async (req,res,next)=>{
+const checkSession = (req, res, next) => {
+    if (req.session.admin) {
+        next();
+    } else {
+        res.redirect('/admin/login');
+    }
+};
+
+const isLogin = (req,res,next)=>{
     if(req.session.admin){
-        return res.redirect('/admin/dashboard');
+        res.redirect('/admin/dashboard')
     }else{
-    next()
+        next()
     }
 }
 
-export default {
-    isLogged
-}
+export default {checkSession , isLogin};

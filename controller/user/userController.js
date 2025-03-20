@@ -65,6 +65,9 @@ const userIdGenerator = async () => {
 
 const registerUser = async (req, res) => {
   try {
+
+    console.log(`register user accessed`);
+    
     const { fullName, email, phone, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -76,11 +79,10 @@ const registerUser = async (req, res) => {
     })
   }
 
-    //Generate hashed password and userId
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const userId = await userIdGenerator();
 
-    //Creates new user
     const newUser = {
       userId,
       email,
@@ -90,17 +92,16 @@ const registerUser = async (req, res) => {
     };
 
     console.log(newUser);
-    //Saves in the session to save to the database after otp validation
+
     req.session.newUser = newUser;
 
-    //Generates otp
     const otp = otpGenerator(); 
     console.log(otp);
 
-    //Store Otp in session for validation of the otp later
     req.session.otp = otp;
     req.session.otpEmail = email;
     req.session.requestForm = "register";
+    req.session.expiryTime = Date.now() + 3 * 60 * 1000;
 
     if (!process.env.EMAIL || !process.env.PASSWORD) {
       console.error("Missing email credential in environment variables.");
@@ -133,6 +134,7 @@ const registerUser = async (req, res) => {
                     <p>Your One-Time Password (OTP) for account verification:</p>
                     <p style="font-size: 24px; font-weight: bold; color:#2118cc;">${otp}</p>
                     <p>Please use this OTP to complete your registration process.</p>
+                    <p>The OTP is only valid for three minutes.<p>
                     <h5>If you did not request this registration, please contact - <a href="mailto:electromaniasupport@gmail.com">electromaniasupport@gmail.com</a></h5>
                     <p>Best regards,<br>The ElectroMania Team</p>
                     <hr style="border: 0; border-top: 1px solid #eee;">
@@ -183,6 +185,7 @@ const otpVerify = async (req,res)=>{
     const sentOtp = req.session.otp;
     const otpEmail = req.session.email;
     const requestForm = req.session.requestForm;
+    const expiryTime = req.session.expiryTime;
 
     const formOtp = req.body.otp;
     console.log(req.session.newUser)
@@ -192,6 +195,12 @@ const otpVerify = async (req,res)=>{
     console.log("Session OTP:", sentOtp);
     console.log("Form OTP:", formOtp);
     console.log(requestForm)
+
+    if(Date.now()>expiryTime){
+      return res.status(400).json({
+        message :"The OTP is expired. Try to resend the OTP."
+      })
+    }
 
     if(!sentOtp || !formOtp){
       return res.status(404).json({
@@ -267,10 +276,69 @@ const resendOtp = async (req,res)=>{
     console.log(otp)
   }
 
-  res.status(200).json({
-    success : true,
-    message : "OTP sent successfully",
-  })
+  const email = req.session.otpEmail;
+  req.session.expiryTime = Date.now() + 3 * 60 * 1000;
+  if (!process.env.EMAIL || !process.env.PASSWORD) {
+    console.error("Missing email credential in environment variables.");
+    return res.status(500).render('user/register',{errorMessage:"Server error, Please try again later"})
+  }
+
+  //Configure the nodemailer
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    port : 587,
+    secure : false,
+    requireTLS : true,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
+  });
+
+  //Email content
+  const mailer = {
+    from: process.env.EMAIL,
+    to: email,
+    subject: "Verify your email for ElectroMania",
+    html: `
+              <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
+                  <h2 style="color: #2118cc;">ElectroMania Account Verification</h2>
+                  <p>Hello,</p>
+                  <p>Your registered ElectroMania email is:</p>
+                  <p style="font-size: 12px; font-weight: bold; color:#2118cc;">${email}</p>
+                  <p>Your One-Time Password (OTP) for account verification:</p>
+                  <p style="font-size: 24px; font-weight: bold; color:#2118cc;">${otp}</p>
+                  <p>Please use this OTP to complete your registration process.</p>
+                  <p>The OTP is only valid for three minutes.<p>
+                  <h5>If you did not request this registration, please contact - <a href="mailto:electromaniasupport@gmail.com">electromaniasupport@gmail.com</a></h5>
+                  <p>Best regards,<br>The ElectroMania Team</p>
+                  <hr style="border: 0; border-top: 1px solid #eee;">
+                  <p style="font-size: 12px; color: #777;">This is an automated message. Please do not reply.</p>
+              </div>
+          `,
+  };
+
+
+  //Send Email
+  try {
+    await transporter.sendMail(mailer);
+    res.status(200).json({ 
+      success : true,
+      message: "OTP has been sent to your mail" ,
+      redirectUrl : '/user/signUpOtp'
+    });
+  } catch (error) {
+    console.error("Error sending otp :", error);
+    res.status(500).json({ message: "Server error while sending OTP" });
+    // return res.render('user/register',{errorMessage: "Server error while sending OTP"})
+    }
+
+
+
+  // res.status(200).json({
+  //   success : true,
+  //   message : "OTP sent successfully",
+  // })
 
   } catch (error) {
     

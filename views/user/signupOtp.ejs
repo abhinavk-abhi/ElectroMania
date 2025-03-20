@@ -276,7 +276,6 @@
                 if (timeLeft < 0) {
                     clearInterval(countdown);
                     timerDisplay.innerText = "00:00";
-                    submitBtn.disabled = true;
                     resendBtn.disabled = false;
                     document.getElementById("timerText").innerText = "Didn't get the OTP?";
                 }
@@ -320,7 +319,6 @@
                     showConfirmButton: false
                 })
 
-                submitBtn.disabled = false;
 
             } catch (error) {
                 console.log(error)

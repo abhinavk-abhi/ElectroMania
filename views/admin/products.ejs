@@ -352,8 +352,16 @@
                 <input type="search" placeholder="Search here...">
                 <i class="bi bi-search search-icon"></i>
             </div>
-            <button class="new-btn">New</button>
-            <a href="#" class="filter-btn"><i class="bi bi-funnel"></i></a>
+
+            <!-- <button class="new-btn" >New</button> -->
+              <!-- Add Product Button -->
+              <div class="text-end">
+                <a class="btn admin-btns add-product-btn" href="/admin/newProducts">
+                    <i class="fas fa-plus me-2"></i> New
+                </a>
+            </div>
+        </div>
+
             <a href="#" class="profile-icon"><i class="bi bi-person-circle"></i></a>
         </div>
     </nav>
@@ -392,23 +400,24 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <% product.forEach(product=> { %>
+                      
+                            <% for(let i=0;i<products.length; i++) {%>
                             <tr>
-                                <td><%= product.productId %></td>
-                                <td><%= product.name%></td>
-                                <td><%= product.basePrice%></td>
-                                <td><%= product.category.name%></td>
-                                <td><%= product.stock%></td>
-                                <td><%= new Date(product.createdAt).toLocaleDateString("en-US") %></td>
+                                <td><%= products[i].productId %></td>
+                                <td><%= products[i].name%></td>
+                                <td><%= products[i].basePrice%></td>
+                                <td><%= products[i].category.name%></td>
+                                <td><%= products[i].stock%></td>
+                                <td><%= new Date(products[i].createdAt).toLocaleDateString("en-US") %></td>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center">
                                         <!-- Hidden (Eye-slash) Icon: Shown when isBlocked is TRUE -->
-                                        <p style="color: #3e29a8; margin: 0;" class="<%= product.isBlocked ? 'd-none' : '' %>">
+                                        <p style="color: #3e29a8; margin: 0;" class="<%= products[i].isBlocked ? 'd-none' : '' %>">
                                             <i class="fa-solid fa-eye-slash"></i>
                                         </p>
                                     
                                         <!-- Visible (Eye) Icon: Shown when isBlocked is FALSE -->
-                                        <p style="color: #9c9999; margin: 0;" class="<%= product.visibility ? '' : 'd-none' %>">
+                                        <p style="color: #9c9999; margin: 0;" class="<%= products[i].visibility ? '' : 'd-none' %>">
                                             <i class="fa-solid fa-eye"></i>
                                         </p>
                                     </div>
@@ -416,10 +425,10 @@
                                 </td>
                                 
                                 <td>
-                                    <a href="/admin/updateProducts/<%= product.productId %>" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+                                    <a href="/admin/updateProducts/<%= products[i].productId %>" class="btn btn-sm btn-outline-primary me-2">Edit</a>
                                 </td>
                             </tr>
-                       <% }) %>
+                       <% }%>
                 </tbody>
             </table>
         </div>
@@ -450,8 +459,29 @@
             });
         });
 
+        function applyFilters (){
+            const category = document.getElementById('categoryFilter').value;
+            const stock = document.getElementById('stockFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const searchQuery = document.getElementById('searchInput').value.trim();
 
+            let queryParams = newURLSearchParams();
 
+            if (category !== "all") queryParams.set("category", category);
+            if (stock !== "all") queryParams.set("stock", stock);
+            if (status !== "all") queryParams.set("status", status);
+            if (searchQuery) queryParams.set("query", searchQuery);
+
+            window.location.href = `/admin/products?${queryParams.toString()}`;
+        }
+
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('stockFilter').addEventListener('change', applyFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            applyFilters();
+        });
 
     </script>
 </body>

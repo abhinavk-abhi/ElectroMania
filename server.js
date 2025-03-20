@@ -8,6 +8,7 @@ import adminRoute from "./routes/admin.js";
 import homeRoute from "./routes/homeRoute.js";
 import connectDB from "./config/db.js";
 import session from "express-session";
+import passport from "./config/passport.js";
 env.config();
 connectDB();
 
@@ -36,9 +37,18 @@ app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 app.use(express.static(path.join(__dirname,"assets")))
 
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use("/user", userRoute);
 app.use("/admin", adminRoute);
 app.use("/", homeRoute);
+
+app.get('/google',passport.authenticate('google',{scope:['profile','email']}))
+app.get('/google/callback',passport.authenticate('google',{failureRedirect:'/register'}),(req,res)=>{
+    res.render('home')
+})
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

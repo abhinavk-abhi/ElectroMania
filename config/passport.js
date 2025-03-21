@@ -5,6 +5,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const userIdGenerator = async () => {
+  const count = await User.countDocuments();
+    return `USR${1000 + count + 1}`;
+};
+
 passport.use(new GoogleStrategy({
     clientID:process.env.GOOGLE_CLIENT_ID,
     clientSecret:process.env.GOOGLE_CLIENT_SECRET,
@@ -17,10 +22,12 @@ async(accessToken,refreshToken,profile,done)=>{
         if(user){
             return done(null,user);
         }else{
+            const userId = await userIdGenerator();
             user = new User({
                 name:profile.displayName,
                 email:profile.emails[0].value,
-                googleId:profile.id
+                googleId:profile.id,
+                userId
             });
 
             await user.save();

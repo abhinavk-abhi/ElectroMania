@@ -8,23 +8,14 @@ const categoryModel = new Schema({
         required : true,
         unique : true
     },
-    categoryDescription : {
-        type : String,
-        required : true
-    },
-    thumbnail : {
+    description : {
         type : String,
         required : true
     },
     visibility : {
-        type : String,
+        type : Boolean,
         required : true,
-        enum : ["Active", "inActive"]
     },
-    discountOffers : {
-        type : Number,
-        required : true
-    }
 },{timestamps : true})
 
 export default mongoose.model("Category",categoryModel)

@@ -47,7 +47,7 @@ app.use("/", homeRoute);
 
 app.get('/google',passport.authenticate('google',{scope:['profile','email']}))
 app.get('/google/callback',passport.authenticate('google',{failureRedirect:'/register'}),(req,res)=>{
-    res.render('home')
+    res.render('home',)
 })
 
 app.listen(port, () => {

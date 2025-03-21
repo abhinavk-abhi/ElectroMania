@@ -15,7 +15,7 @@ const categoryInfo = async (req,res)=>{
 
         const totalPages = Math.ceil(totalcategories/limit);
 
-        res.render('admin/categories',{title : "categories", errorMessage : "", cat : categoryData , currPage : page , 
+        res.render('admin/categories',{title : "categories", errorMessage : "", cat : categoryData , currentPage : page , 
             totalPages : totalPages , totalcategories : totalcategories, selectedFilter : "", searchQuery : searchQuery
         });
     } catch (error) {
@@ -28,7 +28,10 @@ const categoryInfo = async (req,res)=>{
 const addCategory = async (req,res)=>{
     try {
         const {addName , addDescription} = req.body;
-        let addStatus = req.body.addStatus === "Active";
+
+        console.log(req.body.addStatus)
+
+        let addStatus = req.body.addStatus === "Active" ? true:false;
 
         if(!addName || !addDescription){
             return res.status(400).json({error : "Category name and desctiption is required."})
@@ -58,7 +61,7 @@ const addCategory = async (req,res)=>{
 const editCategory = async (req,res)=>{
     try {
         const {orgName , editName , editDescription , editStatus} = req.body;
-
+console.log(req.body)
          const category = await Category.findOne({name : orgName});
          if(!category){
             return res.status(400).json({error : "Category not found"})
@@ -72,7 +75,7 @@ const editCategory = async (req,res)=>{
 
          category.name = editName;
          category.description = editDescription;
-         category.visibility = editStatus?.toLowerCase() === "active";
+         category.visibility = editStatus?.toLowerCase() === "active" ? true : false ;
 
          await category.save();
 

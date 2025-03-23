@@ -21,19 +21,15 @@ const login = async (req,res)=>{
     const {email,password} = req.body;
     const user = await User.findOne({email});
     if(!user){
-      // return res.redirect('user/login',{errorMessage : 'Incorrect email or password'})
-      // return res.status(200).render('user/login', { errorMessage: 'Incorrect email or password' });
       return res.status(200).json({
         success : false,
-        message : "Incorrect Email or Password",
+        message : "User doesn't exist.Please sign up",
         redirectUrl : '/user/login'
       })
     }
 
     const isMatch = await bcrypt.compare(password,user.password);
     if(!isMatch){
-      // return res.redirect('user/login',{errorMessage : 'Incorrect email or password'})
-      // return res.status(200).render('user/login', { errorMessage: 'Incorrect email or password' });
       return res.status(200).json({
         success : false,
         message : "Incorrect Email or Password",
@@ -43,7 +39,6 @@ const login = async (req,res)=>{
     }
 
     req.session.user = user._id;
-    // res.redirect('/')
     res.status(200).json({
       success : true,
       message : "Logged in succefully",
@@ -91,7 +86,7 @@ const registerUser = async (req, res) => {
       phone,
     };
 
-    console.log(newUser);
+    // console.log(newUser);*****************
 
     req.session.newUser = newUser;
 
@@ -188,7 +183,7 @@ const otpVerify = async (req,res)=>{
     const expiryTime = req.session.expiryTime;
 
     const formOtp = req.body.otp;
-    console.log(req.session.newUser)
+    // console.log(req.session.newUser)*********************************
 
     const {userId,email,password,name,phone} = req.session.newUser;
 

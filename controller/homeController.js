@@ -7,7 +7,7 @@ const loadHome = async (req,res)=>{
 
         if(user){
             const userData = await User.findOne({_id:user})
-            console.log(userData);
+            // console.log(userData);
             
             res.render('home',{user:userData})
         }else{

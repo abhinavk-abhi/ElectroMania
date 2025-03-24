@@ -20,7 +20,10 @@ app.use(
     secret: process.env.SESSION_SECRET || "yourSecretKey",
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 8 * 60 * 60 * 1000 }, // 8 hour
+    cookie: { 
+      secure: process.env.NODE_ENV === 'production',  
+      maxAge: 24 * 60 * 60 * 1000  
+    }
   })
 );
 
@@ -45,9 +48,16 @@ app.use(express.static(path.join(__dirname, "assets")));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});//This for accessing the name of the from everywhere from the session even with login of google**//
+
 app.use("/user", userRoute);
 app.use("/admin", adminRoute);
 app.use("/", homeRoute);
+
+
 
 app.get(
   "/google",
@@ -57,6 +67,7 @@ app.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/register" }),
   (req, res) => {
+    req.session.user = req.user;
     res.render("home");
   }
 );

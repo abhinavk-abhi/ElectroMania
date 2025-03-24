@@ -28,6 +28,14 @@ const login = async (req,res)=>{
       })
     }
 
+    if(user.isBlocked){
+      return res.status(200).json({
+        success : false,
+        message : "You are blocked by the admin of the website. For further details contact customer support.",
+        redirectUrl : '/user/login'
+      })
+    }
+
     const isMatch = await bcrypt.compare(password,user.password);
     if(!isMatch){
       return res.status(200).json({
@@ -38,7 +46,10 @@ const login = async (req,res)=>{
 
     }
 
-    req.session.user = user._id;
+   
+    req.session.user = user;
+    
+    
     res.status(200).json({
       success : true,
       message : "Logged in succefully",
@@ -48,7 +59,6 @@ const login = async (req,res)=>{
     console.log(error)
   }
 }
-
 
 const otpGenerator = () => Math.floor(1000 + Math.random() * 9000);
 
@@ -86,8 +96,7 @@ const registerUser = async (req, res) => {
       phone,
     };
 
-    // console.log(newUser);*****************
-
+    
     req.session.newUser = newUser;
 
     const otp = otpGenerator(); 
@@ -178,13 +187,11 @@ const otpLoader = async (req,res)=>{
 const otpVerify = async (req,res)=>{
   try {
     const sentOtp = req.session.otp;
-    const otpEmail = req.session.email;
+    const otpEmail = req.session.otpEmail;
     const requestForm = req.session.requestForm;
     const expiryTime = req.session.expiryTime;
 
     const formOtp = req.body.otp;
-    // console.log(req.session.newUser)*********************************
-
     const {userId,email,password,name,phone} = req.session.newUser;
 
     console.log("Session OTP:", sentOtp);
@@ -258,12 +265,12 @@ const otpVerify = async (req,res)=>{
 const logout = (req,res)=>{
   res.set('Cache-controle','no-store');
   req.session.destroy();
-  res.redirect('/user/login')
+  res.render('user/login',{errorMessage : ''})
 }
 
 const resendOtp = async (req,res)=>{
   try {
-    const otp = otpGenerator();
+    let otp = otpGenerator();
   if(req.session.otp === otp){
     otp = otpGenerator()
   }else{

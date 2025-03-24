@@ -16,48 +16,101 @@
             min-height: 100vh;
         }
 
+        /*Additionally added for the dropdown on the right side of navbar */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-toggle {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+        height: 50px;
+        text-decoration: none;
+    }
+
+    .dropdown-toggle i {
+        margin-right: 8px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: rgb(156, 132, 132);
+        min-width: 160px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border: 1px solid #1d1b1b;
+        border-radius: 4px;
+        z-index: 1000;
+        margin-top: 5px;
+        padding: 5px 0;
+    }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color:  rgb(156, 132, 132);
+    }
+
+    /* Show dropdown when active class is present */
+    .dropdown.active .dropdown-content {
+        display: block;
+    }
         .navbar {
-    z-index: 1001; /* Increased to be above hero-section's z-index and overlay */
-    background: #8781813f;
-    padding: 0 40px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    height: 80px;
-    box-sizing: border-box;
-    position: sticky;
-    top: 0;
-}
+        z-index: 1001;
+        background: #8781813f;
+        padding: 0 20px; /* Reduced side padding */
+        display: flex;
+        justify-content: space-between; /* Changed from space-evenly */
+        align-items: center;
+        color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        height: 80px;
+        box-sizing: border-box;
+        position: sticky;
+        top: 0;
+    }
 
-        .brand-name {
-            font-family: 'Bellefair', serif;
-            font-size: 45px;
-            font-weight: normal;
-            text-decoration: none;
-            color: black;
-            line-height: 1;
-            margin-right: 60px;
-            display: flex;
-            align-items: center;
-            height: 100%;
-            padding-top: 5px;
-        }
+    .brand-name {
+        font-family: 'Bellefair', serif;
+        font-size: 45px;
+        font-weight: normal;
+        text-decoration: none;
+        color: black;
+        line-height: 1;
+        margin-right: 30px; /* Reduced from 60px */
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding-top: 5px;
+    }
 
-        .nav-links {
-            display: flex;
-            gap: 50px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 16px;
-            align-items: center;
-            flex: 1;
-            justify-content: center;
-            margin: 0 20px;
-            height: 100%;
-            position: relative;
-            padding-top: 5px;
-        }
+    .nav-links {
+        display: flex;
+        gap: 20px; /* Reduced from 50px */
+        font-family: 'Outfit', sans-serif;
+        font-size: 16px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+        margin: 0 10px; /* Reduced from 20px */
+        height: 100%;
+        position: relative;
+        padding-top: 5px;
+    }
+
 
         .nav-links a {
             color: white;
@@ -76,7 +129,7 @@
             opacity: 0.8;
         }
 
-        .dropdown {
+        /* .dropdown {
             position: relative;
             display: inline-flex;
             align-items: center;
@@ -125,25 +178,26 @@
 
         .dropdown-content a:hover {
             background-color: #f5f5f5;
-        }
+        } */
 
         .nav-right {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            height: 100%;
-            position: relative;
-            padding-top: 5px;
-        }
+        display: flex;
+        gap: 10px; /* Reduced from 20px */
+        align-items: center;
+        height: 100%;
+        position: relative;
+        padding-top: 5px;
+    }
 
         /* Remove underline from all links in nav-right */
         .nav-right a {
-            color: white;
-            text-decoration: none; /* Explicitly remove underline */
-            display: flex;
-            align-items: center;
-            height: 50px;
-        }
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        height: 50px;
+        margin: 0 10px; /* Reduced from 25px */
+    }
 
         /* Ensure dropdown-toggle (username) also has no underline */
         .nav-right .dropdown-toggle {
@@ -151,17 +205,40 @@
         }
 
         .search-bar {
-            padding: 0 15px;
-            border: none;
-            border-radius: 4px;
-            width: 240px;
-            font-family: 'Outfit', sans-serif;
-            margin-right: 8px;
-            font-size: 14px;
-            height: 50px;
-        }
+        padding: 0 10px;
+        border: none;
+        border-radius: 4px;
+        width: 100%;
+        font-family: 'Outfit', sans-serif;
+        font-size: 14px;
+        height: 40px;
+        outline: none;
+    }
 
-        .search-btn, .signup-btn, .icon-btn {
+        .search-container {
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 4px;
+        padding: 0 5px;
+        margin-right: 15px;
+        width: 240px;
+    }
+
+    .search-btn {
+        background: transparent;
+        color: #4D44AD;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 40px;
+    }
+
+         .signup-btn, .icon-btn {
             background: #4D44AD;
             color: white;
             border: none;
@@ -487,28 +564,33 @@
     <nav class="navbar">
         <a href="/" class="brand-name">ElectroMania</a>
         <div class="nav-links">
-            <a href="/home" style="color: black;">Home</a>
+            <a href="/" style="color: black;">Home</a>
             <div class="dropdown">
-                <a href="/shop" style="color: black;">Shop <i class="bi bi-chevron-down" style="font-size: 12px; margin-top: 2px;"></i></a>
-                </div>
+                <a href="/shop" style="color: black;">Shop</a>
+            </div>
             <a href="/offers" style="color: black;">Deals/Offers</a>
         </div>
         <div class="nav-right">
-            <input type="search" class="search-bar" placeholder="Search products...">
-            <button class="search-btn"><i class="bi bi-search" style="font-size: 18px;"></i></button>
-            <a href="/wishlist" style="color: white; margin: 0 25px; font-size: 22px; display: flex; align-items: center; height: 50px; text-decoration: none;"><i class="fas fa-heart"></i></a>
-            <a href="/cart" style="color: white; margin: 0 25px; font-size: 22px; display: flex; align-items: center; height: 50px; text-decoration: none;"><i class="fas fa-shopping-cart"></i></a>
+            <div class="search-container">
+                <input type="search" class="search-bar" placeholder="Search products...">
+                <button class="search-btn"><i class="bi bi-search" style="font-size: 18px;"></i></button>
+            </div>
+            <a href="/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
+            <a href="/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
             <div class="d-none d-lg-flex align-items-center">
                 <% if (locals.user) { %>
                     <div class="dropdown">
-                        <a href="/profile" class="dropdown-toggle" style="color: white; font-size: 15px; font-weight: 500; height: 50px; display: flex; align-items: center; text-decoration: none;"><i class="fas fa-user" style="margin-right: 8px;"></i><%= locals.user.name %></a>
+                        <a href="/profile" class="dropdown-toggle">
+                            <i class="fas fa-user"></i>
+                            <%= locals.user.name %>
+                        </a>
                         <div class="dropdown-content">
-                            <a href="user/logout" style="color: #333; font-size: 14px;">Logout</a>
+                            <a href="/profile">Profile</a>
+                            <a href="user/logout">Logout</a>
                         </div>
                     </div>
                 <% } else { %>
                     <a href="/register" class="icon-btn">SignUp</a>
-                    <!-- <a href="/user/login" class="">Login</a> -->
                 <% } %>
             </div>
         </div>
@@ -605,4 +687,27 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdown = this.closest('.dropdown');
+                    dropdown.classList.toggle('active');
+                });
+            });
+    
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dropdown')) {
+                    document.querySelectorAll('.dropdown').forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                    });
+                }
+            });
+        });
+    </script>
 </body>

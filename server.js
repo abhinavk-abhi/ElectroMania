@@ -43,7 +43,7 @@ const publicPath = join(__dirname, "public");
 app.use(express.static(publicPath));
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
-app.use(express.static(path.join(__dirname, "assets")));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -8,7 +8,7 @@ const productLoad = async (req, res) => {
     const skip = (page - 1) * limit;
     const filter = {};
 
-    const categories = await Category.find();
+    const category = await Category.find();
 
     if (req.query.category && req.query.category !== "all") {
       filter.category = req.query.category;
@@ -39,12 +39,12 @@ const productLoad = async (req, res) => {
 
     const totalProducts = await Product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limit);
-    console.log(products);
+    console.log(category)
     res.render("admin/products", {
       title: "Products",
       errorMessage: "",
       products: products,
-      // cat : category,
+      category: category,
       currentPage: page,
       totalPages: totalPages,
       totalProducts: totalProducts,
@@ -62,11 +62,18 @@ const productLoad = async (req, res) => {
 
 const addProduct = async (req,res)=>{
     try {
-        res.render('admin/addProducts')
+        const categories = await Category.find({visibility : true})
+
+        res.render('admin/addProducts',{
+          category : categories
+        });
     } catch (error) {
-        
+        console.error('Error loading the add product page :',error);
+        res.status(500).json({message : "Internal server error. Please try again later."})
     }
 }
+
+
 
 export default {
   productLoad,

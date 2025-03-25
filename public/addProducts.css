@@ -1,0 +1,390 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #f5f7fa;
+    min-height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  .brand-name {
+    font-family: 'Bellefair', serif;
+    font-size: 28px;
+    font-weight: normal;
+    text-decoration: none;
+    color: #192430;
+  }
+  
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .nav-right .search-container {
+    position: relative;
+  }
+  
+  .nav-right input {
+    padding: 8px 15px 8px 35px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    width: 200px;
+    font-size: 14px;
+    background: #f5f5f5;
+  }
+  
+  .nav-right .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 16px;
+  }
+  
+  .nav-right .new-btn {
+    background: #3b6da1;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .nav-right .new-btn:hover {
+    background: #2d5480;
+  }
+  
+  .nav-right .filter-btn {
+    color: #666;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  .nav-right a.profile-icon {
+    color: #666;
+    font-size: 24px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-right a.profile-icon:hover {
+    color: #28517D;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    background: #f9f9f9;
+    padding: 20px 0;
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    overflow-y: auto;
+  }
+  
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    color: #192430;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    position: relative;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  
+  .sidebar a i {
+    margin-right: 15px;
+    font-size: 18px;
+  }
+  
+  .sidebar a.active {
+    background: #3b6da1;
+    color: white;
+  }
+  
+  .sidebar a:hover {
+    background: #d9dbdd;
+  }
+  
+  /* Main Content */
+  .main-content {
+    margin-left: 250px;
+    padding: 80px 30px 30px;
+    flex: 1;
+  }
+  
+  .dashboard-title {
+    font-size: 24px;
+    color: #192430;
+    margin-bottom: 20px;
+  }
+  
+  /* Form Styles */
+  .add-product-form {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .form-label {
+    font-weight: 600;
+    color: #192430;
+  }
+  
+  .form-control,
+  .form-select {
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .error-message {
+    font-size: 0.8em;
+    color: #ff0101;
+  }
+  
+  /* Image Upload */
+  .image-upload-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .image-upload-slot {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
+  
+  .image-upload-dropzone {
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .image-upload-dropzone i {
+    font-size: 24px;
+    color: #666;
+  }
+  
+  .image-upload-dropzone p {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .image-preview {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .image-preview .remove-image-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #ff0101;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .image-upload-slot.filled .image-upload-dropzone {
+    display: none;
+  }
+  
+  .image-upload-slot.filled .image-preview {
+    display: block;
+  }
+  
+  .image-upload-dropzone.dragover {
+    border-color: #3b6da1;
+    background: #f5f5f5;
+  }
+  
+  /* Variant Section */
+  .variant-container {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .variant-item {
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .remove-variant {
+    background: none;
+    border: none;
+    color: #ff0101;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .remove-variant:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Buttons */
+  .btn-primary {
+    background: #3b6da1;
+    border: none;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background: #2d5480;
+  }
+  
+  .btn-outline-primary {
+    color: #3b6da1;
+    border-color: #3b6da1;
+  }
+  
+  .btn-outline-primary:hover {
+    background: #3b6da1;
+    color: white;
+  }
+  
+  /* Modal Styles */
+  .modal-header {
+    background-color: #3e29a8;
+    color: white;
+    height: 50px;
+  }
+  
+  .modal-title {
+    font-weight: bold;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .sidebar {
+      width: 200px;
+    }
+  
+    .main-content {
+      margin-left: 200px;
+    }
+  
+    .nav-right input {
+      width: 150px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      position: static;
+      top: auto;
+      padding: 10px 0;
+    }
+  
+    .main-content {
+      margin-left: 0;
+      padding: 20px;
+    }
+  
+    .navbar {
+      padding: 10px 20px;
+    }
+  
+    .brand-name {
+      font-size: 24px;
+    }
+  
+    .nav-right {
+      gap: 15px;
+    }
+  
+    .nav-right input {
+      width: 120px;
+      padding: 6px 12px 6px 30px;
+    }
+  
+    .nav-right .new-btn {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px 15px;
+      height: auto;
+    }
+  
+    .brand-name {
+      margin-bottom: 10px;
+    }
+  
+    .nav-right {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .nav-right input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .nav-right .new-btn {
+      width: 100%;
+    }
+  }

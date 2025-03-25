@@ -42,6 +42,12 @@
             text-decoration: none;
             color: #192430;
         }
+        .new-btn-2{
+                background-color: #3e29a8;
+                border-radius: 10px;
+                width: fit-content;
+                color: #e0e0e0;
+            }
 
         .nav-right {
             display: flex;
@@ -347,20 +353,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <a href="/admin" class="brand-name">ElectroMania</a>
-        <div class="nav-right">
-            <div class="search-container">
-                <input type="search" placeholder="Search here...">
-                <i class="bi bi-search search-icon"></i>
-            </div>
-
-            <!-- <button class="new-btn" >New</button> -->
-              <!-- Add Product Button -->
-              <div class="text-end">
-                <a class="btn admin-btns add-product-btn" href="/admin/newProducts">
-                    <i class="fas fa-plus me-2"></i> New
-                </a>
-            </div>
-        </div>
+       
 
             <a href="#" class="profile-icon"><i class="bi bi-person-circle"></i></a>
         </div>
@@ -382,6 +375,50 @@
     <!-- Main Content -->
     <div class="main-content">
         <h2 class="dashboard-title">Products Management</h2>
+
+         <!-- Filters and Add Product Button -->
+         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+            <!-- Filter by Category -->
+            <div class="d-flex gap-2">
+                <!-- Filter by Category -->
+                <!-- In the whatsapp chat You  -->
+            
+                <!-- Filter by Stock -->
+                <div class="flex-grow-1" style="max-width: 120px;">
+                    <select id="stockFilter" class="form-select">
+                        <option value="all" <%= selectedStock === "all" ? "selected" : "" %>>Stock ⇅</option>
+                        <option value="1" <%= selectedStock === "1" ? "selected" : "" %>>In Stock</option>
+                        <option value="2" <%= selectedStock === "2" ? "selected" : "" %>>Out of Stock</option>
+                    </select>
+                </div>
+            
+                <!-- Filter by Status -->
+                <div class="flex-grow-1" style="max-width: 160px;">
+                    <select id="statusFilter" class="form-select">
+                        <option value="all" <%= selectedStatus === "all" ? "selected" : "" %>>Status ⇅</option>
+                        <option value="1" <%= selectedStatus === "1" ? "selected" : "" %>>Active</option>
+                        <option value="2" <%= selectedStatus === "2" ? "selected" : "" %>>Hidden</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Search Bar -->
+            <form class="d-flex search-container flex-grow-1" style="max-width: 300px;" id="searchForm">
+                <input id="searchInput" class="form-control me-2" type="search" placeholder="Search product name...." 
+                    aria-label="Search" value="<%= searchQuery || '' %>">
+                <button class="btn" type="submit" style="background-color: #3e29a8;">
+                    <i class="bi bi-search text-white"></i>
+                </button>
+            </form>
+
+            <!-- Add Product Button -->
+            <div class="text-end">
+                <a class="btn admin-btns add-product-btn" href="/admin/newProducts">
+                    <i class="btn new-btn-2">New</i> 
+                </a>
+            </div>
+        </div>
+
 
         <!-- Products Table -->
         <div class="products-table">
@@ -406,7 +443,7 @@
                                 <td><%= products[i].productId %></td>
                                 <td><%= products[i].name%></td>
                                 <td><%= products[i].basePrice%></td>
-                                <td><%= products[i].category.name%></td>
+                                <td><%= products[i].category%></td>
                                 <td><%= products[i].stock%></td>
                                 <td><%= new Date(products[i].createdAt).toLocaleDateString("en-US") %></td>
                                 <td>
@@ -425,7 +462,7 @@
                                 </td>
                                 
                                 <td>
-                                    <a href="/admin/updateProducts/<%= products[i].productId %>" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+                                    <a href="/admin/updateProducts/<%= products[i]._id %>" class="btn btn-sm btn-outline-primary me-2">Edit</a>
                                 </td>
                             </tr>
                        <% }%>
@@ -482,6 +519,8 @@
             event.preventDefault();
             applyFilters();
         });
+
+        
 
     </script>
 </body>

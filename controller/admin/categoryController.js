@@ -29,7 +29,7 @@ const addCategory = async (req,res)=>{
     try {
         const {addName , addDescription} = req.body;
 
-        console.log(req.body.addStatus)
+        // console.log(req.body.addStatus)
 
         let addStatus = req.body.addStatus === "Active" ? true:false;
 
@@ -61,7 +61,6 @@ const addCategory = async (req,res)=>{
 const editCategory = async (req,res)=>{
     try {
         const {orgName , editName , editDescription , editStatus} = req.body;
-console.log(req.body)
          const category = await Category.findOne({name : orgName});
          if(!category){
             return res.status(400).json({error : "Category not found"})

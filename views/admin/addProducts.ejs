@@ -13,23 +13,405 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Cropper.js CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="../../public/addProducts.css" />
+  <!-- Custom CSS (Embedded) -->
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #f5f7fa;
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .brand-name {
+      font-family: 'Bellefair', serif;
+      font-size: 28px;
+      font-weight: normal;
+      text-decoration: none;
+      color: #192430;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-right .search-container {
+      position: relative;
+    }
+
+    .nav-right input {
+      padding: 8px 15px 8px 35px;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      width: 200px;
+      font-size: 14px;
+      background: #f5f5f5;
+    }
+
+    .nav-right .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      font-size: 16px;
+    }
+
+    .nav-right .new-btn {
+      background: #3b6da1;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .nav-right .new-btn:hover {
+      background: #2d5480;
+    }
+
+    .nav-right .filter-btn {
+      color: #666;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .nav-right a.profile-icon {
+      color: #666;
+      font-size: 24px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-right a.profile-icon:hover {
+      color: #28517D;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: #f9f9f9;
+      padding: 20px 0;
+      position: fixed;
+      top: 60px;
+      bottom: 0;
+      left: 0;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      padding: 15px 30px;
+      color: #192430;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background 0.3s ease;
+      position: relative;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+
+    .sidebar a i {
+      margin-right: 15px;
+      font-size: 18px;
+    }
+
+    .sidebar a.active {
+      background: #3b6da1;
+      color: white;
+    }
+
+    .sidebar a:hover {
+      background: #d9dbdd;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 250px;
+      padding: 80px 30px 30px;
+      flex: 1;
+    }
+
+    .dashboard-title {
+      font-size: 24px;
+      color: #192430;
+      margin-bottom: 20px;
+    }
+
+    /* Form Styles */
+    .add-product-form {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #192430;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .error-message {
+      font-size: 0.8em;
+      color: #ff0101;
+    }
+
+    /* Image Upload */
+    .image-upload-row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .image-upload-slot {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+    .image-upload-dropzone {
+      width: 100%;
+      height: 100%;
+      border: 2px dashed #e0e0e0;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .image-upload-dropzone i {
+      font-size: 24px;
+      color: #666;
+    }
+
+    .image-upload-dropzone p {
+      font-size: 12px;
+      color: #666;
+      margin: 0;
+    }
+
+    .image-preview {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .image-preview .remove-image-btn {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #ff0101;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .image-upload-slot.filled .image-upload-dropzone {
+      display: none;
+    }
+
+    .image-upload-slot.filled .image-preview {
+      display: block;
+    }
+
+    .image-upload-dropzone.dragover {
+      border-color: #3b6da1;
+      background: #f5f5f5;
+    }
+
+    /* Variant Section */
+    .variant-container {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .variant-item {
+      background: #f9f9f9;
+      border-radius: 8px;
+    }
+
+    .remove-variant {
+      background: none;
+      border: none;
+      color: #ff0101;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .remove-variant:disabled {
+      color: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: #3b6da1;
+      border: none;
+      transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #2d5480;
+    }
+
+    .btn-outline-primary {
+      color: #3b6da1;
+      border-color: #3b6da1;
+    }
+
+    .btn-outline-primary:hover {
+      background: #3b6da1;
+      color: white;
+    }
+
+    /* Modal Styles */
+    .modal-header {
+      background-color: #3e29a8;
+      color: white;
+      height: 50px;
+    }
+
+    .modal-title {
+      font-weight: bold;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 200px;
+      }
+
+      .main-content {
+        margin-left: 200px;
+      }
+
+      .nav-right input {
+        width: 150px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        position: static;
+        top: auto;
+        padding: 10px 0;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .navbar {
+        padding: 10px 20px;
+      }
+
+      .brand-name {
+        font-size: 24px;
+      }
+
+      .nav-right {
+        gap: 15px;
+      }
+
+      .nav-right input {
+        width: 120px;
+        padding: 6px 12px 6px 30px;
+      }
+
+      .nav-right .new-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 15px;
+        height: auto;
+      }
+
+      .brand-name {
+        margin-bottom: 10px;
+      }
+
+      .nav-right {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .nav-right input {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .nav-right .new-btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body class="bg-light">
   <!-- Navbar -->
   <nav class="navbar">
     <a href="/admin" class="brand-name">ElectroMania</a>
-    <div class="nav-right">
-      <div class="search-container">
-        <input type="search" placeholder="Search here...">
-        <i class="bi bi-search search-icon"></i>
-      </div>
-      <button class="new-btn">New</button>
-      <a href="#" class="filter-btn"><i class="bi bi-funnel"></i></a>
-      <a href="#" class="profile-icon"><i class="bi bi-person-circle"></i></a>
-    </div>
   </nav>
 
   <!-- Sidebar + Main Content -->
@@ -99,7 +481,7 @@
                   <div id="brandError" class="error-message"></div>
                 </div>
                 <div class="w-100">
-                  <label for="basePrice" class="form-label">Base Price</label>
+                  <label for="basePrice" class="form-label"> Price</label>
                   <input
                     type="number"
                     id="productPrice"
@@ -123,23 +505,25 @@
 
               <div class="mb-4 d-flex gap-3">
                 <div class="w-100">
-                  <label for="shortDescription" class="form-label">Short Description</label>
-                  <textarea
-                    class="form-control"
-                    id="shortDescription"
-                    name="shortDescription"
-                    placeholder="Enter short description"
-                  ></textarea>
-                </div>
-                <div class="w-100">
-                  <label for="productDescription" class="form-label">Long Description</label>
+                  <label for="shortDescription" class="form-label"> Description</label>
                   <textarea
                     class="form-control"
                     id="productDescription"
-                    name="productDescription"
-                    placeholder="Enter description"
+                    name="shortDescription"
+                    placeholder="Enter short description"
                   ></textarea>
                   <div id="descriptionError" class="error-message"></div>
+                </div>
+                <div class="w-100">
+                  <label for="basePrice" class="form-label">Stock</label>
+                  <input
+                    type="number"
+                    id="productStock"
+                    name="productStock"
+                    class="form-control form-control-sm"
+                    placeholder="eg.10"
+                  />
+                  <div id="stockError" class="error-message"></div>
                 </div>
               </div>
 
@@ -218,19 +602,7 @@
 
               <!-- Variant Section -->
               <div class="mb-4">
-                <label class="form-label">Product Variants</label>
-                <div id="variantContainer" class="variant-container">
-                  <!-- Variants will be added here -->
-                </div>
-                <div class="d-flex justify-content-between mt-3">
-                  <button
-                    type="button"
-                    id="addVariantButton"
-                    class="btn btn-sm btn-outline-secondary"
-                    style="border-radius: 8px"
-                  >
-                    <i class="fas fa-plus me-1"></i> Add Variant
-                  </button>
+                <div class="d-flex w-40 justify-content-between mt-3">
                   <div class="d-flex gap-3">
                     <a class="btn btn-outline-primary" href="/admin/products">Cancel</a>
                     <button type="submit" class="btn btn-primary">Add Product</button>
@@ -282,7 +654,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       setupFormSubmission();
       setupVariantManagement();
-      setupInitialVariants();
+      // setupInitialVariants();
       setupImageUploads(document.querySelector(".image-upload-row"));
 
       // Sidebar active state
@@ -313,16 +685,18 @@
         const brand = document.getElementById("brand").value.trim();
         const category = document.getElementById("productCategory").value.trim();
         const description = document.getElementById("productDescription").value.trim();
+        const stock = document.getElementById("productStock").value.trim()
         const price = document.getElementById("productPrice").value.trim();
         const specifications = document.getElementById("productSpec").value.trim();
         const imageInputs = document.querySelectorAll('input[name="productImages[]"]');
-        const variants = document.querySelectorAll(".variant-item");
+       
 
         const errors = {
           name: document.getElementById("nameError"),
           brand: document.getElementById("brandError"),
           category: document.getElementById("categoryError"),
           description: document.getElementById("descriptionError"),
+          stock: document.getElementById("stockError"),
           price: document.getElementById("priceError"),
           spec: document.getElementById("specError"),
           image: document.getElementById("imageError"),
@@ -360,6 +734,14 @@
           hasError = true;
         }
 
+        if(!stock){
+          errors.stock.innerText = "Stock is required";
+          hasError = true;
+        }else if(stock < 1){
+          error.stock.innerText = "Stock can't be zero or negative value"
+          hasError = true
+        }
+
         if (!price) {
           errors.price.innerText = "Price is required";
           hasError = true;
@@ -384,27 +766,19 @@
         }
 
         // Validate variants
-        variants.forEach((variant, index) => {
-          const color = variant.querySelector(`input[name="colorVariant[${index}]"]`).value.trim();
-          const weight = variant.querySelector(`input[name="weightVariant[${index}]"]`).value.trim();
-          const stock = variant.querySelector(`input[name="stockVariant[${index}]"]`).value.trim();
+        // variants.forEach((variant, index) => {
+          
+        //   const stock = variant.querySelector(`input[name="stockVariant[${index}]"]`).value.trim();
+        //   const stockError = variant.querySelector(".stock-error");
 
-          const colorError = variant.querySelector(".color-error");
-          const stockError = variant.querySelector(".stock-error");
-
-          if (!color) {
-            colorError.innerText = "Color is required";
-            hasError = true;
-          }
-
-          if (!stock) {
-            stockError.innerText = "Stock is required";
-            hasError = true;
-          } else if (parseInt(stock) < 0) {
-            stockError.innerText = "Stock cannot be negative";
-            hasError = true;
-          }
-        });
+        //   if (!stock) {
+        //     stockError.innerText = "Stock is required";
+        //     hasError = true;
+        //   } else if (parseInt(stock) < 0) {
+        //     stockError.innerText = "Stock cannot be negative";
+        //     hasError = true;
+        //   }
+        // });
 
         if (hasError) return;
 
@@ -464,49 +838,22 @@
       });
     }
 
-    function createVariant(index) {
-      const variant = createElement("div", {
-        className: "variant-item mb-3 p-3 border rounded",
-      });
-      variant.innerHTML = `
-        <div class="d-flex gap-3 align-items-end">
-          <div class="w-100">
-            <label class="form-label">Color</label>
-            <input type="text" class="form-control form-control-sm" name="colorVariant[${index}]" placeholder="e.g., Blue">
-            <div class="error-message color-error"></div>
-          </div>
-          <div class="w-100">
-            <label class="form-label">Weight</label>
-            <input type="text" class="form-control form-control-sm" name="weightVariant[${index}]" placeholder="e.g., 500g">
-          </div>
-          <div class="w-100">
-            <label class="form-label">Stock</label>
-            <input type="number" class="form-control form-control-sm" name="stockVariant[${index}]" placeholder="e.g., 10">
-            <div class="error-message stock-error"></div>
-          </div>
-          <button type="button" class="btn remove-variant">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-      `;
-      return variant;
-    }
-
+   
     function updateRemoveButtons(container) {
       const buttons = container.querySelectorAll(".remove-variant");
       buttons.forEach((btn) => (btn.disabled = buttons.length <= 1));
     }
 
-    function setupInitialVariants() {
-      const container = document.getElementById("variantContainer");
-      if (!container) return;
+    // function setupInitialVariants() {
+    //   const container = document.getElementById("variantContainer");
+    //   if (!container) return;
 
-      if (!container.children.length) {
-        const initialVariant = createVariant(0);
-        container.appendChild(initialVariant);
-        updateRemoveButtons(container);
-      }
-    }
+    //   if (!container.children.length) {
+    //     const initialVariant = createVariant(0);
+    //     container.appendChild(initialVariant);
+    //     updateRemoveButtons(container);
+    //   }
+    // }
 
     function setupImageUploads(container) {
       if (!container) return;

@@ -60,7 +60,7 @@ const productLoad = async (req, res) => {
 };
 
 
-const addProduct = async (req,res)=>{
+const loadAddProduct = async (req,res)=>{
     try {
         const categories = await Category.find({visibility : true})
 
@@ -73,9 +73,12 @@ const addProduct = async (req,res)=>{
     }
 }
 
+const addProduct = async (req,res)=>{
+  
+}
 
 
 export default {
   productLoad,
-  addProduct
+  loadAddProduct
 };

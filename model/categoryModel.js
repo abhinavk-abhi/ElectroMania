@@ -16,6 +16,10 @@ const categoryModel = new Schema({
         type : Boolean,
         required : true,
     },
+    itemsCount : {
+        type : Number,
+        default : 0
+    }
 },{timestamps : true})
 
 export default mongoose.model("Category",categoryModel)

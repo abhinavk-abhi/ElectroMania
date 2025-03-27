@@ -381,7 +381,14 @@
             <!-- Filter by Category -->
             <div class="d-flex gap-2">
                 <!-- Filter by Category -->
-                <!-- In the whatsapp chat You  -->
+                <div class="flex-grow-1" style="max-width: 150px;">
+                    <select id="categoryFilter" class="form-select">
+                        <option value="all" <%= selectedCategory === "all" ? "selected" : "" %>>Category ⇅</option>
+                        <% category.forEach(category => { %>
+                            <option value="<%= category.name %>" <%= selectedCategory === category.name ? "selected" : "" %>><%= category.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
             
                 <!-- Filter by Stock -->
                 <div class="flex-grow-1" style="max-width: 120px;">
@@ -405,7 +412,7 @@
             <!-- Search Bar -->
             <form class="d-flex search-container flex-grow-1" style="max-width: 300px;" id="searchForm">
                 <input id="searchInput" class="form-control me-2" type="search" placeholder="Search product name...." 
-                    aria-label="Search" value="<%= searchQuery || '' %>">
+                aria-label="Search" value="<%= searchQuery || '' %>">
                 <button class="btn" type="submit" style="background-color: #3e29a8;">
                     <i class="bi bi-search text-white"></i>
                 </button>
@@ -442,8 +449,8 @@
                             <tr>
                                 <td><%= products[i].productId %></td>
                                 <td><%= products[i].name%></td>
-                                <td><%= products[i].basePrice%></td>
-                                <td><%= products[i].category%></td>
+                                <td><%= products[i].price%></td>
+                                <td><%= products[i].category?.name%></td>
                                 <td><%= products[i].stock%></td>
                                 <td><%= new Date(products[i].createdAt).toLocaleDateString("en-US") %></td>
                                 <td>
@@ -474,20 +481,15 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        // Update active class on click
         document.addEventListener('DOMContentLoaded', function () {
             const sidebarLinks = document.querySelectorAll('.sidebar a');
             sidebarLinks.forEach(link => {
                 link.addEventListener('click', function () {
-                    // Remove active class from all links
                     sidebarLinks.forEach(l => l.classList.remove('active'));
-                    // Add active class to the clicked link
                     this.classList.add('active');
-                    // Navigation will happen automatically via href
                 });
             });
 
-            // Set active state based on current URL
             const currentPath = window.location.pathname;
             sidebarLinks.forEach(link => {
                 if (link.getAttribute('href') === currentPath) {
@@ -496,14 +498,14 @@
             });
         });
 
-        function applyFilters (){
+        function applyFilters() {
             const category = document.getElementById('categoryFilter').value;
             const stock = document.getElementById('stockFilter').value;
             const status = document.getElementById('statusFilter').value;
             const searchQuery = document.getElementById('searchInput').value.trim();
 
-            let queryParams = newURLSearchParams();
-
+            let queryParams = new URLSearchParams();
+            
             if (category !== "all") queryParams.set("category", category);
             if (stock !== "all") queryParams.set("stock", stock);
             if (status !== "all") queryParams.set("status", status);
@@ -519,7 +521,6 @@
             event.preventDefault();
             applyFilters();
         });
-
         
 
     </script>

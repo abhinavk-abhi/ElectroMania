@@ -16,7 +16,7 @@ router.get('/dashboard',adminAuth.isLogin,adminController.loadHome)
 //Products
 router.get('/products',adminAuth.isLogin,productController.productLoad)
 router.get('/newProducts',adminAuth.isLogin,productController.loadAddProduct)
-router.post('/addProducts'),upload.any(),productController.addProduct
+router.post('/addProducts',upload.any(),productController.addProduct)
 
 //Category
 router.get('/categories', categoryController.categoryInfo);

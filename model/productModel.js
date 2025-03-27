@@ -14,16 +14,20 @@ const productModel = new Schema({
         type : String,
         required : true
     },
+    brand : {
+        type : String,
+        required : true
+    },
+    specification : {
+        type : String,
+        required : true
+    },
     images : {
         type : [String],
         required : true
     },
-    basePrice : {
+    price : {
         type : Number ,
-        required : true
-    },
-    discountPercentage : {
-        type : Number,
         required : true
     },
     stock : {
@@ -32,8 +36,9 @@ const productModel = new Schema({
     },
     status : {
         type : String,
-        required : true,
-        enum : ["active","inActive"]
+        required : false,
+        enum : ["Available","Out of stock","Unavailable"],
+        default : "Available"
     },
     productOffer : {
         type : String,
@@ -48,6 +53,10 @@ const productModel = new Schema({
         ref : 'Category',
         required : true
     },
+    reviewCount : {
+        type : Number,
+        default : 0
+    }
     
 },{timestamps : true})
 

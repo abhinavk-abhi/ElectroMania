@@ -117,10 +117,79 @@ const addProduct = async (req,res)=>{
   }
 }
 
+const loadEditProducts = async(req,res)=>{
+ try {
+  const id = req.params.productId;
+  const product = await Product.findOne({_id:id})
+
+  if(!product){
+    return res.status(404).json({message : "Product not found"})
+  }
+  const categories = await Category.find({visibility : true})
+ 
+  res.render('admin/editProducts',{
+    product : product,
+    category : categories
+  })
+ } catch (error) {
+  console.log("Edit product load error :",error)
+    return res.status(500)
+ }
+}
+
+const editProduct = async (req,res)=>{
+  try{
+    const {productId, productName, productCategory, productBrand, productPrice, productOffer, productDescription, productSpec, productStock} = req.body;
+
+    const removedImages = req.body.removedImages ? JSON.parse(req.body.removedImages) : [];
+
+    const product = await Product.findOne({productId});
+
+    if(!product){
+      return res.status(404).json({message : "Product not found"})
+    }
+
+    for (const imageUrl of removedImages) {
+      const publicId = imageUrl.split('/').pop().split('.')[0];
+      await cloudinary.uploader.destroy(publicId);
+
+      product.images = product.images.filter(img=> img !== imageUrl);
+    }
+
+    const category = await Category.findOne({name : productCategory})
+    const categoryId = category._id 
+   
+
+      productId = productId;
+      name = productName;
+      category = categoryId;
+      description = productDescription;
+      brand = productBrand;
+      price= productPrice;
+      productOffer= productOffer;
+      stock = productStock;
+      specification = productSpec;
+      images = imageUr;
+    
+
+    if(req.files){
+      const newImages = req.files.map(file => file.path);
+      product.images.push(...newImages)
+    }
+
+    await product.save()
+    res.status(201).json({message : "Product edited successfully"});
+  }catch (error){
+console.log("Edit product error :",error)
+return res.status(500).json({message : "Something went wrong try again later."})
+  }
+}
 
 export default {
   productLoad,
   loadAddProduct,
-  addProduct 
+  addProduct ,
+  loadEditProducts,
+  editProduct
 
 };

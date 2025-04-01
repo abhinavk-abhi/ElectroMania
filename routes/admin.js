@@ -18,7 +18,7 @@ router.get('/products',adminAuth.isLogin,productController.productLoad)
 router.get('/newProducts',adminAuth.isLogin,productController.loadAddProduct)
 router.post('/addProducts',upload.any(),productController.addProduct)
 router.get('/updateProducts/:productId',productController.loadEditProducts)
-router.post('/editProducts/productId',upload.any(),productController.editProduct)
+router.put('/products/:productId',upload.any(),productController.editProduct)
 
 //Category
 router.get('/categories', categoryController.categoryInfo);

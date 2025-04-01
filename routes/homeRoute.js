@@ -6,6 +6,7 @@ import userAuth from '../middleware/userAuth.js'
 
 router.get('/',homeController.loadHome);
 router.get('/register', userAuth.isLogin,homeController.loadRegister);
+router.get('/shop',homeController.loadShop)
 
 
 export default router;

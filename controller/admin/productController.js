@@ -139,11 +139,12 @@ const loadEditProducts = async(req,res)=>{
 
 const editProduct = async (req,res)=>{
   try{
-    const {productId, productName, productCategory, productBrand, productPrice, productOffer, productDescription, productSpec, productStock} = req.body;
+    const {productId, productName, productCategory, productBrand, productPrice, productOffer, description, productStock , visibility , givenId} = req.body;
 
     const removedImages = req.body.removedImages ? JSON.parse(req.body.removedImages) : [];
 
-    const product = await Product.findOne({productId});
+    const product = await Product.findOne({_id : productId});
+    
 
     if(!product){
       return res.status(404).json({message : "Product not found"})
@@ -156,20 +157,19 @@ const editProduct = async (req,res)=>{
       product.images = product.images.filter(img=> img !== imageUrl);
     }
 
-    const category = await Category.findOne({name : productCategory})
+    const category = await Category.findOne({_id : productCategory})
+    
     const categoryId = category._id 
    
-
-      productId = productId;
-      name = productName;
-      category = categoryId;
-      description = productDescription;
-      brand = productBrand;
-      price= productPrice;
-      productOffer= productOffer;
-      stock = productStock;
-      specification = productSpec;
-      images = imageUr;
+      product.productId = givenId;
+      product.name = productName;
+      product.category = categoryId;
+      product.description = description;
+      product.brand = productBrand;
+      product.price= productPrice;
+      product.productOffer= productOffer;
+      product.stock = productStock;
+      product.isBlocked = visibility;
     
 
     if(req.files){

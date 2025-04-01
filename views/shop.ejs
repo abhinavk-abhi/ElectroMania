@@ -3,474 +3,706 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop | ElectroMania</title>
-    
+    <title>ElectroMaria</title>
     <style>
-        :root {
-            --dark-blue: #28517D;
-            --darker-blue: #192430;
-            --light-text: #666666;
-            --white: #FFFFFF;
-            --accent-blue: #28517D;
-            --border-color: rgba(0, 0, 0, 0.1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background: linear-gradient(to bottom, #28517D, #192430);
-            color: var(--light-text);
-            min-height: 100vh;
+            background: linear-gradient(to right, #1a3a5f, #2d5f8b);
         }
+        .dropdown {
+        position: relative;
+        display: inline-block;
+    }
 
+    .dropdown-toggle {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+        height: 50px;
+        text-decoration: none;
+    }
+
+    .dropdown-toggle i {
+        margin-right: 8px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: rgb(156, 132, 132);
+        min-width: 160px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border: 1px solid #1d1b1b;
+        border-radius: 4px;
+        z-index: 1000;
+        margin-top: 5px;
+        padding: 5px 0;
+    }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color:  rgb(156, 132, 132);
+    }
+
+    /* Show dropdown when active class is present */
+    .dropdown.active .dropdown-content {
+        display: block;
+    }
         .navbar {
-            background: #878181;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        z-index: 1001;
+        background: #8781813f;
+        padding: 0 20px; /* Reduced side padding */
+        display: flex;
+        justify-content: space-between; /* Changed from space-evenly */
+        align-items: center;
+        color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        height: 80px;
+        box-sizing: border-box;
+        position: sticky;
+        top: 0;
+    }
 
-        .brand-name {
-            font-family: 'Bellefair', serif;
-            font-size: 2rem;
-            font-weight: normal;
-            color: white;
-        }
+    .brand-name {
+        font-family: 'Bellefair', serif;
+        font-size: 45px;
+        font-weight: normal;
+        text-decoration: none;
+        color: black;
+        line-height: 1;
+        margin-right: 30px; /* Reduced from 60px */
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding-top: 5px;
+    }
 
-        .nav-links {
-            gap: 1.5rem;
-        }
+    .nav-links {
+        display: flex;
+        gap: 20px; /* Reduced from 50px */
+        font-family: 'Outfit', sans-serif;
+        font-size: 16px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+        margin: 0 10px; /* Reduced from 20px */
+        height: 100%;
+        position: relative;
+        padding-top: 5px;
+    }
+
 
         .nav-links a {
             color: white;
             text-decoration: none;
             font-weight: 500;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 50px;
+            padding: 0 10px;
+            font-size: 15px;
         }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            border-radius: 4px;
-            z-index: 1000;
+        .nav-links a:hover {
+            opacity: 0.8;
         }
 
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
+        .nav-right {
+        display: flex;
+        gap: 10px; /* Reduced from 20px */
+        align-items: center;
+        height: 100%;
+        position: relative;
+        padding-top: 5px;
+    }
 
-        .dropdown-content a {
-            color: #333;
-            padding: 12px 20px;
-            text-decoration: none;
-            display: block;
-        }
+        /* Remove underline from all links in nav-right */
+        .nav-right a {
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        height: 50px;
+        margin: 0 10px; /* Reduced from 25px */
+    }
 
-        .dropdown-content a:hover {
-            background-color: #f5f5f5;
+        /* Ensure dropdown-toggle (username) also has no underline */
+        .nav-right .dropdown-toggle {
+            text-decoration: none; /* Remove underline from username */
         }
 
         .search-bar {
-            width: 100%;
-        }
+        padding: 0 10px;
+        border: none;
+        border-radius: 4px;
+        width: 100%;
+        font-family: 'Outfit', sans-serif;
+        font-size: 14px;
+        height: 40px;
+        outline: none;
+    }
 
-        .footer {
-            background: #D9D9D9;
-            padding: 60px 0;
-        }
+        .search-container {
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 4px;
+        padding: 0 5px;
+        margin-right: 15px;
+        width: 240px;
+    }
 
-        .footer h4 {
-            color: #192430;
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
+    .search-btn {
+        background: transparent;
+        color: #4D44AD;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 40px;
+    }
 
-        .footer a {
-            color: #666;
+         .signup-btn, .icon-btn {
+            background: #4D44AD;
+            color: white;
+            border: none;
+            padding: 0 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            font-size: 15px;
             text-decoration: none;
+        }
+
+        .search-btn {
+            padding: 0;
+            width: 50px;
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-btn:hover, .signup-btn:hover, .icon-btn:hover {
+            opacity: 0.9;
+        }
+      /* Main content */
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 200px;
+            background-color: #1a3a5f;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .sidebar h3 {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        .sidebar li {
+            padding: 5px 0;
             font-size: 14px;
         }
 
-        .footer a:hover {
-            color: #28517D;
+        .sidebar a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            color: white;
+        }
+
+        .price-filter input {
+            width: 50px;
+            margin: 5px;
+        }
+
+        /* Product grid */
+        .product-grid {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .sort-bar { 
+            margin-bottom: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .sort-dropdown {
+            padding: 5px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            background: transparent;
         }
 
         .product-card {
-            background: var(--white);
-            border-radius: 10px;
+            background-color: white;
+            border-radius: 5px;
             padding: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .product-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
         }
 
         .product-card img {
-            width: 100%;
-            height: 140px;
+            width: 80%;
+            height: 250px;
+            text-align: center;
             object-fit: contain;
-            border-radius: 8px;
-            padding: 15px;
-            background: #f8f9fa;
+            margin-bottom: 10px;
+        }
+
+        .heart-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: red;
+            font-size: 18px;
+            cursor: pointer;
         }
 
         .product-title {
-            color: #192430;
+            height: 40px;
+            overflow: hidden;
+            margin-bottom: 10px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: bold;
         }
 
-        .product-price {
-            color: #28517D;
-            font-weight: 600;
+        .price {
+            font-weight: bold;
+            color: #1a3a5f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .add-to-cart {
+            background-color: #4a69bd;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+            background: transparent;
+        }
+
+        .pagination button {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background-color: #1a3a5f;
+            color: white;
+            border: none;
+        }
+
+        .page-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 20px 0;
+            background: transparent;
+        }
+
+        .page-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+        }
+
+        .page-dot.active {
+            background-color: #1a3a5f;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            flex: 1;
+            padding: 0 15px;
+        }
+
+        .footer-section h3 {
+            color: #1a3a5f;
+            margin-bottom: 15px;
             font-size: 16px;
         }
 
-        .buy-btn {
-            background: #28517D;
-            color: var(--white);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .footer-section p, .footer-section a {
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
         }
 
-        .product-card:hover .buy-btn {
-            opacity: 1;
-            transform: translateY(0);
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        .wishlist-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(255, 255, 255, 0.95);
-            border: none;
-            color: #666;
-            cursor: pointer;
-            font-size: 16px;
-            width: 32px;
-            height: 32px;
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #1a3a5f;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+            font-size: 16px;
         }
 
-        .product-card:hover .wishlist-btn {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .wishlist-btn:hover {
-            color: #ff4757;
-            background: white;
-        }
-
-        .price-range {
-            width: 100%;
-            margin: 20px 0;
-        }
-
-        .price-inputs {
-            display: flex;
-            gap: 15px;
+        .copyright {
+            text-align: center;
             margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
         }
 
-        .price-inputs input {
-            width: 85px;
-            padding: 8px 12px;
-            border: 1.5px solid #28517D;
-            border-radius: 6px;
-            background: var(--white);
-            color: #192430;
-            font-size: 14px;
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 10px;
         }
 
-        .filter-dropdown {
-            display: none;
-        }
-
-        @media (max-width: 992px) {
-            .filter-dropdown {
-                display: block;
-            }
-            .filter-section {
-                display: none;
-            }
+        .payment-method {
+            width: 40px;
+            height: 25px;
+            background-color: #eee;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #555;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand brand-name" href="/">ElectroMania</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-links">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/home">Home</a>
-                    </li>
-                  
-                        <a class="nav-link " href="/shop">Shop</a>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/offers">Deals/Offers</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2 search-bar" type="search" placeholder="Search products..." aria-label="Search">
-                    <button class="btn btn-outline-light search-btn" type="submit"><i class="fas fa-search"></i></button>
-                </form>
-                <a href="/cart" class="btn btn-outline-light ms-2 cart-btn"><i class="fas fa-shopping-cart"></i></a>
-                <button class="btn btn-primary ms-2 signup-btn">Sign Up</button>
+    <nav class="navbar">
+        <a href="/" class="brand-name">ElectroMania</a>
+        <div class="nav-links">
+            <a href="/" style="color: black;">Home</a>
+            <div class="dropdown">
+                <a href="/shop" style="color: black;">Shop</a>
+            </div>
+            <a href="/offers" style="color: black;">Deals/Offers</a>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <input type="search" class="search-bar" placeholder="Search products...">
+                <button class="search-btn"><i class="bi bi-search" style="font-size: 18px;"></i></button>
+            </div>
+            <a href="/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
+            <a href="/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
+            <div class="d-none d-lg-flex align-items-center">
+                <% if (locals.user) { %>
+                    <div class="dropdown">
+                        <a href="/profile" class="dropdown-toggle">
+                            <i class="fas fa-user"></i>
+                            <%= locals.user.name %>
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="/profile">Profile</a>
+                            <a href="user/logout">Logout</a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <a href="/register" class="icon-btn">SignUp</a>
+                <% } %>
             </div>
         </div>
     </nav>
+    <div class="container">
+        <div class="sidebar">
+            <h3>Filter Items</h3>
+            <h3>Category</h3>
+            <ul>
+                <li><a href="#">PC Peripherals</a></li>
+                <li><a href="#">Audio</a></li>
+                <li><a href="#">Gaming</a></li>
+                <li><a href="#">Networking</a></li>
+                <li><a href="#">Storage</a></li>
+            </ul>
 
-    <!-- Filter Dropdown for Small Screens -->
-    <div class="filter-dropdown container-fluid mt-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <button class="btn btn-secondary w-50 me-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
-                <i class="fas fa-filter"></i> Filters
-            </button>
-            <select class="form-select w-50">
-                <option value="newest">Newest</option>
-                <option value="price-low">Price - Low to High</option>
-                <option value="price-high">Price - High to Low</option>
-                <option value="a-z">A-Z</option>
-                <option value="z-a">Z-A</option>
-                <option value="availability">Availability</option>
-            </select>
+            <h3>Products</h3>
+            <ul>
+                <li><a href="#">Keyboards</a></li>
+                <li><a href="#">Mouse</a></li>
+                <li><a href="#">Headsets</a></li>
+                <li><a href="#">External Drives</a></li>
+                <li><a href="#">Webcams</a></li>
+                <li><a href="#">Speakers</a></li>
+                <li><a href="#">Adapters</a></li>
+            </ul>
+
+            <h3>Customer Rating</h3>
+            <ul>
+                <li><a href="#">★★★★★</a></li>
+                <li><a href="#">★★★★☆</a></li>
+                <li><a href="#">★★★☆☆</a></li>
+                <li><a href="#">★★☆☆☆</a></li>
+                <li><a href="#">★☆☆☆☆</a></li>
+            </ul>
+
+            <h3>Brands</h3>
+            <ul>
+                <li><a href="#">Logitech</a></li>
+                <li><a href="#">SteelSeries</a></li>
+                <li><a href="#">Razer</a></li>
+                <li><a href="#">Corsair</a></li>
+                <li><a href="#">HyperX</a></li>
+            </ul>
         </div>
-        <div class="collapse" id="filterCollapse">
-            <div class="card card-body mt-2">
-                <div class="mb-3">
-                    <h6>Category</h6>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="electronics">
-                        <label class="form-check-label" for="electronics">value</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="office">
-                        <label class="form-check-label" for="office">Office</label>
-                    </div>
 
-                </div>
-                <div class="mb-3">
-                    <h6>Products</h6>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="keyboards">
-                        <label class="form-check-label" for="keyboards">Keyboards</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="mice">
-                        <label class="form-check-label" for="mice">Mice</label>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <h6>Price Range</h6>
-                    <input type="range" class="form-range price-range" min="0" max="10000" value="5000">
-                    <div class="price-inputs">
-                        <input type="number" class="form-control min-price" placeholder="Min">
-                        <input type="number" class="form-control max-price" placeholder="Max">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <h6>Brand</h6>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="hp">
-                        <label class="form-check-label" for="hp">HP</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="dell">
-                        <label class="form-check-label" for="dell">Dell</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="lenovo">
-                        <label class="form-check-label" for="lenovo">Lenovo</label>
-                    </div>
+        <div class="product-grid">
+            <div class="sort-bar">
+                <span>Sort by:</span>
+                <select class="sort-dropdown">
+                    <option>Best Seller</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Rating</option>
+                </select>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <% products.forEach((product, index) => { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm p-3">
+                                <!-- Wishlist Icon -->
+                                <div class="text-end">
+                                    <i class="bi bi-heart"></i>
+                                </div>
+                                
+                                <!-- Product Image -->
+                                <img src="<%= product.images[0] %>" class="card-img-top img-fluid" alt="<%= product.name %>">
+                                
+                                <!-- Product Details -->
+                                <div class="card-body text-center">
+                                    <h5 class="card-title"><%= product.name %></h5>
+                                    
+                                    <!-- Rating (Placeholder Stars) -->
+                                    <div class="rating">
+                                        <span>⭐️⭐️⭐️⭐️☆ (<%= product.reviewCount %>)</span>
+                                    </div>
+                                    
+                                    <!-- Price & Discount -->
+                                    <h6 class="price mt-2">
+                                        ₹ <%= product.price %>  
+                                        <% if (product.productOffer > 0) { %>
+                                            <span class="text-muted text-decoration-line-through">₹ <%= product.productOffer %></span>
+                                        <% } %>
+                                    </h6>
+                                    
+                                    <!-- Cart Button -->
+                                    <button class="btn btn-primary">
+                                        <i class="bi bi-cart"></i> Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <% if ((index + 1) % 3 === 0) { %>  
+                            </div><div class="row"> <!-- Create a new row after every third product -->
+                        <% } %>
+                    <% }); %>
                 </div>
             </div>
+            
+            
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>ElectroMania</h3>
+                <p>Welcome to ElectroMania, your ultimate destination for all things electronic. We offer a wide range of products from trusted brands at competitive prices.</p>
+                <div class="social-icons">
+                    <div class="social-icon">f</div>
+                    <div class="social-icon">t</div>
+                    <div class="social-icon">ig</div>
+                    <div class="social-icon">yt</div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Get In touch with us</h3>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Blog</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Track Your Order</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>For Customers</h3>
+                <a href="#">Shipping Policy</a>
+                <a href="#">Warranty Policy</a>
+                <a href="#">Refund Policy</a>
+                <a href="#">Privacy Notice</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">FAQ</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Phone: +123-456-7890</p>
+                <p>Email: support@electromaria.com</p>
+                <p>Hours: Monday - Friday (9am - 6pm)</p>
+                <p>Address: 123 Tech Street, Silicon Valley, CA</p>
+                <p>Customer Care: +1-800-555-0199</p>
+            </div>
         </div>
-    </div>
 
-    <div class="container-fluid mt-4">
-        <div class="row">
-            <!-- Filter Section for Larger Screens -->
-            <aside class="col-lg-3 col-md-4 filter-section">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Filter Items</h5>
-                        <div class="mb-3">
-                            <h6>Category</h6>
-                           
-                        </div>
-
-                        <div class="mb-3">
-                            <h6>Products</h6>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="keyboards-lg">
-                                <label class="form-check-label" for="keyboards-lg">Keyboards</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="mice-lg">
-                                <label class="form-check-label" for="mice-lg">Mice</label>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <h6>Price Range</h6>
-                            <input type="range" class="form-range price-range" min="0" max="10000" value="5000">
-                            <div class="price-inputs">
-                                <input type="number" class="form-control min-price" placeholder="Min">
-                                <input type="number" class="form-control max-price" placeholder="Max">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <h6>Brand</h6>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="hp-lg">
-                                <label class="form-check-label" for="hp-lg">HP</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="dell-lg">
-                                <label class="form-check-label" for="dell-lg">Dell</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="lenovo-lg">
-                                <label class="form-check-label" for="lenovo-lg">Lenovo</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Products Section -->
-            <main class="col-lg-9 col-md-8">
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-                    <div class="col">
-                        <div class="card product-card">
-                            <div class="card-body">
-                                <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                                <img src="/images/product1.png" class="card-img-top" alt="HP K400 Wired Keyboard">
-                                <h5 class="card-title product-title">HP K400 Wired Keyboard</h5>
-                                <p class="card-text product-price">₹899</p>
-                                <button class="btn btn-primary buy-btn">Add to Cart</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Repeat for other product cards -->
-                </div>
-
-                <div class="d-flex justify-content-end mt-4">
-                    <select class="form-select" style="width: auto;">
-                        <option value="10">Show 10</option>
-                        <option value="20">Show 20</option>
-                        <option value="30">Show 30</option>
-                        <option value="40">Show 40</option>
-                    </select>
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <footer class="footer mt-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <h4>ElectroMania</h4>
-                    <p><a href="/about">About Us</a></p>
-                    <p><a href="/contact">Contact</a></p>
-                    <p><a href="/blog">Blog</a></p>
-                </div>
-                <div class="col-md-3">
-                    <h4>Customer Service</h4>
-                    <p><a href="/shipping">Shipping Policy</a></p>
-                    <p><a href="/returns">Returns & Exchanges</a></p>
-                    <p><a href="/faq">FAQs</a></p>
-                </div>
-                <div class="col-md-3">
-                    <h4>Categories</h4>
-                    <p><a href="/electronics">Electronics</a></p>
-                    <p><a href="/accessories">Accessories</a></p>
-                    <p><a href="/gadgets">Gadgets</a></p>
-                </div>
-                <div class="col-md-3">
-                    <h4>Connect With Us</h4>
-                    <p><a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></p>
-                    <p><a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a></p>
-                    <p><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></p>
-                </div>
+        <div class="copyright">
+            © 2025 ElectroMaria - All Rights Reserved
+            <div class="payment-methods">
+                <div class="payment-method">Visa</div>
+                <div class="payment-method">MC</div>
+                <div class="payment-method">Amex</div>
+                <div class="payment-method">PP</div>
             </div>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle wishlist heart icon
-        document.querySelectorAll('.wishlist-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const icon = this.querySelector('i');
-                icon.classList.toggle('far');
-                icon.classList.toggle('fas');
+        // JavaScript for interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Heart icon toggle
+            const heartIcons = document.querySelectorAll('.heart-icon');
+            heartIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    if (this.style.color === 'gray') {
+                        this.style.color = 'red';
+                    } else {
+                        this.style.color = 'gray';
+                    }
+                });
             });
-        });
 
-        // Price input validation
-        const minPriceInput = document.querySelector('.min-price');
-        const maxPriceInput = document.querySelector('.max-price');
+            // Add to cart button effect
+            const addButtons = document.querySelectorAll('.add-to-cart');
+            addButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.textContent = 'Added';
+                    this.style.backgroundColor = '#28a745';
+                    setTimeout(() => {
+                        this.textContent = 'Add to Cart';
+                        this.style.backgroundColor = '#4a69bd';
+                    }, 1000);
+                });
+            });
 
-        minPriceInput.setAttribute('min', '0');
-        maxPriceInput.setAttribute('min', '1');
+            // Pagination functionality
+            const paginationButtons = document.querySelectorAll('.pagination button');
+            const pageDots = document.querySelectorAll('.page-dot');
 
-        minPriceInput.addEventListener('input', () => {
-            let minValue = parseInt(minPriceInput.value) || 0;
-            let maxValue = parseInt(maxPriceInput.value) || 1;
-            
-            if (minValue < 0) {
-                minValue = 0;
-                minPriceInput.value = minValue;
-                minPriceInput.classList.add('is-invalid');
-                setTimeout(() => minPriceInput.classList.remove('is-invalid'), 800);
-            }
-            
-            if (minValue >= maxValue) {
-                minValue = maxValue - 1;
-                minPriceInput.value = minValue;
-                minPriceInput.classList.add('is-invalid');
-                setTimeout(() => minPriceInput.classList.remove('is-invalid'), 800);
-            }
-        });
+            paginationButtons.forEach((button, index) => {
+                if (index > 0 && index < paginationButtons.length - 1) {
+                    button.addEventListener('click', function() {
+                        paginationButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        pageDots.forEach(dot => dot.classList.remove('active'));
+                        pageDots[index - 1].classList.add('active');
+                    });
+                }
+            });
 
-        maxPriceInput.addEventListener('input', () => {
-            let maxValue = parseInt(maxPriceInput.value) || 1;
-            let minValue = parseInt(minPriceInput.value) || 0;
-            
-            if (maxValue < 1) {
-                maxValue = 1;
-                maxPriceInput.value = maxValue;
-                maxPriceInput.classList.add('is-invalid');
-                setTimeout(() => maxPriceInput.classList.remove('is-invalid'), 800);
-            }
-            
-            if (maxValue <= minValue) {
-                maxValue = minValue + 1;
-                maxPriceInput.value = maxValue;
-                maxPriceInput.classList.add('is-invalid');
-                setTimeout(() => maxPriceInput.classList.remove('is-invalid'), 800);
-            }
+            pageDots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    pageDots.forEach(d => d.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    paginationButtons.forEach(btn => btn.classList.remove('active'));
+                    paginationButtons[index + 1].classList.add('active');
+                });
+            });
         });
     </script>
 </body>

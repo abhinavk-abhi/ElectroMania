@@ -37,7 +37,7 @@ const loadShop = async (req,res)=>{
         const page = parseInt(req.query.page) || 1;
         const limit = 12;
         const skip = (page-1)*limit;
-        let filter = {isBlocked : true}
+        let filter = {visibility : true}
         
         if(req.query.result){
             filter.name = {$regex : req.query.result , $options : "i"}
@@ -48,7 +48,7 @@ const loadShop = async (req,res)=>{
 
             const matchedCategories = await Category.find({
                 name:{$in : categories},
-                isBlocked : false
+                visibility : true
             }).select('_id');
 
             if(matchedCategories.length){
@@ -113,14 +113,15 @@ const loadShop = async (req,res)=>{
             {$limit : limit}
         ])
 
-        const categories = await Category.find({isBlocked : false});
-        // const brand = await Product.distinct("brand",{isBlocked : false});
+        const categories = await Category.find({visibility : true});
+        const brand = await Product.distinct("brand");
         const totalProducts = await Product.countDocuments(filter);
         const totalPages = Math.ceil(totalProducts/limit)
 
-        res.render("temporary",{
+        res.render("shop",{
             products : product,
             category : categories,
+            brand : brand,
             appliedFilters : req.query,
             currentPage : page,
             totalPages,
@@ -134,4 +135,34 @@ const loadShop = async (req,res)=>{
     }
 }
 
-export default {loadHome,loadRegister,loadShop};
+
+const loadProductDetails = async (req,res)=>{
+    try {
+
+        const userId = req.session.user?.id ?? req.session.user?._id ?? null;
+        const user = await User.findOne({_id:userId}) 
+
+        const productId = req.params.productId;
+        const product = await Product.findOne({_id : productId})
+
+        const category = product.category;
+        const relatedProducts = await Product.find({
+            category : category,
+            _id : {$ne : product._id}
+        })
+       
+
+        if(!product){
+            return res.render('shop',{message : "Product is unavailable"})
+        }
+
+        res.render('productDetails',{
+            product : product,
+            relatedProducts : relatedProducts,
+            user : user
+        })
+    } catch (error) {
+        
+    }
+}
+export default {loadHome,loadRegister,loadShop , loadProductDetails};

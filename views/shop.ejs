@@ -1,113 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElectroMaria</title>
+    <title>ElectroMania</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #28517D;
+            --footer-color: #D9D9D9;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
         }
 
         body {
-            background: linear-gradient(to right, #1a3a5f, #2d5f8b);
+            font-family: Arial, sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-light);
         }
+
         .dropdown {
-        position: relative;
-        display: inline-block;
-    }
+            position: relative;
+            display: inline-block;
+        }
 
-    .dropdown-toggle {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        color: white;
-        font-size: 15px;
-        font-weight: 500;
-        height: 50px;
-        text-decoration: none;
-    }
+        .dropdown-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            height: 50px;
+            text-decoration: none;
+        }
 
-    .dropdown-toggle i {
-        margin-right: 8px;
-    }
+        .dropdown-toggle i {
+            margin-right: 8px;
+        }
 
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        right: 0;
-        background-color: rgb(156, 132, 132);
-        min-width: 160px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        border: 1px solid #1d1b1b;
-        border-radius: 4px;
-        z-index: 1000;
-        margin-top: 5px;
-        padding: 5px 0;
-    }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: rgb(156, 132, 132);
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid #1d1b1b;
+            border-radius: 4px;
+            z-index: 1000;
+            margin-top: 5px;
+            padding: 5px 0;
+        }
 
-    .dropdown-content a {
-        color: #333;
-        padding: 10px 20px;
-        text-decoration: none;
-        display: block;
-        font-size: 14px;
-        transition: background-color 0.2s;
-    }
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
 
-    .dropdown-content a:hover {
-        background-color:  rgb(156, 132, 132);
-    }
+        .dropdown-content a:hover {
+            background-color: rgb(156, 132, 132);
+        }
 
-    /* Show dropdown when active class is present */
-    .dropdown.active .dropdown-content {
-        display: block;
-    }
+        /* Show dropdown when active class is present */
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
         .navbar {
-        z-index: 1001;
-        background: #8781813f;
-        padding: 0 20px; /* Reduced side padding */
-        display: flex;
-        justify-content: space-between; /* Changed from space-evenly */
-        align-items: center;
-        color: white;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        height: 80px;
-        box-sizing: border-box;
-        position: sticky;
-        top: 0;
-    }
+            z-index: 1001;
+            background: #8781813f;
+            padding: 0 20px;
+            /* Reduced side padding */
+            display: flex;
+            justify-content: space-between;
+            /* Changed from space-evenly */
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: 80px;
+            box-sizing: border-box;
+            position: relative;
+            top: 0;
+        }
 
-    .brand-name {
-        font-family: 'Bellefair', serif;
-        font-size: 45px;
-        font-weight: normal;
-        text-decoration: none;
-        color: black;
-        line-height: 1;
-        margin-right: 30px; /* Reduced from 60px */
-        display: flex;
-        align-items: center;
-        height: 100%;
-        padding-top: 5px;
-    }
+        .brand-name {
+            font-family: 'Bellefair', serif;
+            font-size: 45px;
+            font-weight: normal;
+            text-decoration: none;
+            color: black;
+            line-height: 1;
+            margin-right: 30px;
+            /* Reduced from 60px */
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-top: 5px;
+        }
 
-    .nav-links {
-        display: flex;
-        gap: 20px; /* Reduced from 50px */
-        font-family: 'Outfit', sans-serif;
-        font-size: 16px;
-        align-items: center;
-        flex: 1;
-        justify-content: center;
-        margin: 0 10px; /* Reduced from 20px */
-        height: 100%;
-        position: relative;
-        padding-top: 5px;
-    }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            /* Reduced from 50px */
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+            margin: 0 10px;
+            /* Reduced from 20px */
+            height: 100%;
+            position: relative;
+            padding-top: 5px;
+        }
 
 
         .nav-links a {
@@ -128,64 +143,68 @@
         }
 
         .nav-right {
-        display: flex;
-        gap: 10px; /* Reduced from 20px */
-        align-items: center;
-        height: 100%;
-        position: relative;
-        padding-top: 5px;
-    }
+            display: flex;
+            gap: 10px;
+            /* Reduced from 20px */
+            align-items: center;
+            height: 100%;
+            position: relative;
+            padding-top: 5px;
+        }
 
         /* Remove underline from all links in nav-right */
         .nav-right a {
-        color: white;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        height: 50px;
-        margin: 0 10px; /* Reduced from 25px */
-    }
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            height: 50px;
+            margin: 0 10px;
+            /* Reduced from 25px */
+        }
 
         /* Ensure dropdown-toggle (username) also has no underline */
         .nav-right .dropdown-toggle {
-            text-decoration: none; /* Remove underline from username */
+            text-decoration: none;
+            /* Remove underline from username */
         }
 
         .search-bar {
-        padding: 0 10px;
-        border: none;
-        border-radius: 4px;
-        width: 100%;
-        font-family: 'Outfit', sans-serif;
-        font-size: 14px;
-        height: 40px;
-        outline: none;
-    }
+            padding: 0 10px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            height: 40px;
+            outline: none;
+        }
 
         .search-container {
-        display: flex;
-        align-items: center;
-        background: white;
-        border-radius: 4px;
-        padding: 0 5px;
-        margin-right: 15px;
-        width: 240px;
-    }
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 4px;
+            padding: 0 5px;
+            margin-right: 15px;
+            width: 240px;
+        }
 
-    .search-btn {
-        background: transparent;
-        color: #4D44AD;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 40px;
-    }
+        .search-btn {
+            background: transparent;
+            color: #4D44AD;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 40px;
+        }
 
-         .signup-btn, .icon-btn {
+        .signup-btn,
+        .icon-btn {
             background: #4D44AD;
             color: white;
             border: none;
@@ -212,256 +231,320 @@
             justify-content: center;
         }
 
-        .search-btn:hover, .signup-btn:hover, .icon-btn:hover {
+        .search-btn:hover,
+        .signup-btn:hover,
+        .icon-btn:hover {
             opacity: 0.9;
         }
-      /* Main content */
-        .container {
-            display: flex;
-            padding: 20px;
-        }
 
-        /* Sidebar styles */
+        /* Sidebar Styles */
         .sidebar {
-            width: 200px;
-            background-color: #1a3a5f;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
+            background-color: transparent;
+            padding: 1.5rem;
         }
 
-        .sidebar h3 {
-            margin: 10px 0;
-            font-size: 16px;
+        .filter-title {
+            color: var(--text-light);
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
         }
 
-        .sidebar ul {
-            list-style-type: none;
-            margin-bottom: 20px;
+        .filter-section {
+            margin-bottom: 1.5rem;
         }
 
-        .sidebar li {
-            padding: 5px 0;
-            font-size: 14px;
+        .filter-section h6 {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
         }
 
-        .sidebar a {
-            color: #ccc;
-            text-decoration: none;
+        .form-check {
+            margin-bottom: 0.5rem;
         }
 
-        .sidebar a:hover {
-            color: white;
+        .form-check-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
-        .price-filter input {
-            width: 50px;
-            margin: 5px;
-        }
-
-        /* Product grid */
-        .product-grid {
-            flex: 1;
-            padding: 0 20px;
-        }
-
-        .sort-bar { 
-            margin-bottom: 15px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .sort-dropdown {
-            padding: 5px;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            background: transparent;
-        }
-
+        /* Product Grid Styles */
         .product-card {
-            background-color: white;
-            border-radius: 5px;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            background: white;
+            border: none;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
             position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            width: 245px;
+            /* Fixed width */
+            height: 350px;
+            /* Fixed height */
+            overflow: hidden;
+            /* Hide overflow if content exceeds fixed height */
         }
 
-        .product-card img {
-            width: 80%;
-            height: 250px;
-            text-align: center;
-            object-fit: contain;
-            margin-bottom: 10px;
+        .product-card:hover {
+
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
 
-        .heart-icon {
+        .wishlist-icon {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            color: red;
-            font-size: 18px;
+            top: 0.75rem;
+            right: 0.75rem;
+            font-size: 1.3rem;
+            color: #e74c3c;
             cursor: pointer;
+            z-index: 10;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 160px;
+            /* Keep fixed height for image */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .product-card .card-body {
+            padding: 0;
+            /* Remove padding from card-body if needed */
+            text-align: center;
+            margin-top: auto;
+            /* Push body content down */
         }
 
         .product-title {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
             height: 40px;
+            /* Keep height constraint */
             overflow: hidden;
-            margin-bottom: 10px;
-            font-size: 14px;
-            font-weight: bold;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            
+            -webkit-box-orient: vertical;
+        }
+
+        .rating {
+            color: #f39c12;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating span {
+            color: #6c757d;
+            /* Color for review count */
         }
 
         .price {
+            color: var(--text-dark);
             font-weight: bold;
-            color: #1a3a5f;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 5px;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
         }
 
-        .add-to-cart {
-            background-color: #4a69bd;
-            color: white;
+        .btn-add-cart {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            width: 100%;
+            padding: 0.6rem;
+            font-size: 0.9rem;
             border: none;
-            padding: 5px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Pagination */
+        .btn-add-cart .bi-cart {
+            margin-right: 0.5rem;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #1e3d5c;
+            color: var(--text-light);
+        }
+
+        /* Pagination Styles */
         .pagination {
-            display: flex;
             justify-content: center;
-            margin-top: 30px;
-            gap: 10px;
-            background: transparent;
+            margin-top: 2rem;
         }
 
-        .pagination button {
-            width: 30px;
-            height: 30px;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
+        .page-link {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-color: rgba(255, 255, 255, 0.1);
+            margin: 0 0.2rem;
         }
 
-        .pagination button.active {
-            background-color: #1a3a5f;
-            color: white;
-            border: none;
+        .page-link:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .page-indicator {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin: 20px 0;
-            background: transparent;
+        .page-item.active .page-link {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
         }
 
-        .page-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #ddd;
-            cursor: pointer;
+        /* Custom Checkbox Styles */
+        .custom-checkbox .form-check-input:checked {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
         }
 
-        .page-dot.active {
-            background-color: #1a3a5f;
+        .form-check-input {
+            background-color: transparent;
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Footer */
-        footer {
-            background-color: #f5f5f5;
-            padding: 20px;
-            margin-top: 20px;
-            border-top: 1px solid #ddd;
+        /* Footer Styles */
+        .footer {
+            background-color: var(--footer-color);
+            color: var(--text-dark);
+            padding: 2rem 0;
+            margin-top: 3rem;
         }
 
-        .footer-container {
-            display: flex;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
+        .footer-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
         }
 
-        .footer-section {
-            flex: 1;
-            padding: 0 15px;
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .footer-section h3 {
-            color: #1a3a5f;
-            margin-bottom: 15px;
-            font-size: 16px;
+        .footer-links li {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
         }
 
-        .footer-section p, .footer-section a {
-            color: #555;
-            margin-bottom: 5px;
-            font-size: 14px;
+        .footer-links a {
+            color: var(--text-dark);
             text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #666;
+        }
+
+        .footer-social {
+            margin-top: 1rem;
+        }
+
+        .footer-social a {
+            color: var(--text-dark);
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+
+        .footer-social a:hover {
+            color: #666;
+        }
+
+        .text-muted {
+            color: #666 !important;
+        }
+
+        .sort-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .sort-button {
+            background-color: #e9ecef;
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-size: 15px;
+            font-weight: 400;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 130px;
+        }
+
+        .sort-button:after {
+            content: '';
+            display: inline-block;
+            margin-left: 10px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #000;
+        }
+
+        .sort-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #e9ecefc4;
+            border-radius: 15px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .sort-option {
+            padding: 5px 25px;
+            color: #000;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: 600;
+        }
+
+        .sort-option:hover {
+            background-color: #d9d9d9;
+        }
+
+        /* Hide dropdown by default */
+        .sort-dropdown {
+            display: none;
+        }
+
+        /* Show dropdown when sort-container has show class */
+        .sort-container.show .sort-dropdown {
             display: block;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .social-icon {
-            width: 30px;
-            height: 30px;
-            background-color: #1a3a5f;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 16px;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #777;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
-        }
-
-        .payment-methods {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .payment-method {
-            width: 40px;
-            height: 25px;
-            background-color: #eee;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #555;
         }
     </style>
 </head>
+
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <a href="/" class="brand-name">ElectroMania</a>
         <div class="nav-links">
@@ -472,10 +555,23 @@
             <a href="/offers" style="color: black;">Deals/Offers</a>
         </div>
         <div class="nav-right">
-            <div class="search-container">
+            <!-- <div class="search-container">
                 <input type="search" class="search-bar" placeholder="Search products...">
                 <button class="search-btn"><i class="bi bi-search" style="font-size: 18px;"></i></button>
-            </div>
+            </div> -->
+            <form id="searchProductForm" action="/shop" method="get" class="d-flex">
+                <input type="hidden" name="category" value="<%= appliedFilters && appliedFilters.category ? appliedFilters.category : '' %>">
+                <input type="hidden" name="price" value="<%= appliedFilters && appliedFilters.price ? appliedFilters.price : '' %>">
+                <input type="hidden" name="brand" value="<%= appliedFilters && appliedFilters.brand ? appliedFilters.brand : '' %>">
+                <input type="hidden" name="availability" value="<%= appliedFilters && appliedFilters.availability ? appliedFilters.availability : '' %>">
+                <input type="hidden" name="sort" value="<%= appliedFilters && appliedFilters.sort ? appliedFilters.sort : 'newest' %>">
+            
+                <input class="form-control me-2" type="search" name="result" placeholder="Search products"
+                    value="<%= appliedFilters && appliedFilters.result ? appliedFilters.result : '' %>">
+                <button class="btn" type="submit" style="background-color: #beb8f2;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
             <a href="/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
             <a href="/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
             <div class="d-none d-lg-flex align-items-center">
@@ -490,220 +586,245 @@
                             <a href="user/logout">Logout</a>
                         </div>
                     </div>
-                <% } else { %>
-                    <a href="/register" class="icon-btn">SignUp</a>
-                <% } %>
+                    <% } else { %>
+                        <a href="/register" class="icon-btn">SignUp</a>
+                        <% } %>
             </div>
         </div>
     </nav>
-    <div class="container">
-        <div class="sidebar">
-            <h3>Filter Items</h3>
-            <h3>Category</h3>
-            <ul>
-                <li><a href="#">PC Peripherals</a></li>
-                <li><a href="#">Audio</a></li>
-                <li><a href="#">Gaming</a></li>
-                <li><a href="#">Networking</a></li>
-                <li><a href="#">Storage</a></li>
-            </ul>
 
-            <h3>Products</h3>
-            <ul>
-                <li><a href="#">Keyboards</a></li>
-                <li><a href="#">Mouse</a></li>
-                <li><a href="#">Headsets</a></li>
-                <li><a href="#">External Drives</a></li>
-                <li><a href="#">Webcams</a></li>
-                <li><a href="#">Speakers</a></li>
-                <li><a href="#">Adapters</a></li>
-            </ul>
+    <div class="container-fluid px-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2">
+                <div class="sidebar">
+                    <div class="filter-title">Filter Items</div>
+                    <form id="filterForm" action="/shop" method="get">
+                        <!-- Preserve search and sorting -->
+                        <input type="hidden" name="result" value="<%= appliedFilters && appliedFilters.result ? appliedFilters.result : '' %>">
+                        <input type="hidden" name="sort" value="<%= appliedFilters && appliedFilters.sort ? appliedFilters.sort : 'newest' %>">
 
-            <h3>Customer Rating</h3>
-            <ul>
-                <li><a href="#">★★★★★</a></li>
-                <li><a href="#">★★★★☆</a></li>
-                <li><a href="#">★★★☆☆</a></li>
-                <li><a href="#">★★☆☆☆</a></li>
-                <li><a href="#">★☆☆☆☆</a></li>
-            </ul>
 
-            <h3>Brands</h3>
-            <ul>
-                <li><a href="#">Logitech</a></li>
-                <li><a href="#">SteelSeries</a></li>
-                <li><a href="#">Razer</a></li>
-                <li><a href="#">Corsair</a></li>
-                <li><a href="#">HyperX</a></li>
-            </ul>
-        </div>
+                    <!-- Category Filter -->
+                    <div class="filter-section">
+                        <h6>Category</h6>
+                        <ul class="list-unstyled">
+                            <% category.forEach(cat=> { %>
+                                <li>
+                                    <input type="checkbox" name="category" value="<%= cat.name %>" <%=appliedFilters &&
+                                        appliedFilters.category && appliedFilters.category.includes(cat.name)
+                                        ? "checked" : "" %>>
+                                    <%= cat.name %>
+                                </li>
+                                <% }) %>
+                        </ul>
 
-        <div class="product-grid">
-            <div class="sort-bar">
-                <span>Sort by:</span>
-                <select class="sort-dropdown">
-                    <option>Best Seller</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Rating</option>
-                </select>
-            </div>
-            <div class="container mt-4">
-                <div class="row">
-                    <% products.forEach((product, index) => { %>
-                        <div class="col-md-4 mb-4">
-                            <div class="card shadow-sm p-3">
-                                <!-- Wishlist Icon -->
-                                <div class="text-end">
-                                    <i class="bi bi-heart"></i>
-                                </div>
-                                
-                                <!-- Product Image -->
-                                <img src="<%= product.images[0] %>" class="card-img-top img-fluid" alt="<%= product.name %>">
-                                
-                                <!-- Product Details -->
-                                <div class="card-body text-center">
-                                    <h5 class="card-title"><%= product.name %></h5>
-                                    
-                                    <!-- Rating (Placeholder Stars) -->
-                                    <div class="rating">
-                                        <span>⭐️⭐️⭐️⭐️☆ (<%= product.reviewCount %>)</span>
-                                    </div>
-                                    
-                                    <!-- Price & Discount -->
-                                    <h6 class="price mt-2">
-                                        ₹ <%= product.price %>  
-                                        <% if (product.productOffer > 0) { %>
-                                            <span class="text-muted text-decoration-line-through">₹ <%= product.productOffer %></span>
-                                        <% } %>
-                                    </h6>
-                                    
-                                    <!-- Cart Button -->
-                                    <button class="btn btn-primary">
-                                        <i class="bi bi-cart"></i> Cart
-                                    </button>
-                                </div>
-                            </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="filter-section">
+                        <h6>Price Range</h6>
+                        <input type="range" class="form-range custom-range" min="0" max="100000" step="1000" id="priceRange" name="price"
+                        value="<%= appliedFilters && appliedFilters.price ? appliedFilters.price : 50000 %>">
+                        <div class="d-flex justify-content-between fw-bold">
+                            <small id="minValue">₹0</small>
+                            <small id="currValue">₹<%= appliedFilters && appliedFilters.price ? appliedFilters.price : 50000 %></small>
+                            <small id="maxValue">₹10,0000</small>
                         </div>
-            
-                        <% if ((index + 1) % 3 === 0) { %>  
-                            </div><div class="row"> <!-- Create a new row after every third product -->
-                        <% } %>
-                    <% }); %>
+                    </div>
+
+                    <!-- Brand Filter -->
+                    <div class="filter-section">
+                        <h6>Brands</h6>
+                        <ul class="list-unstyled">
+                            <% 
+                                const uniqueBrands = [...new Set(brand)];
+                                uniqueBrands.forEach(brand => { 
+                            %>
+                                <li>
+                                    <input type="checkbox" name="brand" value="<%= brand %>"
+                                        <%= appliedFilters && appliedFilters.brand && appliedFilters.brand.includes(brand) ? "checked" : "" %>>
+                                    <%= brand %>
+                                </li>
+                            <% }); %>
+                        </ul>
+
+                        <ul class="list-unstyled">
+                            <h6>Availability</h6>
+                            <li>
+                                <input type="checkbox" name="availability" value="outOfStock"
+                                    <%= appliedFilters && appliedFilters.availability ? "checked" : "" %>>
+                                Include out of Stock
+                            </li>
+                        </ul>
+                    <br>
+                        <button type="submit" class="btn text-black w-90" style="background-color: #e1d3e5; border-radius: 28px;">
+                            Apply Filters
+                        </button>
+                    </form>
+                    </div>
                 </div>
             </div>
-            
-            
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>ElectroMania</h3>
-                <p>Welcome to ElectroMania, your ultimate destination for all things electronic. We offer a wide range of products from trusted brands at competitive prices.</p>
-                <div class="social-icons">
-                    <div class="social-icon">f</div>
-                    <div class="social-icon">t</div>
-                    <div class="social-icon">ig</div>
-                    <div class="social-icon">yt</div>
+            <!-- Product Grid -->
+            <div class="col-lg-10">
+
+                <div class="d-flex justify-content-start mt-3">
+                    <div class="sort-container" id="sortContainer">
+                        <form id="sortForm" action="/shop" method="get">
+                            <!-- Preserve filters and search when sorting -->
+                            <input type="hidden" name="result" value="<%= appliedFilters && appliedFilters.result ? appliedFilters.result : '' %>">
+                            <input type="hidden" name="category" value="<%= appliedFilters && appliedFilters.category ? appliedFilters.category : '' %>">
+                            <input type="hidden" name="price" value="<%= appliedFilters && appliedFilters.price ? appliedFilters.price : '' %>">
+                            <input type="hidden" name="brand" value="<%= appliedFilters && appliedFilters.brand ? appliedFilters.brand : '' %>">
+                            <input type="hidden" name="availability" value="<%= appliedFilters && appliedFilters.availability ? appliedFilters.availability : '' %>">
+                        
+                            <select name="sort" class="form-select" onchange="this.form.submit()">
+                                <option value="newest" <%= sortOption === 'newest' ? 'selected' : '' %>>Newest</option>
+                                <option value="priceLowToHigh" <%= sortOption === 'priceLowToHigh' ? 'selected' : '' %>>Price: Low to High</option>
+                                <option value="priceHighToLow" <%= sortOption === 'priceHighToLow' ? 'selected' : '' %>>Price: High to Low</option>
+                                <option value="aToZ" <%= sortOption === 'aToZ' ? 'selected' : '' %>>A to Z</option>
+                                <option value="zToA" <%= sortOption === 'zToA' ? 'selected' : '' %>>Z to A</option>
+                                <option value="ratingHighToLow" <%= sortOption === 'ratingHighToLow' ? 'selected' : '' %>>Rating: High to Low</option>
+                            </select>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-            <div class="footer-section">
-                <h3>Get In touch with us</h3>
-                <a href="#">About Us</a>
-                <a href="#">Careers</a>
-                <a href="#">Contact Us</a>
-                <a href="#">Blog</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms & Conditions</a>
-                <a href="#">Track Your Order</a>
-            </div>
+                <div class="row row-cols-1 row-cols-md-auto g-4 justify-content-start mt-4">
+                    <% products.forEach(product=> { %>
+                        <div class="col">
+                            <a href="/productDetails/<%= product._id%>">
+                                <div id="productCard" class="card product-card">
+                                    <!-- Wishlist Icon -->
+                                    <div class="wishlist-icon">
+                                        <i class="bi bi-heart"></i>
+                                    </div>
 
-            <div class="footer-section">
-                <h3>For Customers</h3>
-                <a href="#">Shipping Policy</a>
-                <a href="#">Warranty Policy</a>
-                <a href="#">Refund Policy</a>
-                <a href="#">Privacy Notice</a>
-                <a href="#">Terms of Use</a>
-                <a href="#">FAQ</a>
-            </div>
+                                    <!-- Product Image -->
+                                    <div class="image-container">
+                                        <img src="<%= product.images[0] %>" alt="<%= product.name %>">
+                                    </div>
 
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p>Phone: +123-456-7890</p>
-                <p>Email: support@electromaria.com</p>
-                <p>Hours: Monday - Friday (9am - 6pm)</p>
-                <p>Address: 123 Tech Street, Silicon Valley, CA</p>
-                <p>Customer Care: +1-800-555-0199</p>
+                                    <!-- Product Details -->
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title product-title text-truncate">
+                                            <%= product.name %>
+                                        </h6>
+
+                                        <!-- Rating (Static for now, as data is missing) -->
+
+
+                                        <!-- Price & Discount (Static discount for now) -->
+                                        <h6 class="price mt-2">
+                                            ₹ <%= product.price %>
+                                                <!-- Example Original Price (if you add productOffer later) -->
+                                                <!-- <span class="text-muted text-decoration-line-through">₹ <%=
+                                                        product.price * product.productOffer %></span> -->
+                                        </h6>
+
+                                        <!-- Cart Button -->
+                                        <button class="btn btn-primary btn-add-cart w-100">
+                                            <i class="bi bi-cart"></i> Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <% }); %>
+                </div>
+
+                <!-- Pagination Controls -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% for (let i=1; i <=totalPages; i++) { %>
+                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
             </div>
         </div>
+    </div>
 
-        <div class="copyright">
-            © 2025 ElectroMaria - All Rights Reserved
-            <div class="payment-methods">
-                <div class="payment-method">Visa</div>
-                <div class="payment-method">MC</div>
-                <div class="payment-method">Amex</div>
-                <div class="payment-method">PP</div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="footer-title">ElectroMania</div>
+                    <p class="text-muted">Your one-stop shop for premium electronics and gaming peripherals.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-title">Quick Links</div>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-title">Customer Service</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Shipping Information</a></li>
+                        <li><a href="#">Returns & Exchange</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-title">Contact Info</div>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-phone me-2"></i>1-800-123-4567</li>
+                        <li><i class="fas fa-envelope me-2"></i>support@electromania.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>123 Tech Street, Digital City</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // JavaScript for interactive elements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Heart icon toggle
-            const heartIcons = document.querySelectorAll('.heart-icon');
-            heartIcons.forEach(icon => {
-                icon.addEventListener('click', function() {
-                    if (this.style.color === 'gray') {
-                        this.style.color = 'red';
-                    } else {
-                        this.style.color = 'gray';
+        function toggleSortDropdown() {
+            document.getElementById('sortContainer').classList.toggle('show');
+        }
+
+        // Close the dropdown when clicking outside
+        window.onclick = function (event) {
+            if (!event.target.matches('.sort-button')) {
+                const dropdowns = document.getElementsByClassName('sort-container');
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
                     }
-                });
-            });
-
-            // Add to cart button effect
-            const addButtons = document.querySelectorAll('.add-to-cart');
-            addButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.textContent = 'Added';
-                    this.style.backgroundColor = '#28a745';
-                    setTimeout(() => {
-                        this.textContent = 'Add to Cart';
-                        this.style.backgroundColor = '#4a69bd';
-                    }, 1000);
-                });
-            });
-
-            // Pagination functionality
-            const paginationButtons = document.querySelectorAll('.pagination button');
-            const pageDots = document.querySelectorAll('.page-dot');
-
-            paginationButtons.forEach((button, index) => {
-                if (index > 0 && index < paginationButtons.length - 1) {
-                    button.addEventListener('click', function() {
-                        paginationButtons.forEach(btn => btn.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        pageDots.forEach(dot => dot.classList.remove('active'));
-                        pageDots[index - 1].classList.add('active');
-                    });
                 }
-            });
+            }
+        }
 
-            pageDots.forEach((dot, index) => {
-                dot.addEventListener('click', function() {
-                    pageDots.forEach(d => d.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    paginationButtons.forEach(btn => btn.classList.remove('active'));
-                    paginationButtons[index + 1].classList.add('active');
+        // Add click event listeners to sort options
+        document.addEventListener('DOMContentLoaded', function () {
+            const sortOptions = document.querySelectorAll('.sort-option');
+            sortOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    // Here you can add logic to sort products based on selection
+                    document.getElementById('sortContainer').classList.remove('show');
                 });
             });
         });
+
     </script>
 </body>
+
 </html>

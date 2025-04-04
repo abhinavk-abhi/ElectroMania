@@ -18,10 +18,7 @@ const productModel = new Schema({
         type : String,
         required : true
     },
-    specification : {
-        type : String,
-        required : true
-    },
+   
     images : {
         type : [String],
         required : true
@@ -44,9 +41,9 @@ const productModel = new Schema({
         type : String,
         default : 0
     },
-    isBlocked : {
+    visibility : {
         type : Boolean,
-        default : false
+        default : true
     },
     category : {
         type : Schema.Types.ObjectId,

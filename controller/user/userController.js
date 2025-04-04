@@ -332,15 +332,7 @@ const resendOtp = async (req,res)=>{
   } catch (error) {
     console.error("Error sending otp :", error);
     res.status(500).json({ message: "Server error while sending OTP" });
-    // return res.render('user/register',{errorMessage: "Server error while sending OTP"})
-    }
-
-
-
-  // res.status(200).json({
-  //   success : true,
-  //   message : "OTP sent successfully",
-  // })
+  }
 
   } catch (error) {
     
@@ -353,6 +345,167 @@ const resendOtp = async (req,res)=>{
   }
 }
 
+const loadForgotPass = async (req,res)=>{
+  try {
+    res.render('user/forgotPass',{errorMessage : ""})
+  } catch (error) {
+    res.status(500).json({
+      message : "Something went wrong. Failed to load forgot  password page.",
+      redirectUrl : '/user/login'
+    })
+  }
+}
+
+const sendForgotOtp = async (req,res)=>{
+  try {
+    let otp = otpGenerator()
+    console.log("forgot pass otp :",otp)
+    const {email} = req.body;
+    const user = await User.findOne({email : email})
+
+    if(!user){
+      return res.status(200).json({
+        message : "No existing user in this email Id"
+      })
+    }
+  
+    if (!process.env.EMAIL || !process.env.PASSWORD) {
+      console.error("Missing email credential in environment variables.");
+      return res.status(500).render('user/login',{errorMessage:"Server error, Please try again later"})
+    }
+  
+    //Configure the nodemailer
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      port : 587,
+      secure : false,
+      requireTLS : true,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
+      },
+    });
+  
+    //Email content
+    const mailer = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "OTP for resetting your password",
+      html: `
+                <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #2118cc;">ElectroMania Account Password Reset</h2>
+                    <p>Hello,</p>
+                    <p>Your One-Time Password (OTP) for account password reset :</p>
+                    <p style="font-size: 24px; font-weight: bold; color:#2118cc;">${otp}</p>
+                    <p>Please use this OTP to reset your account password.</p>
+                    <p>The OTP is only valid for three minutes.<p>
+                    <h5>If you did not perform this action , please contact - <a href="mailto:electromaniasupport@gmail.com">electromaniasupport@gmail.com</a></h5>
+                    <p>Best regards,<br>The ElectroMania Team</p>
+                    <hr style="border: 0; border-top: 1px solid #eee;">
+                    <p style="font-size: 12px; color: #777;">This is an automated message. Please do not reply.</p>
+                </div>
+            `,
+    };
+  
+  
+    //Send Email
+    try {
+      await transporter.sendMail(mailer);
+
+    req.session.forgotOtp = otp;
+    req.session.user = user;
+
+      res.status(200).json({ 
+        success : true,
+        message: "OTP has been sent to your mail" ,
+        redirectUrl : '/user/forgotPassOtp'
+      });
+    } catch (error) {
+      console.error("Error sending otp :", error);
+      res.status(500).json({ message: "Server error while sending OTP" });
+    }
+
+   
+
+ 
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send(error.message)
+  }
+}
+
+
+const loadForgotPassOtp = async (req,res)=>{
+  try {
+    res.render('user/forgotPassOtp',{errorMessage:""});
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Failed to load the page')
+  }
+
+} 
+
+
+const  verifyForgotOtp = async (req,res)=>{
+  try {
+    const otp = req.session.forgotOtp;
+    const formOtp = req.body.otp;
+
+
+console.log('otp is :'+ otp)
+
+    if(otp == formOtp){
+      return res.status(200).json({
+        message :"OTP verified successfully."
+      })
+    }else{
+      return res.status(400).json({
+        message : "Invalid OTP Try again"
+      })
+    }
+  } catch (error) {
+    return res.status(500).send("Error occured in the verification process.")
+  }
+}
+
+const loadChangePassword = async (req,res)=>{
+  try {
+    res.render('user/changePassword',{errorMessage : ""})
+  } catch (error) {
+    console.log("Change password page error :" , error)
+    return res.status(500).send("Failed to load the page . Please try again later")
+  }
+}
+
+const changePassword = async (req,res)=>{
+  console.log('kdfkljkf;j')
+  try {
+    const {newPassword} = req.body;
+    const user = req.session.user;
+
+    const hashedPassword = await bcrypt.hash(newPassword,10)
+
+    await User.findByIdAndUpdate({_id : user._id},
+      {$set :{password : hashedPassword}}
+    )
+
+    req.session.user = null;
+
+    return res.status(200).json({
+      message : "Password changed successfully",
+      redirectUrl : '/user/login'
+    })
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message : "Failed to update the password",
+      redirectUrl : '/user/login'
+    })
+  }
+}
+
 
 export default { registerUser,
                 loadLogin,
@@ -360,5 +513,11 @@ export default { registerUser,
                 otpVerify,
                 login,
                 logout,
-                resendOtp
+                resendOtp,
+                loadForgotPass,
+                verifyForgotOtp,
+                sendForgotOtp,
+                loadForgotPassOtp,
+                loadChangePassword,
+                changePassword
               };

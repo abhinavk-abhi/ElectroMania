@@ -13,7 +13,12 @@ const productLoad = async (req, res) => {
     const category = await Category.find();
 
     if (req.query.category && req.query.category !== "all") {
-      filter.category = req.query.category;
+      const category = await Category.findOne({name : req.query.category});
+      if(category){
+        filter.category = category._id
+      }else{
+        filter.cateogory = null
+      }
     }
 
     if (req.query.stock === "1") {
@@ -23,9 +28,9 @@ const productLoad = async (req, res) => {
     }
 
     if (req.query.status === "1") {
-      filter.isBlock = false;
+      filter.visibility = true;
     } else if (req.query.status === "2") {
-      filter.isBlock = true;
+      filter.visibility = false;
     }
 
     if (req.query.query) {
@@ -169,7 +174,7 @@ const editProduct = async (req,res)=>{
       product.price= productPrice;
       product.productOffer= productOffer;
       product.stock = productStock;
-      product.isBlocked = visibility;
+      product.visibility = visibility;
     
 
     if(req.files){

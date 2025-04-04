@@ -526,14 +526,14 @@
                         <div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="visibility" id="inlineRadio1"
-                                    value="true" <% if (product.isBlocked === true || product.isBlocked ==="true"
+                                    value="true" <% if (product.visibility=== true || product.visibility==="true"
                                     ) { %> checked <% } %>>
                                     <label class="form-check-label" for="inlineRadio1">Active</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="visibility" id="inlineRadio2"
-                                    value="false" <% if (product.isBlocked=== false ||
-                                    product.isBlocked=== "false" ) { %> checked <% } %>>
+                                    value="false" <% if (product.visibility== false ||
+                                    product.visibility== "false" ) { %> checked <% } %>>
                                     <label class="form-check-label" for="inlineRadio2">Block</label>
                             </div>
                         </div>

@@ -527,18 +527,7 @@
                 </div>
               </div>
 
-              <div class="mb-4 d-flex gap-3">
-                <div class="w-100">
-                  <label for="productSpec" class="form-label">Specifications</label>
-                  <textarea
-                    class="form-control"
-                    id="productSpec"
-                    name="productSpec"
-                    placeholder="Enter specifications"
-                  ></textarea>
-                  <div id="specError" class="error-message"></div>
-                </div>
-              </div>
+              
 
               <!-- Single Image Section -->
               <div class="mb-4">
@@ -687,7 +676,6 @@
         const description = document.getElementById("productDescription").value.trim();
         const stock = document.getElementById("productStock").value.trim()
         const price = document.getElementById("productPrice").value.trim();
-        const specifications = document.getElementById("productSpec").value.trim();
         const imageInputs = document.querySelectorAll('input[name="productImages[]"]');
        
 
@@ -698,7 +686,6 @@
           description: document.getElementById("descriptionError"),
           stock: document.getElementById("stockError"),
           price: document.getElementById("priceError"),
-          spec: document.getElementById("specError"),
           image: document.getElementById("imageError"),
         };
 
@@ -750,10 +737,7 @@
           hasError = true;
         }
 
-        if (!specifications) {
-          errors.spec.innerText = "Specifications are required";
-          hasError = true;
-        }
+       
 
         let totalImages = 0;
         imageInputs.forEach((input) => {

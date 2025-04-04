@@ -25,10 +25,9 @@ const userInfo = async  (req,res)=>{
     //Fetch filtered and searched users
 
     const customers = await User.find(filter)
-    .sort({createdAt : 1})
+    .sort({createdAt : -1})
     .skip(skip)
-    .limit(limit);
-
+    .limit(limit)
     // console.log(customers)
 
     const totalCustomers = await User.countDocuments(filter);

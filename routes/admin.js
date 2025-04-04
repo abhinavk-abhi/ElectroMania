@@ -7,7 +7,7 @@ import productController from '../controller/admin/productController.js';
 import categoryController from '../controller/admin/categoryController.js';
 import upload from '../middleware/imageUpload.js';
 
-router.get('/login',adminAuth.isLogin,adminController.loadLogin)
+router.get('/',adminAuth.isLogin,adminController.loadLogin)
 router.post('/login',adminController.login)
 
 

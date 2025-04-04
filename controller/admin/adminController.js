@@ -21,7 +21,6 @@ const login = async (req,res)=>{
         const {email,password} = req.body;
         const admin = await Admin.findOne({email})
         if(!admin) {
-            console.log('-------')
             return res.status(401).json({
                 success : false,
                 message : 'Admin doesn\'t exists',
@@ -39,7 +38,7 @@ const login = async (req,res)=>{
         });
         }
 
-        req.session.admin = Admin._id;
+        req.session.admin = admin;
         return res.status(200).json({
             success: true,
             message : 'Logged in successfully',

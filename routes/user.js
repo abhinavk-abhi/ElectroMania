@@ -11,7 +11,12 @@
     router.post('/verifyOtp',userController.otpVerify)
     router.get('/logout',userController.logout)
     router.post('/resendOtp',userController.resendOtp)
-
+    router.get('/forgotPassword',userController.loadForgotPass)
+    router.post('/forgotPassOtp',userController.sendForgotOtp)
+    router.get('/forgotPassOtp',userController.loadForgotPassOtp)
+    router.post('/forgotPass/verifyOtp',userController.verifyForgotOtp)
+    router.get('/changePassword',userController.loadChangePassword)
+    router.post('/changePassword',userController.changePassword)
 
 
 

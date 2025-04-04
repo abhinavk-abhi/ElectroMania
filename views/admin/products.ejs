@@ -456,12 +456,12 @@
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center">
                                         <!-- Hidden (Eye-slash) Icon: Shown when isBlocked is TRUE -->
-                                        <p style="color: #3e29a8; margin: 0;" class="<%= products[i].isBlocked ? 'd-none' : '' %>">
+                                        <p style="color: #3e29a8; margin: 0;" class="<%= products[i].visibility? 'd-none' : '' %>">
                                             <i class="bi bi-eye-slash-fill"></i>
                                         </p>
                                     
                                         <!-- Visible (Eye) Icon: Shown when isBlocked is FALSE -->
-                                        <p style="color: #9c9999; margin: 0;" class="<%= products[i].isBlocked? '' : 'd-none' %>">
+                                        <p style="color: #9c9999; margin: 0;" class="<%= products[i].visibility ? '' : 'd-none' %>">
                                             <i class="bi bi-eye-fill"></i>
                                         </p>
                                     </div>

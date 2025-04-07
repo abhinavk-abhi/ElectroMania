@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - ElectroMania</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #28517D;
+            --secondary-color: #4D44AD;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            font-family: Arial, sans-serif;
+        }
+
+        .cart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        /* Cart Item Styles */
+        .cart-item {
+            background: #F8F9FA;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .item-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .quantity-display {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .remove-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Order Summary Styles */
+        .order-summary {
+            background: #F8F9FA;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .summary-item span {
+            font-size: 16px;
+        }
+
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .continue-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        /* Related Products Styles */
+        .related-products {
+            margin-top: 30px;
+        }
+
+        .related-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .cart-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .wishlist-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: red;
+            cursor: pointer;
+        }
+
+        .rating {
+            color: gold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="brand-name">ElectroMania</a>
+        <div class="nav-links">
+            <a href="/" style="color: black;">Home</a>
+            <div class="dropdown">
+                <a href="/shop" style="color: black;">Shop</a>
+            </div>
+            <a href="/offers" style="color: black;">Deals/Offers</a>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <input type="search" class="search-bar" placeholder="Search products...">
+                <button class="search-btn"><i class="bi bi-search" style="font-size: 18px;"></i></button>
+            </div>
+            <a href="/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
+            <a href="/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
+            <div class="d-none d-lg-flex align-items-center">
+                <% if (locals.user) { %>
+                    <div class="dropdown">
+                        <a href="/profile" class="dropdown-toggle">
+                            <i class="fas fa-user"></i>
+                            <%= locals.user.name %>
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="/profile">Profile</a>
+                            <a href="user/logout">Logout</a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <a href="/register" class="icon-btn">SignUp</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-md-8">
+                <!-- Cart Item 1 -->
+                <div class="cart-item">
+                    <img src="monitor.jpg" alt="Acer Monitor">
+                    <div class="item-details">
+                        <h3 class="item-title">Acer ED270 27.0 inch FHD (1920 x 1080) Curved Gaming Panel LED LCD Monitor</h3>
+                        <div class="item-price">₹11,799</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn">-</button>
+                        <span class="quantity-display">1</span>
+                        <button class="quantity-btn">+</button>
+                    </div>
+                    <button class="remove-btn">Remove</button>
+                </div>
+
+                <!-- Cart Item 2 -->
+                <div class="cart-item">
+                    <img src="mouse.jpg" alt="Gaming Mouse">
+                    <div class="item-details">
+                        <h3 class="item-title">Kreo Chronos RGB USB Wireless Gaming Mouse with soft compatible with PS4/PS5, PC/Programming/Gaming</h3>
+                        <div class="item-price">₹2,499</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn">-</button>
+                        <span class="quantity-display">1</span>
+                        <button class="quantity-btn">+</button>
+                    </div>
+                    <button class="remove-btn">Remove</button>
+                </div>
+
+                <!-- Related Products -->
+                <div class="related-products">
+                    <h2 class="related-title">Related Products</h2>
+                    <div class="row">
+                        <!-- Product 1 -->
+                        <div class="col-md-3 position-relative">
+                            <div class="product-card">
+                                <i class="bi bi-heart-fill wishlist-icon"></i>
+                                <img src="mouse1.jpg" alt="Gaming Mouse">
+                                <h3 class="product-title">Razer Basilisk V3 Wired Gaming Mouse</h3>
+                                <div class="rating">
+                                    ★★★★★ <span>(88)</span>
+                                </div>
+                                <div class="product-price">₹2,395</div>
+                                <button class="cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-md-4">
+                <div class="order-summary">
+                    <h2 class="summary-title">Order summary</h2>
+                    <div class="summary-item">
+                        <span>1x Acer ED270 27.0 inch FHD Monitor</span>
+                        <span>₹11,799</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>1x Kreo Chronos RGB USB Mouse</span>
+                        <span>₹2,499</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Delivery charge</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Platform fee</span>
+                        <span>₹30</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total</span>
+                        <span>₹14,328</span>
+                    </div>
+                    <button class="continue-btn">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Footer -->
+     <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="payment-methods">
+                        <img src="/images/visa.png" alt="Visa">
+                        <img src="/images/mastercard.png" alt="Mastercard">
+                        <img src="/images/paypal.png" alt="PayPal">
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-12 text-center mt-3">
+                    <small>© 2024 ElectroMania - All Rights Reserved</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

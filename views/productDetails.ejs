@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Product Details Styles */
         body {
@@ -523,22 +525,47 @@
                         <h1 class="product-title"><%= product.name %></h1>
                         <h5 class="product-description"><%= product.description%></h5>
                         <div class="product-price">
-                            ₹<%= product.price %> 
-                            <% if (product.originalPrice) { %>
-                                <span class="discount">-<%= product.discount %>% ₹<%= product.originalPrice %></span>
-                            <% } %>
+                            <p>
+                                <% const displayOffer = Math.max(product.productOffer || 0, product.category.offer || 0); if (displayOffer > 0) {  %>
+                                <span class="text-danger fs-2 fw-bold me-2">₹<%= Math.round(product.price - (product.price * displayOffer / 100)) %></span>
+                                <del class="text-muted fs-5 me-3">₹<%= product.price %></del>
+                                    <strong><%= displayOffer || 0 %>% OFF</strong> 
+                                <% } %>
+                            </p>
                         </div>
-
-                      
 
                         <!-- Action Buttons -->
                         <div class="d-flex gap-3 mt-4">
-                            <button class="btn btn-primary flex-grow-1">Add to Cart</button>
+                            <button id="addtocartBtn" class="btn btn-primary flex-grow-1">Add to Cart</button>
+                            <button class="btn btn-outline-secondary w-50" id="addToWishlistBtn"><i class="fa fa-heart me-2"></i><span class="wishlist-text">Add to Wishlist</span></button>
                         </div>
+
+                        <div class="row g-3 my-3">
+                            <div class="col-md-4">
+                                <label for="quantity" class="form-label fw-bold">Quantity:</label>
+                                <select id="quantity" name="quantity" class="form-select">
+                                    <% for (let i = 1; i <= 5; i++) { %>
+                                        <option value="<%= i %>"><%= i %></option>
+                                    <% } %>
+                                </select>
+                            </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="userId" id="userId" 
+    <% if(locals.user) { %>
+        value="<%= user._id %>"
+    <% } else { %>
+        value=""
+    <% } %>
+>
+        <input type="hidden" name="productId" id="productId" value="<%= product.productId %>">
+        <input type="hidden" name="productdbId" id="productdbId" value="<%= product._id %>">
+        <input type="hidden" id="salePrice" name="salePrice" value="<%= Math.round(product.price - (product.price * displayOffer / 100)) %>">
+        <input type="hidden" id="basePrice" name="basePrice" value="<%= product.price %>">
 
         <!-- Related Products -->
         <div class="related-products mt-5">
@@ -703,6 +730,84 @@
                 productInfo.classList.remove('zooming');
             }
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const stockStatus = document.getElementById('stockStatus');
+    const mainImage = document.getElementById('mainImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const addToCartBtn = document.getElementById('addtocartBtn');
+    const addToWishlistBtn = document.getElementById('addToWishlistBtn')
+        
+
+    addToCartBtn.addEventListener('click', async (e)=>{
+        e.preventDefault();
+
+        const userId = document.getElementById('userId').value;
+        const productId = document.getElementById('productdbId').value;
+        const quantity = document.getElementById('quantity').value;
+        const price = document.getElementById('salePrice').value;
+        const basePrice = document.getElementById('basePrice').value;
+console.log(userId)
+        if(!userId){
+            Swal.fire({
+                icon : 'error',
+                text : "Please login to continue.",
+                showConfirmButton : true,
+                confirmButtonText : "Login"
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    window.location.href = '/user/login'
+                }
+            })
+        }
+
+        const productDetails = {
+            userId,
+            productId,
+            quantity,
+            price,
+            basePrice
+        }
+
+        try {
+            const response = await fetch('/user/addToCart',{
+                method : 'POST',
+                headers : { 'Content-Type' : 'application/json'},
+                body : JSON.stringify(productDetails)
+            });
+
+            const data = await response.json()
+
+            if(!response.ok){
+                Swal.fire({
+                    icon : 'warning',
+                    text : data.error ,
+                    showConfirmButton : false ,
+                    timer : 2000
+                })
+            } else {
+                Swal.fire({
+                    icon : 'success',
+                    text : 'Added to cart successfully',
+                    showConfirmButton : true ,
+                    confirmButtonText : 'Go to Cart'
+                }).then((result)=>{
+                    if(result.isConfirmed) {
+                        window.location.href = '/user/cart'
+                    }
+                }) 
+            }
+        } catch (error) {
+            Swal.fire({
+                icon : 'error',
+                text : 'An error occured',
+                showConfirmButton : false,
+                timer : 2000
+            })
+        }
+    })
+
+})
     </script>
 </body>
 </html>

@@ -1,4 +1,6 @@
 import User from "../../model/userModel.js";
+import Products from '../../model/productModel.js'
+import Cart from '../../model/cartModel.js'
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import nodemailer from 'nodemailer'
@@ -507,6 +509,8 @@ const changePassword = async (req,res)=>{
 }
 
 
+
+
 export default { registerUser,
                 loadLogin,
                 otpLoader,
@@ -519,5 +523,6 @@ export default { registerUser,
                 sendForgotOtp,
                 loadForgotPassOtp,
                 loadChangePassword,
-                changePassword
+                changePassword,
+                
               };

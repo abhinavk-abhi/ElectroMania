@@ -17,12 +17,71 @@
             margin: 0;
             padding: 0;
         }
+        /* Container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
 
+/* Toggle button */
+.dropdown-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    height: 50px;
+    text-decoration: none;
+    padding: 0 16px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
 
-    /* Show dropdown when active class is present */
-    .dropdown.active .dropdown-content {
-        display: block;
-    }
+/* Dropdown icon spacing */
+.dropdown-toggle i {
+    font-size: 18px;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    min-width: 100px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    margin-top: 10px;
+    padding: 8px 0;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+/* Dropdown links */
+.dropdown-content a {
+    color: #333;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect */
+.dropdown-content a:hover {
+    background-color: #f0f0f093;
+    color: #000;
+}
+
+/* Show dropdown on .active class */
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
         .navbar {
         z-index: 1001;
         background: #8781813f;
@@ -464,24 +523,24 @@
                 <input type="search" class="search-bar" placeholder="Search products...">
                 <button class="search-btn"><i class="bi bi-search" style="font-size: 18px;"></i></button>
             </div>
-            <a href="/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
-            <a href="/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
+            <a href="/user/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
+            <a href="/user/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
             <div class="d-none d-lg-flex align-items-center">
                 <% if (locals.user) { %>
                     <div class="dropdown">
-                        <a href="/profile" class="dropdown-toggle">
-                            <i class="fas fa-user"></i>
-                            <%= locals.user.name %>
+                        <a class="btn dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> <%= locals.user.name %>
                         </a>
-                        <div class="dropdown-content">
-                            <a href="/profile">Profile</a>
-                            <a href="user/logout">Logout</a>
-                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" style="color: black;" href="/profile">Profile</a></li>
+                            <li><a class="dropdown-item" style="color: black;" href="/user/logout">Logout</a></li>
+                        </ul>
                     </div>
                 <% } else { %>
-                    <a href="/register" class="icon-btn">SignUp</a>
+                    <a href="/register" class="btn btn-outline-light">Sign Up</a>
                 <% } %>
             </div>
+            
         </div>
     </nav>
     
@@ -747,7 +806,7 @@
         const quantity = document.getElementById('quantity').value;
         const price = document.getElementById('salePrice').value;
         const basePrice = document.getElementById('basePrice').value;
-console.log(userId)
+
         if(!userId){
             Swal.fire({
                 icon : 'error',
@@ -776,8 +835,10 @@ console.log(userId)
                 body : JSON.stringify(productDetails)
             });
 
-            const data = await response.json()
+          
 
+            const data = await response.json()
+            console.log(data)
             if(!response.ok){
                 Swal.fire({
                     icon : 'warning',
@@ -798,8 +859,9 @@ console.log(userId)
                 }) 
             }
         } catch (error) {
+            console.log(error)
             Swal.fire({
-                icon : 'error',
+                icon : 'warning',
                 text : 'An error occured',
                 showConfirmButton : false,
                 timer : 2000

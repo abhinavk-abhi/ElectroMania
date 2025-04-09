@@ -14,8 +14,8 @@ router.post('/login',adminController.login)
 router.get('/dashboard',adminAuth.isLogin,adminController.loadHome)
 
 //Products
-router.get('/products',adminAuth.isLogin,productController.productLoad)
-router.get('/newProducts',adminAuth.isLogin,productController.loadAddProduct)
+router.get('/products',productController.productLoad)
+router.get('/newProducts',productController.loadAddProduct)
 router.post('/addProducts',upload.any(),productController.addProduct)
 router.get('/updateProducts/:productId',productController.loadEditProducts)
 router.put('/products/:productId',upload.any(),productController.editProduct)

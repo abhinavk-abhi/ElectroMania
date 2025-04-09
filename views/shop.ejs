@@ -572,23 +572,22 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
-            <a href="/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
-            <a href="/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
+            <a href="/user/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
+            <a href="/user/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
             <div class="d-none d-lg-flex align-items-center">
                 <% if (locals.user) { %>
                     <div class="dropdown">
-                        <a href="/profile" class="dropdown-toggle">
-                            <i class="fas fa-user"></i>
-                            <%= locals.user.name %>
+                        <a class="btn dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> <%= locals.user.name %>
                         </a>
-                        <div class="dropdown-content">
-                            <a href="/profile">Profile</a>
-                            <a href="user/logout">Logout</a>
-                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" style="color: black;" href="/profile">Profile</a></li>
+                            <li><a class="dropdown-item" style="color: black;" href="/user/logout">Logout</a></li>
+                        </ul>
                     </div>
-                    <% } else { %>
-                        <a href="/register" class="icon-btn">SignUp</a>
-                        <% } %>
+                <% } else { %>
+                    <a href="/register" class="btn btn-outline-light">Sign Up</a>
+                <% } %>
             </div>
         </div>
     </nav>

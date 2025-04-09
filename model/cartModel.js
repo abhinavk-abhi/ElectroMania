@@ -25,9 +25,6 @@ const cartModel = new Schema ({
         productImage: {
             type: String
         },
-        stock: {
-            type: Number
-        },
         quantity: {
             type: Number,
             required: true,

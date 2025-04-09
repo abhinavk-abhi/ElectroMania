@@ -29,9 +29,11 @@
     router.get('/changePassword',userController.loadChangePassword)
     router.post('/changePassword',userController.changePassword)
     
-    //Add to cart
-    router.post('/addToCart',cartController.addToCart)
+    // Cart
+    router.post('/addToCart',userAuth.isLogin,cartController.addToCart)
     router.get('/cart',cartController.loadCart)
+    router.patch('/cart',cartController.incCartQua)
+    router.delete('/cart',cartController.removeProduct)
 
 
     export default router;                  

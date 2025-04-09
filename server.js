@@ -9,6 +9,7 @@ import homeRoute from "./routes/homeRoute.js";
 import connectDB from "./config/db.js";
 import session from "express-session";
 import passport from "./config/passport.js";
+import expressLayouts from 'express-ejs-layouts'
 env.config();
 connectDB();
 
@@ -40,10 +41,13 @@ const __dirname = dirname(__filename);
 const port = process.env.PORT || 3000;
 const publicPath = join(__dirname, "public");
 
+
+
 app.use(express.static(publicPath));
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 app.use(express.static(path.join(publicPath)));
+
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -36,7 +36,6 @@ const addToCart = async (req,res)=>{
         quantity : parseInt(quantity),
         price,
         basePrice,
-        stock : availableStock,
         productImage : product.images[0]
     }
 
@@ -96,7 +95,70 @@ const addToCart = async (req,res)=>{
   }
 
 
+const incCartQua = async (req,res)=>{
+    try {
+        
+        const {userId, productId, count} = req.body;
+
+        const cart = await Cart.findOne({
+            $and:[
+               { userId : userId},
+                {'items.productId' : productId}
+            ]
+            }
+        )
+
+        if(!cart){
+            return res.status(404).json({error : 'Product not found.'})
+        }
+
+        const item = cart?.items.find(item => item.productId.toString() === productId.toString());
+        const product = await Products.findOne({_id : productId })
+        if(count > 0){
+            if(item.quantity < product.stock){
+                item.quantity += 1
+            }else{
+                return res.status(400).json({error : "Product stock limit reached"})
+            }
+        }else if( count < 0 && item.quantity > 1){
+            item.quantity -= 1
+            
+        }else if(count < 0 && item.quantity === 1 ){
+            return res.status(400).json({error : "Quantity unchanged as it is already at minimum"})
+        }
+
+
+        await cart.save()
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message : "Unexpected error occured please try again later."})
+    }
+}
+
+const removeProduct = async (req,res)=>{
+    try {
+        const {productId , userId , index } = req.body;
+        const cart = await Cart.findOne({
+            $and:[
+               { userId : userId},
+                {'items.productId' : productId}
+            ]
+            }
+        )
+
+        await cart.items.splice(index,1)
+        await cart.save()
+       
+        return res.status(200).json({message : "Product removed successfully"})
+    } catch (error) {
+        
+    }
+}
+
   export default  {
     addToCart,
-    loadCart
+    loadCart,
+    incCartQua,
+    removeProduct
   }

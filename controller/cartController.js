@@ -26,7 +26,7 @@ const addToCart = async (req,res)=>{
     let availableStock = product.stock;
 
     if(quantity > availableStock){
-        return res.status(404).json({error : `Only ${availableStock} units of ${product.name} available in stock`})
+        return res.status(400).json({error : `Only ${availableStock} units of ${product.name} available in stock`})
     }
 
     const item = {

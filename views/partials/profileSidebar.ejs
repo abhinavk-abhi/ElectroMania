@@ -1,0 +1,164 @@
+<!-- views/partials/profileSidebar.ejs -->
+<style>
+    /* views/partials/sidebarStyles.ejs */
+/* Sidebar Variables */
+:root {
+    --primary-color: #28517D;
+    --secondary-color: #4D44AD;
+    --light-gray: #f5f5f5;
+    --text-dark: #333333;
+}
+
+/* Sidebar Container */
+.sidebar {
+    background-color: white;
+    padding: 30px 0;
+    border-right: 1px solid #eee;
+    height: 100%;
+}
+
+/* User Profile Header */
+.user-profile {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ddd;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.username {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.username span {
+    font-weight: bold;
+}
+
+/* Navigation Menu */
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: fit-content;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    width: 100%;
+    text-decoration: none;
+    color: var(--text-dark);
+}
+
+.nav-item i {
+    font-size: 18px;
+    margin-right: 15px;
+    color: #666;
+    width: 24px;
+    text-align: center;
+}
+
+.nav-item.active {
+    background-color: var(--light-gray);
+    border-left: 3px solid var(--secondary-color);
+}
+
+.nav-item:hover {
+    background-color: #f0f0f0;
+}
+
+.nav-item.active i,
+.nav-item.active span {
+    color: var(--secondary-color) !important;
+}
+
+/* Responsive Sidebar */
+@media (max-width: 768px) {
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+}
+</style>
+
+<div class="user-profile">
+    <div class="user-avatar">
+        <img src="/images/user-avatar.jpg" alt="User Avatar">
+    </div>
+    <div class="username">
+        Hello <span><%= locals.user ? user.name : 'Abhinav' %></span>
+    </div>
+</div>
+
+<!-- Navigation Menu -->
+<ul class="nav-menu">
+  
+    <li id="profile" class="nav-item ">
+        <a href="/profile">
+            <i class="fas fa-user"></i>
+            <span>Profile Information</span>
+        </a>
+    </li>
+    <li id="orders" class="nav-item ">
+        <a href="/profile/orders">
+            <i class="fas fa-shopping-bag"></i>
+            <span>My orders</span>
+        </a>
+    </li>
+    <li id="address" class="nav-item ">
+        <a href="/profile/addresses">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Manage Addresses</span>
+        </a>
+    </li>
+    <li id="coupon" class="nav-item ">
+        <a href="/profile/coupons">
+            <i class="fas fa-tag"></i>
+            <span>My Coupons</span>
+        </a>
+    </li>
+    <li id="reviews" class="nav-item ">
+        <a href="/profile/reviews">
+            <i class="fas fa-star"></i>
+            <span>My reviews & ratings</span>
+        </a>
+    </li>
+    <li id="wallet" class="nav-item">
+        <a href="/profile/wallet">
+            <i class="fas fa-wallet"></i>
+            <span>My Wallet</span>
+        </a>
+    </li>
+    <li  class="nav-item">
+        <a href="/user/logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Log out</span>
+        </a>
+    </li>
+</ul>

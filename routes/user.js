@@ -4,6 +4,8 @@
     import userAuth from '../middleware/userAuth.js'
     import passport from 'passport';
     import cartController from '../controller/cartController.js'
+    import { ProfilingLevel } from 'mongodb';
+    import profileController from '../controller/profileController.js';
 
 
     //User Login
@@ -30,10 +32,14 @@
     router.post('/changePassword',userController.changePassword)
     
     // Cart
-    router.post('/addToCart',userAuth.isLogin,cartController.addToCart)
+    router.post('/addToCart',cartController.addToCart)
     router.get('/cart',cartController.loadCart)
     router.patch('/cart',cartController.incCartQua)
     router.delete('/cart',cartController.removeProduct)
 
+
+    //Profile
+    router.get('/profile',profileController.loadProfile)
+    router.get('/editProfile',profileController.editInformation)
 
     export default router;                  

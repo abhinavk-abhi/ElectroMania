@@ -749,20 +749,7 @@
           hasError = true;
         }
 
-        // Validate variants
-        // variants.forEach((variant, index) => {
-          
-        //   const stock = variant.querySelector(`input[name="stockVariant[${index}]"]`).value.trim();
-        //   const stockError = variant.querySelector(".stock-error");
-
-        //   if (!stock) {
-        //     stockError.innerText = "Stock is required";
-        //     hasError = true;
-        //   } else if (parseInt(stock) < 0) {
-        //     stockError.innerText = "Stock cannot be negative";
-        //     hasError = true;
-        //   }
-        // });
+     
 
         if (hasError) return;
 
@@ -828,16 +815,6 @@
       buttons.forEach((btn) => (btn.disabled = buttons.length <= 1));
     }
 
-    // function setupInitialVariants() {
-    //   const container = document.getElementById("variantContainer");
-    //   if (!container) return;
-
-    //   if (!container.children.length) {
-    //     const initialVariant = createVariant(0);
-    //     container.appendChild(initialVariant);
-    //     updateRemoveButtons(container);
-    //   }
-    // }
 
     function setupImageUploads(container) {
       if (!container) return;

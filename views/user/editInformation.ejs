@@ -24,6 +24,8 @@
 
         /* Profile Container */
         .profile-container {
+            display: flex;
+            align-items: flex-start;
             background: white;
             border-radius: 15px;
             margin: 20px auto;
@@ -36,6 +38,7 @@
 
         /* Sidebar */
         .sidebar {
+            width: 250px;
             background-color: white;
             padding: 30px 0;
             border-right: 1px solid #eee;
@@ -399,6 +402,16 @@
                 padding-bottom: 10px;
             }
         }
+
+        .profile-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -410,185 +423,69 @@
         <%- include ('../partials/profileSidebar') %>
 
         <!-- Main Content -->
-        <div class="col-md-9 col-lg-10 main-content">
+        <div class="col-md-7 col-lg-9 main-content">
+           
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 main-content">
+        <h2 class="section-title">Personal Information</h2>
+        
+        <form id="editProfile" >
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label"> Name</label>
+                        <input  type="text" class="form-control" id="name" name="name" value="<%= user.name %>">
+                    </div>
+                    <div id="errorContainer">
+                        <p id="errorText" class="text-danger"></p>
+                    </div>
+                </div>
+               
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Gender</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input  type="radio" id="male" name="gender" value="male" <%= user.gender == "male" ? 'checked' : '' %>>
+                        <label for="male">Male</label>
+                    </div>
+                    <div class="radio-option">
+                        <input  type="radio" id="female" name="gender" value="female" <%= user.gender == "female" ? 'checked' : '' %>>
+                        <label for="female">Female</label>
+                    </div>
+                </div>
+                <div id="errorContainer">
+                    <p id="errorText" class="text-danger"></p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Email address</label>
+                <input  type="email" class="form-control" name="email" value="<%= locals.user ? user.email : '' %>">
+                <input type="hidden" id="userId" value="<%= locals.user._id %>">
+            </div>
+            <div id="errorContainer">
+                <p id="errorText" class="text-danger"></p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Mobile Number</label>
+                <input  type="tel" class="form-control" name="mobile" value="<%= locals.user ? user.phone : '' %>">
+            </div>
+            <div id="errorContainer">
+                <p id="errorText" class="text-danger"></p>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" id="editProfileButton" class="btn-save">Edit</button>
+            </div>
+        </form>
+    </div>
+</div>
            
 
-            <!-- Orders Section -->
-            <div id="orders" class="content-section">
-                <h2 class="section-title">My Orders</h2>
-                
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">Order #ORD123456</div>
-                        <div class="order-status status-delivered">Delivered</div>
-                    </div>
-                    <div class="order-product">
-                        <img src="/images/products/monitor.jpg" alt="Monitor">
-                        <div class="product-info">
-                            <h4>Acer ED270 27.0 inch FHD Curved Gaming Panel</h4>
-                            <div class="product-price">₹11,799</div>
-                        </div>
-                    </div>
-                    <div class="text-end">
-                        <button class="btn-cancel">View Details</button>
-                    </div>
-                </div>
-                
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">Order #ORD123457</div>
-                        <div class="order-status status-processing">Processing</div>
-                    </div>
-                    <div class="order-product">
-                        <img src="/images/products/mouse.jpg" alt="Mouse">
-                        <div class="product-info">
-                            <h4>Kreo Chronos RGB USB Wireless Gaming Mouse</h4>
-                            <div class="product-price">₹2,499</div>
-                        </div>
-                    </div>
-                    <div class="text-end">
-                        <button class="btn-cancel">View Details</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Addresses Section -->
-            <div id="addresses" class="content-section">
-                <h2 class="section-title">Manage Addresses</h2>
-                
-                <div class="address-card">
-                    <div class="address-actions">
-                        <a href="#" class="text-primary me-2">Edit</a>
-                        <a href="#" class="text-danger">Delete</a>
-                    </div>
-                    <div class="address-type">Home</div>
-                    <div class="address-name">Abhinav K</div>
-                    <div class="address-details">
-                        123 Main Street, Apartment 4B<br>
-                        Bangalore, Karnataka - 560001
-                    </div>
-                    <div class="address-phone">+91 9483396488</div>
-                </div>
-                
-                <div class="address-card">
-                    <div class="address-actions">
-                        <a href="#" class="text-primary me-2">Edit</a>
-                        <a href="#" class="text-danger">Delete</a>
-                    </div>
-                    <div class="address-type">Work</div>
-                    <div class="address-name">Abhinav K</div>
-                    <div class="address-details">
-                        456 Tech Park, Building C<br>
-                        Bangalore, Karnataka - 560037
-                    </div>
-                    <div class="address-phone">+91 9483396488</div>
-                </div>
-                
-                <button class="btn-save mt-3">Add New Address</button>
-            </div>
-
-            <!-- Coupons Section -->
-            <div id="coupons" class="content-section">
-                <h2 class="section-title">My Coupons</h2>
-                
-                <div class="alert alert-info">
-                    You have 2 active coupons
-                </div>
-                
-                <div class="order-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4>WELCOME10</h4>
-                            <p>10% off on your first order</p>
-                            <small class="text-muted">Valid till 31 December 2024</small>
-                        </div>
-                        <button class="btn-save">Copy Code</button>
-                    </div>
-                </div>
-                
-                <div class="order-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4>SUMMER2024</h4>
-                            <p>Flat ₹500 off on orders above ₹5000</p>
-                            <small class="text-muted">Valid till 30 June 2024</small>
-                        </div>
-                        <button class="btn-save">Copy Code</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reviews Section -->
-            <div id="reviews" class="content-section">
-                <h2 class="section-title">My Reviews & Ratings</h2>
-                
-                <div class="review-card">
-                    <div class="review-product">
-                        <img src="/images/products/monitor.jpg" alt="Monitor">
-                        <div>
-                            <h4>Acer ED270 27.0 inch FHD Curved Gaming Panel</h4>
-                            <div class="stars">★★★★★</div>
-                        </div>
-                    </div>
-                    <div class="review-text">
-                        Great monitor for gaming! The curve is perfect and colors are vibrant. Response time is excellent for FPS games.
-                    </div>
-                    <div class="review-date">Posted on 15 May 2024</div>
-                </div>
-                
-                <div class="review-card">
-                    <div class="review-product">
-                        <img src="/images/products/keyboard.jpg" alt="Keyboard">
-                        <div>
-                            <h4>Redragon K631 Wireless Gaming Keyboard</h4>
-                            <div class="stars">★★★★☆</div>
-                        </div>
-                    </div>
-                    <div class="review-text">
-                        Good build quality and nice typing experience. Battery life could be better but overall a solid keyboard.
-                    </div>
-                    <div class="review-date">Posted on 2 April 2024</div>
-                </div>
-            </div>
-
-            <!-- Wallet Section -->
-            <div id="wallet" class="content-section">
-                <h2 class="section-title">My Wallet</h2>
-                
-                <div class="wallet-balance">
-                    <div class="balance-label">Available Balance</div>
-                    <div class="balance-amount">₹1,250</div>
-                </div>
-                
-                <h4 class="mb-3">Transaction History</h4>
-                
-                <div class="transaction">
-                    <div class="transaction-details">
-                        <h4>Refund - Order #ORD123458</h4>
-                        <div class="transaction-date">20 May 2024</div>
-                    </div>
-                    <div class="transaction-amount amount-credit">+₹750</div>
-                </div>
-                
-                <div class="transaction">
-                    <div class="transaction-details">
-                        <h4>Used in Order #ORD123457</h4>
-                        <div class="transaction-date">15 May 2024</div>
-                    </div>
-                    <div class="transaction-amount amount-debit">-₹500</div>
-                </div>
-                
-                <div class="transaction">
-                    <div class="transaction-details">
-                        <h4>Signup Bonus</h4>
-                        <div class="transaction-date">10 May 2024</div>
-                    </div>
-                    <div class="transaction-amount amount-credit">+₹1,000</div>
-                </div>
-            </div>
-
-            <!-- Logout Section (not actually visible, just for functionality) -->
-            <div id="logout" class="content-section"></div>
+            
         </div>
     </div>
 
@@ -620,45 +517,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get all navigation items
-            const navItems = document.querySelectorAll('#profileNav .nav-item');
-            
-            // Add click event listener to each nav item
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Get the section id from data attribute
-                    const sectionId = this.getAttribute('data-section');
-                    
-                    // Handle logout separately
-                    if (sectionId === 'logout') {
-                        // Redirect to logout URL
-                        window.location.href = '/user/logout';
-                        return;
-                    }
-                    
-                    // Remove active class from all nav items
-                    navItems.forEach(navItem => {
-                        navItem.classList.remove('active');
-                    });
-                    
-                    // Add active class to clicked nav item
-                    this.classList.add('active');
-                    
-                    // Hide all content sections
-                    const contentSections = document.querySelectorAll('.content-section');
-                    contentSections.forEach(section => {
-                        section.classList.remove('active');
-                    });
-                    
-                    // Show the selected content section
-                    const selectedSection = document.getElementById(sectionId);
-                    if (selectedSection) {
-                        selectedSection.classList.add('active');
-                    }
-                });
-            });
-        });
+       document.addEventListener("DOMContentLoaded", ()=>{
+        document.getElementById("profile").classList.add = "active"
+       })
     </script>
 </body>
 </html>

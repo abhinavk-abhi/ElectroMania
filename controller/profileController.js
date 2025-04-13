@@ -12,7 +12,6 @@ const loadProfile = async (req,res)=>{
 }
 
 const editInformation = async (req,res)=>{
-    console.log('hi')
     try {
         const id = req.query.userId;
         console.log(id)
@@ -26,8 +25,25 @@ const editInformation = async (req,res)=>{
     }
 }
 
+const verifyEmail = async (req,res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+const saveEdits = async (req,res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
 export default { 
     loadProfile,
     editInformation,
-
+    verifyEmail,
+    saveEdits
 }

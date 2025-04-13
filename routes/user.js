@@ -41,5 +41,7 @@
     //Profile
     router.get('/profile',profileController.loadProfile)
     router.get('/editProfile',profileController.editInformation)
+    router.post('/profile/verifyEmail',profileController.verifyEmail)
+    router.put('/userProfile',profileController.saveEdits)
 
     export default router;                  

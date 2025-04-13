@@ -599,7 +599,7 @@
 
 
                     if (email !== userEmail) {
-                        const response = await fetch('/verifyEmail', {
+                        const response = await fetch('/user/profile/verifyEmail', {
                             method: "post",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ email })
@@ -615,7 +615,7 @@
                                 showConfirmButton: false,
                             })
                         } else {
-                            const saveChanges = await fetch('/userProfile', {
+                            const saveChanges = await fetch('/user/userProfile', {
                                 method: "put",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ userEdit })

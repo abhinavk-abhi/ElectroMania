@@ -502,6 +502,37 @@
                                 <button type="button" id="editProfileButton" class="btn-save">Edit</button>
                             </div>
                         </form>
+
+                        <!-- OTP Modal -->
+                        <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content p-3">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="otpModalLabel">Enter OTP</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="otpForm">
+                                            <div class="mb-3">
+                                                <label for="otpInput" class="form-label">OTP</label>
+                                                <input type="text" class="form-control" id="otpInput" maxlength="4"
+                                                    pattern="\d{4}" placeholder="Enter 4-digit OTP" required
+                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);">
+                                                <div class="invalid-feedback">
+                                                    Please enter a valid 4-digit OTP.
+                                                </div>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-primary">Send</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
         </div>
@@ -597,12 +628,18 @@
                         phone: phone
                     }
 
+                    document.getElementById("otpForm").addEventListener("submit", function (e) {
+                        e.preventDefault();
+                        const otp = document.getElementById("otpInput").value;
+
+
+                    });
 
                     if (email !== userEmail) {
-                        const response = await fetch('/user/profile/verifyEmail', {
+                        const response = await fetch('/user/profile/emailOtp', {
                             method: "post",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ email })
+                            body: JSON.stringify({ userEmail })
                         })
 
                         const data = await response.json()
@@ -614,6 +651,72 @@
                                 timer: 2000,
                                 showConfirmButton: false,
                             })
+
+                        } else {
+                            const otpModal = new bootstrap.Modal(document.getElementById("otpModal"));
+                            otpModal.show();
+
+                            document.getElementById("otpForm").addEventListener("submit", async function (e) {
+                                e.preventDefault();
+                                const otpInput = document.getElementById("otpInput");
+                                const otp = otpInput.value;
+
+                                if (!/^\d{4}$/.test(otp)) {
+                                    otpInput.classList.add("is-invalid");
+                                    return;
+                                }
+
+                                // Remove previous invalid state
+                                otpInput.classList.remove("is-invalid");
+
+                                // Send OTP for verification
+                                const otpVerify = await fetch('/userProfileOtp', {
+                                    method: 'POST',
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ otp })  // Include email if needed
+                                });
+
+                                const result = await otpVerify.json();
+
+                                if (!otpVerify.ok) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        text: result.error || "Invalid OTP",
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    });
+                                }else{
+
+                                const saveChanges = await fetch('/user/userProfile', {
+                                method: "put",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ userEdit })
+                                })
+
+                                const result = await saveChanges.json()
+
+                                if (!saveChanges.ok) {
+                                Swal.fire({
+                                    icon: "warning",
+                                    text: result.error,
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                })
+                                } else if (saveChanges.ok) {
+                                Swal.fire({
+                                    icon: "success",
+                                    text: result.message,
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                })
+                                }
+
+                                }
+                            })
+                        
+
+                        }
+
                         } else {
                             const saveChanges = await fetch('/user/userProfile', {
                                 method: "put",
@@ -638,10 +741,11 @@
                                     showConfirmButton: false
                                 })
                             }
-                        }
-                    }
 
-                });
+                        }
+
+                    });
+
             });
         </script>
 </body>

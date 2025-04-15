@@ -25,9 +25,13 @@ const editInformation = async (req,res)=>{
     }
 }
 
-const verifyEmail = async (req,res)=>{
+const otpGenerator = () => Math.floor(1000 + Math.random() * 9000);
+
+const emailOtp = async (req,res)=>{
     try {
-        
+        const {email} = req.body;
+        const otp = await otpGenerator()
+
     } catch (error) {
         
     }
@@ -44,6 +48,6 @@ const saveEdits = async (req,res)=>{
 export default { 
     loadProfile,
     editInformation,
-    verifyEmail,
+    emailOtp,
     saveEdits
 }

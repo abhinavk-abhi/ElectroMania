@@ -6,6 +6,8 @@
     import cartController from '../controller/cartController.js'
     import { ProfilingLevel } from 'mongodb';
     import profileController from '../controller/profileController.js';
+    import upload from '../middleware/imageUpload.js'
+    import addressController from '../controller/addressController.js';
 
 
     //User Login
@@ -42,7 +44,11 @@
     router.get('/profile',profileController.loadProfile)
     router.get('/editProfile',profileController.editInformation)
     router.post('/profile/emailOtp',profileController.emailOtp)
-    router.post('/userProfileOtp')
-    router.put('/userProfile',profileController.saveEdits)
+    router.post('/userProfileOtp',profileController.otpVerify)
+    router.put('/userProfile',upload.single("profilePic"),profileController.saveEdits)
 
-    export default router;                  
+    //Address
+    router.get('/address',addressController.loadAddress)
+    router.post('/address',addressController.newAddress)
+
+    export default router;                      

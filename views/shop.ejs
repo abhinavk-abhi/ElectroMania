@@ -693,23 +693,25 @@
                 <div class="row row-cols-1 row-cols-md-auto g-4 justify-content-start mt-4">
                     <% products.forEach(product=> { %>
                         <div class="col">
-                            <a href="/productDetails/<%= product._id%>">
+                           
                                 <div id="productCard" class="card product-card">
                                     <!-- Wishlist Icon -->
                                     <div class="wishlist-icon">
                                         <i class="bi bi-heart"></i>
                                     </div>
-
+                                    <a href="/productDetails/<%= product._id%>">
                                     <!-- Product Image -->
                                     <div class="image-container">
                                         <img src="<%= product.images[0] %>" alt="<%= product.name %>">
                                     </div>
-
+                                    </a>
                                     <!-- Product Details -->
                                     <div class="card-body text-center">
+                                        <a href="/productDetails/<%= product._id%>">
                                         <h6 class="card-title product-title text-truncate">
                                             <%= product.name %>
                                         </h6>
+                                        </a>
 
                                         <!-- Rating (Static for now, as data is missing) -->
 
@@ -723,12 +725,12 @@
                                         </h6>
 
                                         <!-- Cart Button -->
-                                        <button class="btn btn-primary btn-add-cart w-100">
+                                        <button id="addToCartBtn" class="btn btn-primary btn-add-cart w-100" style="z-index: 1000;">
                                             <i class="bi bi-cart"></i> Cart
                                         </button>
                                     </div>
                                 </div>
-                            </a>
+                        
                         </div>
                         <% }); %>
                 </div>
@@ -822,6 +824,81 @@
                 });
             });
         });
+
+        const addToCartBtn = document.getElementById("addToCartBtn")
+
+        addToCartBtn.addEventListener('click', async (e)=>{
+        e.preventDefault();
+
+        const userId = document.getElementById('userId').value;
+        const productId = document.getElementById('productdbId').value;
+        const quantity = document.getElementById('quantity').value;
+        const price = document.getElementById('salePrice').value;
+        const basePrice = document.getElementById('basePrice').value;
+
+        if(!userId){
+            Swal.fire({
+                icon : 'error',
+                text : "Please login to continue.",
+                showConfirmButton : true,
+                confirmButtonText : "Login"
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    window.location.href = '/user/login'
+                }
+            })
+        }
+
+        const productDetails = {
+            userId,
+            productId,
+            quantity,
+            price,
+            basePrice
+        }
+
+        console.log(productDetails)
+
+        try {
+            const response = await fetch('/user/addToCart',{
+                method : 'POST',
+                headers : { 'Content-Type' : 'application/json'},
+                body : JSON.stringify(productDetails)
+            });
+
+          
+
+            const data = await response.json()
+            console.log(data)
+            if(!response.ok){
+                Swal.fire({
+                    icon : 'warning',
+                    text : data.error ,
+                    showConfirmButton : false ,
+                    timer : 2000
+                })
+            } else {
+                Swal.fire({
+                    icon : 'success',
+                    text : 'Added to cart successfully',
+                    showConfirmButton : true ,
+                    confirmButtonText : 'Go to Cart'
+                }).then((result)=>{
+                    if(result.isConfirmed) {
+                        window.location.href = '/user/cart'
+                    }
+                }) 
+            }
+        } catch (error) {
+            console.log(error)
+            Swal.fire({
+                icon : 'warning',
+                text : 'An error occured',
+                showConfirmButton : false,
+                timer : 2000
+            })
+        }
+    })
 
     </script>
 </body>

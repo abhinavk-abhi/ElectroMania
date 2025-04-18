@@ -24,6 +24,12 @@ const userModel = new Schema({
         unique : true,
         sparse : true
     },
+    
+    profilePic : {
+        type : String,
+        required : false
+    },
+    
     phone : {
         type : String,
         required : false,
@@ -39,7 +45,7 @@ const userModel = new Schema({
     gender : {
         type : String,
         required : false,
-        enum : ["Male","Female"]
+       
     },
     cart : [{
         type : Schema.Types.ObjectId,

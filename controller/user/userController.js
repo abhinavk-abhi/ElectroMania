@@ -73,7 +73,7 @@ const userIdGenerator = async () => {
 const registerUser = async (req, res) => {
   try {
 
-    console.log(`register user accessed`);
+    // console.log(`register user accessed`);
     
     const { fullName, email, phone, password } = req.body;
 

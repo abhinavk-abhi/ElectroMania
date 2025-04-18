@@ -7,11 +7,11 @@ const addressModel = Schema({
         ref : "user",
         required : true
     },
-    userName : {
+    name : {
         type : String,
         required : true
     },
-    phoneNumbeer : {
+    phone : {
         type : String,
         required : true
     },
@@ -22,8 +22,9 @@ const addressModel = Schema({
     locality : {
         type : String
     },
-    houseNumber : {
-        type : String
+    address : {
+        type : String,
+        required : true
     },
     state : {
         type : String,

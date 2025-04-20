@@ -11,24 +11,24 @@ router.get('/',adminAuth.isLogin,adminController.loadLogin)
 router.post('/login',adminController.login)
 
 
-router.get('/dashboard',adminAuth.isLogin,adminController.loadHome)
+router.get('/dashboard',adminAuth.checkSession,adminController.loadHome)
 
 //Products
-router.get('/products',productController.productLoad)
-router.get('/newProducts',productController.loadAddProduct)
-router.post('/addProducts',upload.any(),productController.addProduct)
-router.get('/updateProducts/:productId',productController.loadEditProducts)
-router.put('/products/:productId',upload.any(),productController.editProduct)
+router.get('/products',adminAuth.checkSession,productController.productLoad)
+router.get('/newProducts',adminAuth.checkSession,productController.loadAddProduct)
+router.post('/addProducts',adminAuth.checkSession,upload.any(),productController.addProduct)
+router.get('/updateProducts/:productId',adminAuth.checkSession,productController.loadEditProducts)
+router.put('/products/:productId',adminAuth.checkSession,upload.any(),productController.editProduct)
 
 //Category
-router.get('/categories', categoryController.categoryInfo);
-router.post('/categories',categoryController.addCategory);
-router.put('/categories',categoryController.editCategory);
-router.get('/categories/filter',categoryController.filterCategories);
+router.get('/categories',adminAuth.checkSession, categoryController.categoryInfo);
+router.post('/categories',adminAuth.checkSession,categoryController.addCategory);
+router.put('/categories',adminAuth.checkSession,categoryController.editCategory);
+router.get('/categories/filter',adminAuth.checkSession,categoryController.filterCategories);
 
 //Customers
-router.get('/customers',adminAuth.isLogin,customerController.userInfo)
-router.put('/customers',customerController.userBlock)
+router.get('/customers',adminAuth.checkSession,customerController.userInfo)
+router.put('/customers',adminAuth.checkSession,customerController.userBlock)
 router.get('/customers/filter',adminAuth.checkSession, customerController.filterCustomers);
 
 export default router;

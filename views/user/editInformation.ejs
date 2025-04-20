@@ -199,6 +199,8 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: 500;
+            margin-bottom: 20px;
+          
         }
 
         .btn-cancel {
@@ -398,6 +400,24 @@
             color: #dc3545;
         }
 
+        .file-label {
+    background-color: #4f46e5;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .file-label:hover {
+    background-color: #4338ca;
+  }
+
+  .hidden-input {
+    display: none;
+  }
+
+
         /* Responsive */
         @media (max-width: 768px) {
             .profile-container {
@@ -450,11 +470,9 @@
                                     <img src="<%= user && user.profilePic ? user.profilePic : '/images/user.png' %>" style="width: 100px; height: 100px;" alt="Profile Preview"
                                                 class="profile-pic-preview" id="profilePicPreview">
 
-                                        &nbsp;<br>
-                                    <label for="profilePic" class="profile-pic-edit">
-                                        <i class="fa-solid fa-camera"></i>
-                                    </label>
-                                    <input type="file" id="profilePic" name="profilePic" class="profile-pic-input"
+                                    <br><br>
+                                    <label for="profilePic" class="file-label">Upload Profile Picture</label>
+                                    <input type="file" id="profilePic" name="profilePic" class="profile-pic-input hidden-input
                                         accept="image/*" onchange="previewImage(event)">
                                 </div>
                             </div>

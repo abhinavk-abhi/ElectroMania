@@ -11,7 +11,7 @@
 
 
     //User Login
-    router.get('/login',userAuth.isLogin,userController.loadLogin)
+    router.get('/login',userController.loadLogin)
     router.post('/login',userController.login)
     
     //User registration
@@ -50,5 +50,6 @@
     //Address
     router.get('/address',addressController.loadAddress)
     router.post('/address',addressController.newAddress)
+    router.get('/editaddress', addressController.loadEditAddress);
 
     export default router;                      

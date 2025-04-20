@@ -82,12 +82,11 @@ const addToCart = async (req,res)=>{
 
         const cart = await Cart.findOne({ userId : userId}).populate('items.productId')
 
-        if(!cart){
+        if(cart){
+            res.render('user/cart',{ cart , user})
+        }else{
             res.render('user/cart',{cart : null , user})
         }
-
-        res.render('user/cart',{ cart , user})
-
     } catch (error) {
         console.log("Error fetching the cart :", error)
         res.status(500).json({error : "Failed to fetch the cart"})

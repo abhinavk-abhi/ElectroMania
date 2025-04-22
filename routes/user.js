@@ -15,15 +15,15 @@
     router.post('/login',userController.login)
     
     //User registration
-    router.post('/register',userAuth.isLogin,userController.registerUser)
-    router.get('/signUpOtp',userAuth.isLogin,userController.otpLoader)
+    router.post('/register',userController.registerUser)
+    router.get('/signUpOtp',userController.otpLoader)
     router.post('/verifyOtp',userController.otpVerify)
     
     //User logout
     router.get('/logout',userController.logout)
     
     //Resend otp
-    router.post('/resendOtp',userController.resendOtp)
+    router.post('/resendOtp',userAuth.isLogin,userController.resendOtp)
     
     //Forgot password and change password
     router.get('/forgotPassword',userController.loadForgotPass)
@@ -34,22 +34,22 @@
     router.post('/changePassword',userController.changePassword)
     
     // Cart
-    router.post('/addToCart',cartController.addToCart)
-    router.get('/cart',cartController.loadCart)
-    router.patch('/cart',cartController.incCartQua)
-    router.delete('/cart',cartController.removeProduct)
+    router.post('/addToCart',userAuth.isLogin,cartController.addToCart)
+    router.get('/cart',userAuth.isLogin,cartController.loadCart)
+    router.patch('/cart',userAuth.isLogin,cartController.incCartQua)
+    router.delete('/cart',userAuth.isLogin,cartController.removeProduct)
 
 
     //Profile
-    router.get('/profile',profileController.loadProfile)
-    router.get('/editProfile',profileController.editInformation)
-    router.post('/profile/emailOtp',profileController.emailOtp)
-    router.post('/userProfileOtp',profileController.otpVerify)
-    router.put('/userProfile',upload.single("profilePic"),profileController.saveEdits)
+    router.get('/profile',userAuth.isLogin,profileController.loadProfile)
+    router.get('/editProfile',userAuth.isLogin,profileController.editInformation)
+    router.post('/profile/emailOtp',userAuth.isLogin,profileController.emailOtp)
+    router.post('/userProfileOtp',userAuth.isLogin,profileController.otpVerify)
+    router.put('/userProfile',userAuth.isLogin,upload.single("profilePic"),profileController.saveEdits)
 
     //Address
-    router.get('/address',addressController.loadAddress)
-    router.post('/address',addressController.newAddress)
-    router.get('/editaddress', addressController.loadEditAddress);
+    router.get('/address',userAuth.isLogin,addressController.loadAddress)
+    router.post('/address',userAuth.isLogin,addressController.newAddress)
+    router.get('/editaddress',userAuth.isLogin,addressController.loadEditAddress);
 
     export default router;                      

@@ -457,6 +457,8 @@
             margin-bottom: 10px;
         }
 
+       
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .order-summary-wrapper {
@@ -513,6 +515,7 @@
                         </ul>
                     </div>
                     <% } else { %>
+                        <a href="/user/login" class="btn btn-outline-light">Log in </a>
                         <a href="/register" class="btn btn-outline-light">Sign Up</a>
                         <% } %>
             </div>
@@ -522,12 +525,13 @@
 
     <div class="product-details-container">
         <div class="row">
-
             <div class="cart-container">
                 <div class="row">
+                    <h2><b>Cart items</b></h2>
                     <!-- Cart Items -->
                     <div class="col-md-6">
-                        <!-- Cart Item 1 -->
+                        <!-- Cart Item -->
+                        <% if (cart && cart.items && cart.items.length> 0) { %>
                         <% cart.items.forEach((item,index)=> { %>
                             <div class="cart-item">
                                 <img src="<%= item.productImage %>" alt="<%= item.name %>">
@@ -558,18 +562,33 @@
                             </div>
                             <% }) %>
                     </div>
+                    <% } else { %>
+                        <div class="col-md-12">
+                        <div class="text-center py-5 rounded-3 div-center justify-content-center">
+                            <i class="fa-solid fa-cart-shopping fa-4x text-muted mb-4" style="font-size: 3rem;"></i>
+                            <p class="text-muted fs-4 fw-medium">Your cart is empty!</p>
+                            <a href="/shop" class="btn mt-3 px-5 py-2 text-white"
+                                style="background: linear-gradient(90deg, #6556a8, #420dd6); border-radius: 20px;">
+                                Start Shopping
+                            </a>
+                        </div>
+                    </div>
+                    <% } %>
 
-
+                    <% if (cart && cart.items && cart.items.length> 0) { %>
                     <div class="col-md-5">
                         <div class="order-summary-wrapper">
                             <div class="order-summary">
+                              
+                                <!-- Order Summary -->
+
                                 <h2 class="summary-title">Order summary</h2>
                                 <% cart.items.forEach(item=>{ %>
                                     <div class="summary-item">
                                         <span>
                                             <%= item.quantity %> x <%= item.name %>
                                         </span>
-                                        <span>₹<%=item.price%></span>
+                                        <span>₹<%=item.quantity * item.price%></span>
                                     </div>
                                    
                                     <% }) %>
@@ -579,6 +598,7 @@
                                         <p>Total</p>
                                     <% let sum = 0 %>
                                     <% cart.items.forEach(item=> { %>
+                                          <%  item.price = item.price * item.quantity %>
                                         <%  sum += item.price %>
                                         <% }) %>
                                         
@@ -590,10 +610,11 @@
                             </div>
                         </div>
                     </div>
+                    <% } %>
                 </div>
             </div>
 
-            <!-- Order Summary -->
+          
 
         </div>
     </div>

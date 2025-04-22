@@ -85,6 +85,11 @@ const addToCart = async (req,res)=>{
         if(cart){
             res.render('user/cart',{ cart , user})
         }else{
+            await Cart.findOneAndUpdate(
+                {userId},
+                {items : []},
+                {upsert : true , new : true }
+            )
             res.render('user/cart',{cart : null , user})
         }
     } catch (error) {

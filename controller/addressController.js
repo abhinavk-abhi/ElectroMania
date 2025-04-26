@@ -34,16 +34,25 @@ const loadAddress = async (req,res)=>{
     }
 }
 
+const loadAddAddress = async (req,res)=>{
+    try {
+        return res.render("user/addAddress")
+    } catch (error) {
+        console.log("addAddress error" + error)
+        return res.status(500).json({ message : "Error occured , Sorry...."})
+    }
+}
+
 const newAddress = async (req,res)=>{
     try {
-        const {userId , name , phone , pincode , locality , address , city , state , landmark , altPhone , addressType } = req.body;
-        // const userId = req.session.user?.id ?? req.session.user?._id ?? null;
+        const  { name, phone, addressLine1, addressLine2, landmark, city, state, country, altNumber, zipCode, addressType } = req.body;
+        const userId = req.session.user?.id ?? req.session.user?._id ?? null;
 
         if(!userId ){
             return res.status(400).json({ error : "UserId is required"})
         }
 
-        if(!name || !phone || !pincode || !locality || !address || !city || !state || !addressType ){
+        if(!name || !phone || !zipCode || !addressLine1 || !city || !state || !addressType ){
             return res.status(400).json({ error : "All fields are required"})
         }
 
@@ -62,13 +71,15 @@ const newAddress = async (req,res)=>{
             index: newIndex,
             addressType,
             name: name,
-            address,
+            addressLine1,
+            addressLine2,
             city,
-            landMark : landmark,
+            landmark,
             state,
-            pincode,
+            country,
+            zipCode,
             phone,
-            altPhone
+            altNumber
         });
 
         await userAddress.save();
@@ -124,8 +135,28 @@ const loadEditAddress = async (req, res) => {
     }
 };
 
+const deleteAddress = async (req,res)=>{
+    try {
+        const {userId , index} = req.query;
+        
+        const address = await Address.findOne({userId : userId})
+
+        address.details.splice(index,1)
+
+        await address.save()
+
+        return res.status(200).json({message : "Deleted successfully.!"})
+        
+    } catch (error) {
+        console.log("address delete error" + error)
+        return res.status(500).json({message : "Failed to delete address."})
+    }
+}
+
 export default {
     loadAddress,
     newAddress,
-    loadEditAddress
+    loadEditAddress,
+    loadAddAddress,
+    deleteAddress
 }

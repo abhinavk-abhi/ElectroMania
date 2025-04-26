@@ -143,9 +143,8 @@ const saveEdits = async (req,res)=>{
         const userId = req.query.id;
         let {name,email,gender,mobile} = req.body
         const user = await User.findOne({_id : userId})
-        console.log(req.body)
+        
         if(!userId || !name || ! email || !gender || !mobile ){
-            console.log("erroorrr")
             return res.status(404).json({error : "Credentials are missing"})
         }   
         if(!user){

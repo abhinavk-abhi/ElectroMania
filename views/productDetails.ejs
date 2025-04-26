@@ -871,7 +871,70 @@
         }
     })
 
+
+    addToWishlistBtn.addEventListener("click", async function (){
+        try {
+            
+        const userId = document.getElementById('userId').value;
+        const productId = document.getElementById('productdbId').value;
+        const quantity = document.getElementById('quantity').value;
+        const price = document.getElementById('salePrice').value;
+        const basePrice = document.getElementById('basePrice').value;
+
+        if(!userId){
+            Swal.fire({
+                icon : 'error',
+                text : "Please login to continue.",
+                showConfirmButton : true,
+                confirmButtonText : "Login"
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    window.location.href = '/user/login'
+                }
+            })
+        }
+
+        const productDetails = {
+            userId,
+            productId,
+            quantity,
+            price,
+            basePrice
+        }
+
+        const response = await fetch('/user/addToWishlist',{
+            method : 'POST',
+            headers : { "Content-Type" : "application/json" },
+            body : JSON.stringify(productDetails)
+        })
+
+        const data = await response.json()
+
+        if(!response.ok){
+            Swal.fire({
+                icon : "error",
+                text : data.error,
+                timer : 1500,
+                showConfirmButton : false
+            })
+
+        }else {
+            Swal.fire ({
+                position : "top-end",
+                text : data.message,
+                timer : 1500,
+                showConfirmButton : false,
+
+            })
+        }
+
+        } catch (error) {
+            console.log("Add to wishlist error" + error)
+        }
+    })
+
 })
+
     </script>
 </body>
 </html>

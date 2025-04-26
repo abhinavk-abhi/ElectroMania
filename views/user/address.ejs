@@ -186,7 +186,7 @@
     }
 
     .address-card {
-      background-color: #f8f8f8;
+      background-color: #d1d1d1b2;
       border-radius: 8px;
       padding: 20px;
       display: flex;
@@ -401,9 +401,10 @@
           <div class="header">
             <h2>Manage Addresses</h2>
             <!-- Button to trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addressModal">
-              Add Delivery Address
-            </button>
+            <a href="/user/addAddress" class="btn btn-primary"
+            style="background-color: #3735be; border-color: #483250; border-radius: 8px;">
+            Add new Address
+        </a>
           </div>
 
           <div class="address-list">
@@ -419,9 +420,10 @@
                       <%= details.phone %>
                     </div>
                     <div class="full-address">
-                      <%= details.address %>
+                      <%= details.addressLine1 %>
+                      <%= details.addressLine2 %>
                     </div>
-                    <%= details.city + ', ' + details.landmark + ' , ' + details.state + ' - ' + details.pincode  %>
+                    <%= details.city + ', ' + details.landmark + ' , ' + details.state + ' - ' + details.zipCode  %>
                   </div>
                   <span class="address-type-tag">
                     <%= details.addressType%>
@@ -441,9 +443,9 @@
                               </a>
                           </li>
                           <li>
-                              <form class="deleteAddressForm">
-                                  <input type="hidden" name="userId" class="userId" value="<%= address.userId %>">
-                                  <input type="hidden" name="index" class="index" value="<%= index %>">
+                              <form id="deleteAddressForm">
+                                  <input type="hidden" name="userId" class="userId" id="userId" value="<%= address.userId %>">
+                                  <input type="hidden" name="index" class="index" id="index" value="<%= index %>">
                                   <button type="submit" class="dropdown-item text-danger">Delete</button>
                               </form>                                          
                           </li>
@@ -462,307 +464,53 @@
           </div>
         </div>
 
-
-
-        <!-- Address Form Modal -->
-        <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content address-form-container">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="addressModalLabel">Add Delivery Address</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <form class="address-form" id="newAddress">
-                <div class="modal-body">
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="name">Name</label>
-                      <input type="text" id="name" name="name" placeholder="Enter your name" class="form-input"
-                        required>
-                    </div>
-                    <div class="errorContainer">
-                      <p class="errorText text-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="mobile">Mobile Number</label>
-                      <input type="tel" id="mobile" name="mobile" placeholder="Enter your Mobile number"
-                        class="form-input" required>
-                    </div>
-                    <div class="errorContainer">
-                      <p class="errorText text-danger"></p>
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="pincode">Pincode</label>
-                      <input type="text" id="pincode" name="pincode" placeholder="Enter your pincode" class="form-input"
-                        required>
-                    </div>
-                    <div class="errorContainer">
-                      <p class="errorText text-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="locality">Locality</label>
-                      <input type="text" id="locality" name="locality" placeholder="Enter your locality"
-                        class="form-input" required>
-                    </div>
-                    <div class="errorContainer">
-                      <p class="errorText text-danger"></p>
-                    </div>
-                  </div>
-
-                  <div class="form-group full-width">
-                    <label for="address">Address</label>
-                    <textarea id="address" name="address" placeholder="Address (area, city)" class="form-input"
-                      required></textarea>
-                  </div>
-                  <div class="errorContainer">
-                    <p class="errorText text-danger"></p>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="city">City/District/Town</label>
-                      <input type="text" id="city" name="city" placeholder="Enter your city/district/town"
-                        class="form-input" required>
-                    </div>
-                    <div class="errorContainer">
-                      <p class="errorText text-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="state">State</label>
-                      <select id="state" name="state" class="form-input" required>
-                        <option value="">--- select state ---</option>
-                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                        <option value="Andhra Pradesh">Andhra Pradesh</option>
-                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                        <option value="Assam">Assam</option>
-                        <option value="Bihar">Bihar</option>
-                        <option value="Chandigarh">Chandigarh</option>
-                        <option value="Chhattisgarh">Chhattisgarh</option>
-                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and
-                          Diu</option>
-                        <option value="Delhi">Delhi</option>
-                        <option value="Goa">Goa</option>
-                        <option value="Gujarat">Gujarat</option>
-                        <option value="Haryana">Haryana</option>
-                        <option value="Himachal Pradesh">Himachal Pradesh</option>
-                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                        <option value="Jharkhand">Jharkhand</option>
-                        <option value="Karnataka">Karnataka</option>
-                        <option value="Kerala">Kerala</option>
-                        <option value="Ladakh">Ladakh</option>
-                        <option value="Lakshadweep">Lakshadweep</option>
-                        <option value="Madhya Pradesh">Madhya Pradesh</option>
-                        <option value="Maharashtra">Maharashtra</option>
-                        <option value="Manipur">Manipur</option>
-                        <option value="Meghalaya">Meghalaya</option>
-                        <option value="Mizoram">Mizoram</option>
-                        <option value="Nagaland">Nagaland</option>
-                        <option value="Odisha">Odisha</option>
-                        <option value="Puducherry">Puducherry</option>
-                        <option value="Punjab">Punjab</option>
-                        <option value="Rajasthan">Rajasthan</option>
-                        <option value="Sikkim">Sikkim</option>
-                        <option value="Tamil Nadu">Tamil Nadu</option>
-                        <option value="Telangana">Telangana</option>
-                        <option value="Tripura">Tripura</option>
-                        <option value="Uttar Pradesh">Uttar Pradesh</option>
-                        <option value="Uttarakhand">Uttarakhand</option>
-                        <option value="West Bengal">West Bengal</option>
-                      </select>
-                    </div>
-                    <div class="errorContainer">
-                      <p class="errorText text-danger"></p>
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="landmark">Landmark</label>
-                      <input type="text" id="landmark" name="landmark" placeholder="Enter landmark (optional)"
-                        class="form-input">
-                    </div>
-                    <div class="errorContainer">
-                      <p class="errorText text-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="altPhone">Alternate phone number</l   document.addEventListener("DOMContentLoaded", () => {
-                        document.getElementById("addresses").classList.add("active");abel>
-                      <input type="tel" id="altPhone" name="altPhone" placeholder="Alternate Mobile number (optional)"
-                        class="form-input">
-                    </div>
-                    <div class="errorContainer">
-                      <p class="errorText text-danger"></p>
-                    </div>
-                  </div>
-
-                  <div class="address-type">
-                    <label class="radio-container">
-                      <input type="radio" name="addressType" value="Home" checked>
-                      <span class="radio-label">Home</span>
-                    </label>
-                    <label class="radio-container">
-                      <input type="radio" name="addressType" value="Work">
-                      <span class="radio-label">Work</span>
-                    </label>
-                  </div>
-                  <input type="hidden" value="<%= user._id %>" id="userId">
-
-                </div>
-                <div class="modal-footer form-buttons">
-                  <button type="submit" class="save-btn">Save</button>
-                  <button type="button" class="cancel-btn" data-bs-dismiss="modal">Cancel</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-
-
         <script>
           document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("addresses").classList.add("active");
+          })
 
-            document.getElementById('newAddress').addEventListener('submit', async function (e) {
+          const deleteForm = document.getElementById('deleteAddressForm')
 
-              e.preventDefault()
+          const userId = document.getElementById('userId').value 
+          const index = document.getElementById('index').value
 
-              const name = document.getElementById('name').value.trim();
-              const phone = document.getElementById('mobile').value.trim();
-              const pincode = document.getElementById('pincode').value.trim();
-              const locality = document.getElementById('locality').value.trim();
-              const address = document.getElementById('address').value.trim();
-              const city = document.getElementById('city').value.trim();
-              const state = document.getElementById('state').value;
-              const landmark = document.getElementById('landmark').value.trim();
-              const altPhone = document.getElementById('altPhone').value.trim();
-              const addressType = document.querySelector('input[name="addressType"]:checked').value;
-              const _id = document.getElementById('userId').value
+          deleteForm.addEventListener('submit', async (event)=>{
+            event.preventDefault()
 
-              const errorMessages = document.querySelectorAll(".errorText");
-              let isValid = true;
+            const result = await Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+            })
+              if (result.isConfirmed) {
 
-              // Clear previous errors
-              errorMessages.forEach(msg => msg.innerText = "");
-
-              // Name validation
-              if (!name) {
-                errorMessages[0].innerText = "Name is required.";
-                isValid = false;
-              }
-
-              // Phone validation (basic 10-digit check)
-              if (!phone) {
-                errorMessages[1].innerText = "Mobile number is required.";
-                isValid = false;
-              } else if (!/^\d{10}$/.test(phone)) {
-                errorMessages[1].innerText = "Enter a valid 10-digit mobile number.";
-                isValid = false;
-              }
-
-              // Pincode validation (6-digit number)
-              if (!pincode) {
-                errorMessages[2].innerText = "Pincode is required.";
-                isValid = false;
-              } else if (!/^\d{6}$/.test(pincode)) {
-                errorMessages[2].innerText = "Enter a valid 6-digit pincode.";
-                isValid = false;
-              }
-
-              // Locality validation
-              if (!locality) {
-                errorMessages[3].innerText = "Locality is required.";
-                isValid = false;
-              }
-
-              // Address validation
-              if (!address) {
-                errorMessages[4].innerText = "Address is required.";
-                isValid = false;
-              }
-
-              // City validation
-              if (!city) {
-                errorMessages[5].innerText = "City/District/Town is required.";
-                isValid = false;
-              }
-
-              // State validation
-              if (!state) {
-                errorMessages[6].innerText = "Please select a state.";
-                isValid = false;
-              }
-
-              // Landmark is optional — no validation
-
-              // Alternate phone is optional, but validate if entered
-              if (altPhone && !/^\d{10}$/.test(altPhone)) {
-                errorMessages[7].innerText = "Enter a valid 10-digit alternate phone number.";
-                isValid = false;
-              }
-
-              // Address type radio validation
-              if (!addressType) {
-                errorMessages[8].innerText = "Please select address type.";
-                isValid = false;
-              }
-
-              // Final decision
-              if (!isValid) {
-                event.preventDefault(); // Prevent form submission if there are errors
-              }
-
-
-              const formData = {
-                userId : _id,
-                name: name,
-                phone: phone,
-                pincode: pincode,
-                locality: locality,
-                address: address,
-                city: city,
-                state: state,
-                landmark: landmark,
-                altPhone: altPhone,
-                addressType: addressType
-              }
-
-              try {
-
-                const response = await fetch('/user/address', {
-                  method: "POST",
-                  headers : { "Content-Type" : "application/json" },
-                  body: JSON.stringify(formData)
+                const response = await fetch(`/user/address?userId=${userId}&index=${index}`,{
+                  method : 'DELETE'
                 })
 
-                const data = await response.json()
-
-                if (!response.ok) {
+                if(!response.ok){
                   Swal.fire({
-                    icon: "warning",
-                    text: data.error || "Failed to add address",
-                    timer: 2000,
-                    showConfirmButton: false
+                    icon : 'error',
+                    text : "Failed to delete the address",
+                    timer : 1500,
+                    showConfirmButton : false
                   })
                 } else {
                   Swal.fire({
-                    icon: "success",
-                    text: data.message || "Address added successfully.",
-                    timer: 2000,
-                    showConfirmButton: false
-                  })
+                  title: "Deleted!",
+                  text: "Deleted successfully!.",
+                  icon: "success",
+                  showConfirmButton : false,
+                  timer : 1500
+                }).then(()=>{
+                  window.location.reload()
+                });
                 }
-
-              } catch (error) {
-                console.log(error)
-              }
-
-            });
-
-
+                
+              }         
           })
         </script>

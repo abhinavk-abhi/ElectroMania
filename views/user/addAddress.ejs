@@ -109,20 +109,20 @@
     <main class="container mt-5 col-md-10">
         <div class="row g-5">
 
-            <!-- Edit Address Form -->
+            <!-- Add New Address Form -->
             <div class="col-md-12">
                 <div class="py-3 px-5 h-100" style="border-radius: 12px; background-color: #e0d5d5;">
-                    <h4 class="mb-4" style="color: #000000;">Edit Address</h4>
+                    <h4 class="mb-4" style="color: #000000;">Add New Address</h4>
                     <form id="addAddressForm">
                         <div class="form-group-pair">
                             <div class="mb-3">
                                 <label for="name" class="form-label required" style="color: #000000;">Name</label>
-                                <input type="text" id="name" name="name" class="form-control form-control-sm" placeholder="Enter your full name" value="<%= address.name %>">
+                                <input type="text" id="name" name="name" class="form-control form-control-sm" placeholder="Enter your full name">
                                 <div id="nameError" style="font-size: 0.8em; color: #ff0101;"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label required" style="color: #000000;">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" class="form-control form-control-sm" placeholder="e.g. 9876543210" pattern="[0-9]{10}" value="<%= address.phone %>">
+                                <input type="tel" id="phone" name="phone" class="form-control form-control-sm" placeholder="e.g. 9876543210" pattern="[0-9]{10}">
                                 <div id="phoneError" style="font-size: 0.8em; color: #ff0101;"></div>
                             </div>
                         </div>
@@ -130,23 +130,23 @@
                         <div class="form-group-pair">
                             <div class="mb-3">
                                 <label for="addressLine1" class="form-label required" style="color: #000000;">Address Line 1</label>
-                                <input type="text" id="addressLine1" name="addressLine1" class="form-control form-control-sm" placeholder="House No., Street Name" value="<%= address.addressLine1 %>">
+                                <input type="text" id="addressLine1" name="addressLine1" class="form-control form-control-sm" placeholder="House No., Street Name">
                                 <div id="addressLine1Error" style="font-size: 0.8em; color: #ff0101;"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="addressLine2" class="form-label" style="color: #000000;">Address Line 2 (Optional)</label>
-                                <input type="text" id="addressLine2" name="addressLine2" class="form-control form-control-sm" placeholder="Apartment, Floor" value="<%= address.addressLine2 %>">
+                                <input type="text" id="addressLine2" name="addressLine2" class="form-control form-control-sm" placeholder="Apartment, Floor">
                             </div>
                         </div>
 
                         <div class="form-group-pair">
                             <div class="mb-3">
                                 <label for="landmark" class="form-label" style="color: #000000;">Landmark (Optional)</label>
-                                <input type="text" id="landmark" name="landmark" class="form-control form-control-sm" placeholder="e.g., Near XYZ School" value="<%= address.landmark %>">
+                                <input type="text" id="landmark" name="landmark" class="form-control form-control-sm" placeholder="e.g., Near XYZ School">
                             </div>
                             <div class="mb-3">
                                 <label for="city" class="form-label required" style="color: #000000;">City</label>
-                                <input type="text" id="city" name="city" class="form-control form-control-sm" placeholder="Enter your city" value="<%= address.city %>">
+                                <input type="text" id="city" name="city" class="form-control form-control-sm" placeholder="Enter your city">
                                 <div id="cityError" style="font-size: 0.8em; color: #ff0101;"></div>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                             <div class="mb-5">
                                 <label for="state" class="form-label required" style="color: #000000;">State</label>
                                 <select id="state" name="state" class="form-select form-control form-control-sm">
-                                    <option value="<%= address.state %>"  selected><%= address.state %></option>
+                                    <option value="" disabled selected>Select your state</option>
                                     <option value="Andhra Pradesh">Andhra Pradesh</option>
                                     <option value="Arunachal Pradesh">Arunachal Pradesh</option>
                                     <option value="Assam">Assam</option>
@@ -189,7 +189,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="zipCode" class="form-label required" style="color: #000000;">Zip Code</label>
-                                <input type="text" id="zipCode" name="zipCode" class="form-control form-control-sm" placeholder="e.g. 123456" value="<%= address.zipCode %>">
+                                <input type="text" id="zipCode" name="zipCode" class="form-control form-control-sm" placeholder="e.g. 123456">
                                 <div id="zipCodeError" style="font-size: 0.8em; color: #ff0101;"></div>
                             </div>
                         </div>
@@ -204,22 +204,20 @@
                             </div>
                             <div class="mb-3">
                                 <label for="altNumber" class="form-label" style="color: #000000;">Alternate Phone Number (Optional)</label>
-                                <input type="tel" id="altNumber" name="altNumber" class="form-control form-control-sm" placeholder="e.g., 9876543210" value="<%= address.altNumber %>">
+                                <input type="tel" id="altNumber" name="altNumber" class="form-control form-control-sm" placeholder="e.g., 9876543210">
                             </div>
                         </div>
 
-                        <div class="d-flex gap-4">
-                          <div class="form-check">
-                              <input class="form-check-input" type="radio" name="addressType" id="addressHome" value="Home" 
-                                  <%= address.addressType === 'Home' ? 'checked' : '' %> >
+                        <div class="d-flex  gap-4">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="addressType" id="addressHome" value="Home">
                               <label class="form-check-label" for="addressHome" style="color: #000000;">Home</label>
-                          </div>
-                          <div class="form-check">
-                              <input class="form-check-input" style="color: #000000;" type="radio" name="addressType" id="addressWork" value="Work" 
-                                  <%= address.addressType === 'Work' ? 'checked' : '' %> >
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" style="color: #000000;" type="radio" name="addressType" id="addressWork" value="Work">
                               <label class="form-check-label" for="addressWork" style="color: #000000;">Work</label>
+                            </div>
                           </div>
-                      </div>
                           <div id="addressTypeError" style="font-size: 0.8em; color: #ff0101;"></div>
                           
                         <div class="d-flex justify-content-between align-items-center mt-2">

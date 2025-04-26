@@ -108,8 +108,8 @@
 </style>
 
 <div class="user-profile">
-    <div class="user-avatar">
-        <img src="/images/user-avatar.jpg" alt="User Avatar">
+    <div class="user-avatar mt-4">
+        <img src="<%= locals.user ? user.profilePic : '' %>" alt="User Avatar">
     </div>
     <div class="username">
         Hello <span><%= locals.user ? user.name : 'Abhinav' %></span>

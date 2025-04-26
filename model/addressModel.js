@@ -16,16 +16,20 @@ const addressModel = Schema({
             type : String,
             required : true
         },
-        pincode : {
+        zipCode : {
             type : String,
             required : true
         },
         locality : {
             type : String
         },
-        address : {
+        addressLine1 : {
             type : String,
             required : true
+        },
+        addressLine2 : {
+            type : String,
+            required : false
         },
         state : {
             type : String,
@@ -35,18 +39,23 @@ const addressModel = Schema({
             type : String,
             required : true
         },
-        landMark : {
+        landmark : {
             type : String,
-            required : true
+            required : false
         },
-        altPhone : {
+        altNumber : {
             type : String,
-            required : true
+            required : false
         },
         addressType : {
             type : String,
             required : true,
-        }
+        },
+        country : {
+            type : String,
+            default : "India",
+        },
+
     }]
 },{timestamps : true})
 

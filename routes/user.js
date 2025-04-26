@@ -8,6 +8,7 @@
     import profileController from '../controller/profileController.js';
     import upload from '../middleware/imageUpload.js'
     import addressController from '../controller/addressController.js';
+    import wishlistController from "../controller/wishlistController.js"
 
 
     //User Login
@@ -39,6 +40,8 @@
     router.patch('/cart',userAuth.isLogin,cartController.incCartQua)
     router.delete('/cart',userAuth.isLogin,cartController.removeProduct)
 
+    //Wishlist
+    router.post('/addToWishlist',userAuth.isLogin,wishlistController.addToWishlist)
 
     //Profile
     router.get('/profile',userAuth.isLogin,profileController.loadProfile)
@@ -49,7 +52,9 @@
 
     //Address
     router.get('/address',userAuth.isLogin,addressController.loadAddress)
+    router.get('/addAddress',userAuth.isLogin,addressController.loadAddAddress)
     router.post('/address',userAuth.isLogin,addressController.newAddress)
     router.get('/editaddress',userAuth.isLogin,addressController.loadEditAddress);
+    router.delete('/address',userAuth.isLogin,addressController.deleteAddress)
 
     export default router;                      

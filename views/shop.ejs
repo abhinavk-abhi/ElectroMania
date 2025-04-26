@@ -586,6 +586,7 @@
                         </ul>
                     </div>
                 <% } else { %>
+                    <a href="/user/login" class="btn btn-outline-light">Log in</a>
                     <a href="/register" class="btn btn-outline-light">Sign Up</a>
                 <% } %>
             </div>
@@ -835,6 +836,7 @@
         const quantity = document.getElementById('quantity').value;
         const price = document.getElementById('salePrice').value;
         const basePrice = document.getElementById('basePrice').value;
+        console.log(userId + productId + quantity + price + basePrice)
 
         if(!userId){
             Swal.fire({

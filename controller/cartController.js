@@ -1,6 +1,7 @@
 import Products from '../model/productModel.js'
 import User from '../model/userModel.js'
 import Cart from '../model/cartModel.js'
+import Wishlist from  '../model/wishlistModel.js'
 
 const addToCart = async (req,res)=>{
     try {
@@ -21,13 +22,17 @@ const addToCart = async (req,res)=>{
     }
 
     const user = await User.findOne({_id : userId})
-  
 
     let availableStock = product.stock;
 
     if(quantity > availableStock){
         return res.status(400).json({error : `Only ${availableStock} units of ${product.name} available in stock`})
     }
+
+    const wishlist = await Wishlist.findOneAndDelete(
+        {userId : userId},
+        { $pull : {products : productId }}
+    )
 
     const item = {
         name : product.name,

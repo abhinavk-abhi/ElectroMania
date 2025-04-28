@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist - ElectroMania</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #192430;
+      min-height: 100vh;
+      /* Remove flex display from body */
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .wishlist-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      width: 100%;
+      max-width: 1200px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e0e0e0;
+    }
+
+    .wishlist-header {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #192430;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* Always 4 columns */
+      gap: 20px;
+    }
+
+    .product-card {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      border: 1px solid #e0e0e0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      max-width: 280px;
+      width: 100%;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .heart-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px; /* Changed from left to right */
+      color: #ff4444;
+      font-size: 20px;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: #192430;
+      /* Add ellipsis for long names */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rating {
+      color: #ffca08;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .price {
+      font-size: 14px;
+      color: #666;
+      text-decoration: line-through;
+      margin-bottom: 5px;
+    }
+
+    .discounted-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: #192430;
+      margin-bottom: 10px;
+    }
+
+    .cart-btn {
+      background-color: #3b6da1;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      width: 100%;
+    }
+
+    .cart-btn:hover {
+      background-color: #2d5480;
+    }
+    
+    .empty-wishlist {
+      grid-column: span 4;
+      text-align: center;
+      padding: 40px 0;
+      font-size: 16px;
+      color: #666;
+    }
+    
+    /* Media queries for responsiveness */
+    @media (max-width: 1100px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .empty-wishlist {
+        grid-column: span 3;
+      }
+    }
+    
+    @media (max-width: 800px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .empty-wishlist {
+        grid-column: span 2;
+      }
+    }
+    
+    @media (max-width: 500px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+      .empty-wishlist {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <%- include ('../partials/header') %>
+  <div class="main-content">
+    <div class="wishlist-container">
+      <h2 class="wishlist-header">Wishlist</h2>
+      <div class="product-grid">
+          <% if(wishlist && wishlist.products && wishlist.products.length > 0) { %>
+              <% wishlist.products.forEach(product => { %>
+                  <div class="product-card">
+                      <span class="heart-icon">♥</span>
+                      <img src="<%= product.images[0] %>" alt="<%= product.name %>">
+                      <div class="product-name"><%= product.name %></div>
+                      <!-- <div class="rating">★★★★☆ (<%= product.reviewCount %>)</div> -->
+                      <div class="price">₹<%= product.price %></div>
+                      <% if(product.productOffer && product.productOffer > 0) { %>
+                          <div class="discounted-price">₹<%= product.price - (product.price * product.productOffer / 100) %></div>
+                      <% } else { %>
+                          <div class="discounted-price">₹<%= product.price %></div>
+                      <% } %>
+                      <button class="cart-btn">Add to Cart</button>
+                  </div>
+              <% }); %>
+          <% } else { %>
+              <div class="empty-wishlist">Your wishlist is empty.</div>
+          <% } %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

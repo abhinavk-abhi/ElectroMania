@@ -41,6 +41,7 @@
     router.delete('/cart',userAuth.isLogin,cartController.removeProduct)
 
     //Wishlist
+    router.get('/wishlist',userAuth.isLogin,wishlistController.loadWishlist)
     router.post('/addToWishlist',userAuth.isLogin,wishlistController.addToWishlist)
 
     //Profile

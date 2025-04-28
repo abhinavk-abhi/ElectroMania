@@ -365,65 +365,12 @@
 <body>
     <!-- Include the Navbar -->
     <%- include('../partials/header') %>
+   
 
     <div class="profile-container">
         <!-- Sidebar remains as is -->
         <aside class="sidebar">
-            <!-- User Profile Header -->
-            <div class="user-profile">
-                <div class="user-avatar">
-                    <img src="/images/user-avatar.jpg" alt="User Avatar">
-                </div>
-                <div class="username">
-                    Hello <span><%= locals.user ? user.name : 'Abhinav' %></span>
-                </div>
-            </div>
-            
-            <!-- Navigation Menu -->
-            <ul class="nav-menu">
-                <li class="nav-item active">
-                    <a href="/user/profile">
-                        <i class="fas fa-user"></i>
-                        <span>Profile Information</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="/user/orders">
-                        <i class="fas fa-shopping-bag"></i>
-                        <span>My orders</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="/user/address">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Manage Addresses</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="/user/coupons">
-                        <i class="fas fa-tag"></i>
-                        <span>My Coupons</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="/user/reviews">
-                        <i class="fas fa-star"></i>
-                        <span>My reviews & ratings</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/user/wallet">
-                        <i class="fas fa-wallet"></i>
-                        <span>My Wallet</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/user/logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Log out</span>
-                    </a>
-                </li>
-            </ul>
+            <%- include('../partials/profileSidebar') %>
         </aside>
 
         <!-- Main content area -->
@@ -479,6 +426,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", ()=>{
+            document.getElementById('profileSection').classList.add('active')
+        })
+
         const editProfileBtn = document.getElementById('editProfileButton');
         const userId = document.getElementById('userId').value;
 

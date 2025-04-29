@@ -8,7 +8,8 @@
     import profileController from '../controller/profileController.js';
     import upload from '../middleware/imageUpload.js'
     import addressController from '../controller/addressController.js';
-    import wishlistController from "../controller/wishlistController.js"
+    import wishlistController from "../controller/wishlistController.js";
+    import checkOutController from '../controller/checkOutController.js';
 
 
     //User Login
@@ -57,5 +58,12 @@
     router.post('/address',userAuth.isLogin,addressController.newAddress)
     router.get('/editaddress',userAuth.isLogin,addressController.loadEditAddress);
     router.delete('/address',userAuth.isLogin,addressController.deleteAddress)
+    router.get('/checkOutAddress',userAuth.isLogin,addressController.addCheckOutAddress)
+    router.post('/checkOutAddress',userAuth.isLogin,addressController.saveCheckOutAddress)
+
+
+    //Checkout
+    router.get('/checkout',userAuth.isLogin,checkOutController.loadCheckOut)
+    router.post('/placeOrder',userAuth.isLogin,checkOutController.placeOrder)
 
     export default router;                      

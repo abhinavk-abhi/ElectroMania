@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 const {Schema} = mongoose;
-import uuidv4 from "uuid";
-const {v4:uuidv4} = uuidv4;
+
 
 const orderModel = new Schema({
     orderId : {
         type : String,
-        default : ()=>uuidv4(),
         unique : true,
         required : true
     }, 
@@ -14,7 +12,7 @@ const orderModel = new Schema({
 
     productId : {
         type : Schema.Types.ObjectId,
-        ref : "products",
+        ref : "product",
         required : true
     },
     quantity : {
@@ -44,7 +42,7 @@ const orderModel = new Schema({
     },
     shippingAddress : {
         type : Schema.Types.ObjectId,
-        ref : "addresses",
+        ref : "addresse",
         required : true
     },
     invoiceDate : {
@@ -68,4 +66,4 @@ const orderModel = new Schema({
    
 },{timestamps : true})
 
-export default mongoose.module("Order",orderModel)
+export default mongoose.model("Order",orderModel)

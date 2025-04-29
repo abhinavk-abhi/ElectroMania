@@ -125,7 +125,8 @@
         }
 
         .item-title {
-            font-weight: 600;
+            font-weight: 400;
+            font-size: medium;
             color: #2d3748;
         }
 
@@ -388,17 +389,16 @@
                                 </div>
                             <% }) %>
                             
-                            <div class="summary-item">
-                                <span>Delivery</span>
-                                <span>₹0</span>
-                            </div>
                             
                             <div class="summary-item total">
                                 <span>Total</span>
                                 <span>₹<%= cart.items.reduce((total, item) => total + (item.price * item.quantity), 0) %></span>
                             </div>
                             
-                            <button class="continue-btn">
+                            <button id="checkOutBtn"
+                            data-cart-id="<%= cart._id %>" 
+                            data-user-id="<%= cart.userId %>"
+                            class="continue-btn">
                                 <i class="fas fa-credit-card me-2"></i> Proceed to Checkout
                             </button>
                         </div>
@@ -449,6 +449,16 @@
     <script>
         // Add animation to empty cart icon
         document.addEventListener('DOMContentLoaded', function() {
+
+
+            const checkOutBtn = document.getElementById('checkOutBtn')
+
+            checkOutBtn.addEventListener("click",async()=>{
+                const cartId = checkOutBtn.getAttribute('data-cart-id')
+                const userId = checkOutBtn.getAttribute('data-user-id')
+                window.location.href = `/user/checkout?cartId=${cartId}&userId=${userId}`
+            })
+
             const emptyCartIcon = document.querySelector('.empty-cart-icon');
             if (emptyCartIcon) {
                 emptyCartIcon.style.transform = 'scale(0.8)';
@@ -551,7 +561,8 @@
                     }
                 })
             })
-        
+
+           
         
         });
     </script>

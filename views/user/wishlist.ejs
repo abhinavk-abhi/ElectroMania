@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wishlist - ElectroMania</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Add Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Add Font Awesome for icons if it's not already in your header -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     * {
       margin: 0;
@@ -17,7 +22,6 @@
       background-color: #f5f7fa;
       color: #192430;
       min-height: 100vh;
-      /* Remove flex display from body */
     }
 
     .main-content {
@@ -167,7 +171,8 @@
   </style>
 </head>
 <body>
-  <%- include ('../partials/header') %>
+  <%- include('../partials/header') %>
+  
   <div class="main-content">
     <div class="wishlist-container">
       <h2 class="wishlist-header">Wishlist</h2>
@@ -175,7 +180,6 @@
           <% if(wishlist && wishlist.products && wishlist.products.length > 0) { %>
               <% wishlist.products.forEach(product => { %>
                   <div class="product-card">
-                      <span class="heart-icon">♥</span>
                       <img src="<%= product.images[0] %>" alt="<%= product.name %>">
                       <div class="product-name"><%= product.name %></div>
                       <!-- <div class="rating">★★★★☆ (<%= product.reviewCount %>)</div> -->
@@ -185,7 +189,13 @@
                       <% } else { %>
                           <div class="discounted-price">₹<%= product.price %></div>
                       <% } %>
-                      <button class="cart-btn">Add to Cart</button>
+                      <button class="cart-btn addtocartBtn" 
+                             data-product-id="<%= product._id %>" 
+                             data-price="<%= product.productOffer && product.productOffer > 0 ? product.price - (product.price * product.productOffer / 100) : product.price %>"
+                             data-base-price="<%= product.price %>"
+                             data-userId = "<%= user._id%>">
+                          Add to Cart
+                      </button>
                   </div>
               <% }); %>
           <% } else { %>
@@ -194,5 +204,93 @@
       </div>
     </div>
   </div>
+
+  <!-- Add Bootstrap and Popper JS for dropdown functionality -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+  <script>
+    // Fixed Add to Cart functionality
+    document.querySelectorAll('.addtocartBtn').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const userId = button.getAttribute('data-userId')
+
+            // Check if user is logged in
+             if (!userId) { 
+                Swal.fire({
+                    icon: 'error',
+                    text: "Please login to continue.",
+                    showConfirmButton: true,
+                    confirmButtonText: "Login"
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        window.location.href = '/user/login'
+                    }
+                });
+                return;
+            }
+
+            const productId = button.getAttribute('data-product-id');
+            const price = button.getAttribute('data-price');
+            const basePrice = button.getAttribute('data-base-price');
+         
+            const quantity = 1; // Default quantity
+
+            const productDetails = {
+                userId,
+                productId,
+                quantity,
+                price,
+                basePrice
+            }
+
+            console.log(productDetails);
+
+            try {
+                const response = await fetch('/user/addToCart', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify(productDetails)
+                });
+
+                const data = await response.json();
+                console.log(data);
+                
+                if(!response.ok){
+                    Swal.fire({
+                        icon: 'warning',
+                        text: data.error,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'Added to cart successfully',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Go to Cart',
+                        showCancelButton : true
+                    }).then((result) => {
+                        if(result.isConfirmed) {
+                            window.location.href = '/user/cart'
+                        }else {
+                          window.location.reload()
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+                Swal.fire({
+                    icon: 'warning',
+                    text: 'An error occurred',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+        });
+    });
+  </script>
 </body>
 </html>

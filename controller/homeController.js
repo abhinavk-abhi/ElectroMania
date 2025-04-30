@@ -3,6 +3,7 @@ import Product from '../model/productModel.js'
 import Category from '../model/categoryModel.js'
 
 
+
 const loadHome = async (req,res)=>{
     try {
         const user = req.session.user;

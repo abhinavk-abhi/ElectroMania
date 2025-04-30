@@ -8,6 +8,14 @@ const orderModel = new Schema({
         unique : true,
         required : true
     }, 
+
+    userId : {
+        type : Schema.Types.ObjectId,
+        ref : "user",
+        required : true
+    },
+
+
     orderItems : [{
 
     productId : {
@@ -24,45 +32,56 @@ const orderModel = new Schema({
         required : true
     }
     }],
+
+
     totalAmount : {
         type : Number,
         required : true
     },
+
     couponApplied : {
         type : Boolean,
-        required : true
+        required : false
     },
+
     discount : {
         type : Number,
         default : 0
     },
+
     finalAmount : {
         type : Number,
         required : true
     },
+
     shippingAddress : {
-        type : Schema.Types.ObjectId,
-        ref : "addresse",
+        type : Object,
         required : true
     },
+
     invoiceDate : {
         type : Date
     },
+
     deliveryStatus : {
         type : String,
-        required : true,
+        default : "Pending",
         enum : ["Pending","Processing","Shipped", "Delivered", "Cancelled","Return Request", "Returned"]
     },
-    customerId : {
-        type : Schema.Types.ObjectId,
-        ref : "user",
-        required : true
+
+    
+    paymentStatus : {
+        type : String,
+        default :  "Pending",
+        enum : ["Paid" , "Pending" , "Failed" , "Refunded"]
     },
-    paymentId : {
-        type : Schema.Types.ObjectId,
-        ref : "payments",
-        required : true
+
+    PaymentMethod : {
+        type : String,
+        enum : ["COD" ,"RAZORPAY" , "PAYPAL" , "WALLET" ]
     }
+    
+  
    
 },{timestamps : true})
 

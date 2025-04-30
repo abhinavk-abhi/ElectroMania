@@ -29,7 +29,7 @@ const addToCart = async (req,res)=>{
         return res.status(400).json({error : `Only ${availableStock} units of ${product.name} available in stock`})
     }
 
-    const wishlist = await Wishlist.findOneAndDelete(
+    const wishlist = await Wishlist.findOneAndUpdate(
         {userId : userId},
         { $pull : {products : productId }}
     )

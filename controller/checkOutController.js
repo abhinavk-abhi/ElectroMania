@@ -3,6 +3,7 @@ import Cart from '../model/cartModel.js'
 import Address from '../model/addressModel.js'
 import Order from '../model/orderModel.js'
 import Coupon from  '../model/couponModel.js'
+import Product from '../model/productModel.js'
 import {nanoid} from 'nanoid'
 
 
@@ -50,13 +51,82 @@ const placeOrder = async (req,res)=>{
         console.log(req.body)
 
         const user = await User.findOne({_id:userId})
-        const cart = await Cart.findOne({userId})
+        if(!user){
+            return res.status(400).json({error : "User not found."})
+        }
+        const cart = await Cart.findOne({userId});
+        if(!cart){
+            return res.status(400).json({error : "User cart not found."})
+        }
         const address = await Address.findOne({_id : addressId})
+        if(!address){
+            return res.status(400).json({error : "User address not found"})
+        }
         const selectedAddress = address.details[addressDetailIndex]
-      
+        if(!selectedAddress){
+            return res.status(400).json({error : "Selected address not found"})
+        }
+
+        let totalAmount = 0;
+        for(let item of cart.items){
+            totalAmount += (item.price * item.quantity)
+        }
+
+        for (let item of cart.items){
+             await Product.findOneAndUpdate({_id : item.productId},
+                {$inc : {stock : -item.quantity}}
+            )
+        }
+
+
+        const generateOrderId = () => {
+            return `ORD-${nanoid(10)}`;
+          };
+
+    const orderId = await generateOrderId()
+
+    const newOrder = new Order ({
+        orderId,
+        userId,
+        orderItems : cart.items.map(item=>{
+            return {
+                productId : item.productId,
+                quantity : item.quantity,
+                price : item.price
+            }
+        }),
+        totalAmount,
+        finalAmount : totalAmount,
+        shippingAddress : selectedAddress,
+        invoiceDate: Date.now(),
+        paymentStatus : paymentMethod === "COD" ? "Pending" : "Paid",
+        paymentMethod : paymentMethod
+
+    });
+
+    await newOrder.save();
+
+    console.log("order created");
+
+
+    cart.items = [];
+    await cart.save();
+    console.log("cart cleared")
+
+
+    res.status(201).json({
+        
+        message: "Order placed successfully",
+        orderId : orderId,
+        success : true
+    });
+
+
+        
 
     } catch (error) {
-        
+        console.log("placeOrder error => "+error)
+        res.status(500).json({error : "Internal server error."})
     }
 }
 

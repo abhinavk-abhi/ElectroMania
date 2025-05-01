@@ -11,7 +11,7 @@ const orderModel = new Schema({
 
     userId : {
         type : Schema.Types.ObjectId,
-        ref : "user",
+        ref : "User",
         required : true
     },
 
@@ -30,9 +30,13 @@ const orderModel = new Schema({
     price : {
         type : Number,
         required : true
-    }
+    },
+    deliveryStatus : {
+        type : String,
+        default : "Pending",
+        enum : ["Pending","Processing","Shipped", "Delivered", "Cancelled","Return Request", "Returned"]
+    },
     }],
-
 
     totalAmount : {
         type : Number,
@@ -63,26 +67,18 @@ const orderModel = new Schema({
         type : Date
     },
 
-    deliveryStatus : {
-        type : String,
-        default : "Pending",
-        enum : ["Pending","Processing","Shipped", "Delivered", "Cancelled","Return Request", "Returned"]
-    },
-
-    
     paymentStatus : {
         type : String,
         default :  "Pending",
         enum : ["Paid" , "Pending" , "Failed" , "Refunded"]
     },
 
-    PaymentMethod : {
+    paymentMethod : {
         type : String,
         enum : ["COD" ,"RAZORPAY" , "PAYPAL" , "WALLET" ]
     }
     
   
-   
 },{timestamps : true})
 
 export default mongoose.model("Order",orderModel)

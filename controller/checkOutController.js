@@ -4,7 +4,8 @@ import Address from '../model/addressModel.js'
 import Order from '../model/orderModel.js'
 import Coupon from  '../model/couponModel.js'
 import Product from '../model/productModel.js'
-import {nanoid} from 'nanoid'
+import { customAlphabet } from 'nanoid';
+
 
 
 const loadCheckOut = async (req,res)=>{
@@ -80,8 +81,11 @@ const placeOrder = async (req,res)=>{
 
 
         const generateOrderId = () => {
-            return `ORD-${nanoid(10)}`;
+          
+            const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
+            return `ORD-${nanoid()}`;
           };
+          
 
     const orderId = await generateOrderId()
 
@@ -100,7 +104,7 @@ const placeOrder = async (req,res)=>{
         shippingAddress : selectedAddress,
         invoiceDate: Date.now(),
         paymentStatus : paymentMethod === "COD" ? "Pending" : "Paid",
-        paymentMethod : paymentMethod
+        paymentMethod
 
     });
 
@@ -121,16 +125,27 @@ const placeOrder = async (req,res)=>{
         success : true
     });
 
-
-        
-
     } catch (error) {
         console.log("placeOrder error => "+error)
         res.status(500).json({error : "Internal server error."})
     }
 }
 
+const orderSuccess = async (req,res)=>{
+    try {
+        const orderId = req.query;
+        const user =  req.session.user || req.user 
+        res.render('user/orderSuccess',{
+            orderId : orderId,
+            user : user
+        })
+    } catch (error) {
+        console.log("loading successPage error=> " + error)
+    }
+}
+
 export default {
     loadCheckOut,
-    placeOrder
+    placeOrder,
+    orderSuccess
 }

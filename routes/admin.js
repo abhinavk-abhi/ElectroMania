@@ -6,6 +6,7 @@ import customerController from '../controller/admin/customerController.js'
 import productController from '../controller/admin/productController.js';
 import categoryController from '../controller/admin/categoryController.js';
 import upload from '../middleware/imageUpload.js';
+import adminOrder from '../controller/admin/adminOrders.js';
 
 router.get('/',adminAuth.isLogin,adminController.loadLogin)
 router.post('/login',adminController.login)
@@ -30,5 +31,10 @@ router.get('/categories/filter',adminAuth.checkSession,categoryController.filter
 router.get('/customers',adminAuth.checkSession,customerController.userInfo)
 router.put('/customers',adminAuth.checkSession,customerController.userBlock)
 router.get('/customers/filter',adminAuth.checkSession, customerController.filterCustomers);
+
+
+//Orders
+router.get('/orders',adminAuth.checkSession,adminOrder.loadOrder)
+
 
 export default router;

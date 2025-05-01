@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - ElectroMania</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Main layout container */
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Sidebar container */
+        .sidebar-container {
+            width: 250px;
+            min-width: 250px;
+            background-color: white;
+            border-right: 1px solid #eee;
+        }
+        
+        /* Content container */
+        .content-container {
+            flex-grow: 1;
+            padding: 40px 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .order-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .order-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .order-info {
+            display: flex;
+            gap: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .view-btn {
+            background-color: #6B46C1;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .view-btn:hover {
+            background-color: #5a3ca9;
+            box-shadow: 0 2px 8px rgba(107, 70, 193, 0.3);
+        }
+        
+        .order-items {
+            padding: 0;
+        }
+        
+        .order-item {
+            display: flex;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .item-name:hover {
+            color: #6B46C1;
+        }
+        
+        .item-variant {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .item-price {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .item-status {
+            text-align: right;
+            min-width: 120px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .status-pending {
+            background-color: #FFF3CD;
+            color: #856404;
+        }
+        
+        .status-processing {
+            background-color: #D1ECF1;
+            color: #0C5460;
+        }
+        
+        .status-shipped {
+            background-color: #D4EDDA;
+            color: #155724;
+        }
+        
+        .status-delivered {
+            background-color: #C3E6CB;
+            color: #155724;
+        }
+        
+        .status-cancelled {
+            background-color: #F8D7DA;
+            color: #721C24;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        
+        .total-amount {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .total-amount span {
+            font-weight: 700;
+            color: #6B46C1;
+        }
+        
+        .no-orders {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        /* Navbar styles from your header */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            height: 50px;
+            text-decoration: none;
+        }
+
+        .dropdown-toggle i {
+            margin-right: 8px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: rgb(156, 132, 132);
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid #1d1b1b;
+            border-radius: 4px;
+            z-index: 1000;
+            margin-top: 5px;
+            padding: 5px 0;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgb(156, 132, 132);
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .navbar {
+            z-index: 1001;
+            background: #4b449788;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: 80px;
+            box-sizing: border-box;
+            position: relative;
+            top: 0;
+            width: 100%;
+        }
+
+        .brand-name {
+            font-family: 'Bellefair', serif;
+            font-size: 45px;
+            font-weight: normal;
+            text-decoration: none;
+            color: black;
+            line-height: 1;
+            margin-right: 30px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-top: 5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+            margin: 0 10px;
+            height: 100%;
+            position: relative;
+            padding-top: 5px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 50px;
+            padding: 0 10px;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            height: 100%;
+            position: relative;
+            padding-top: 5px;
+        }
+
+        .nav-right a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            height: 50px;
+            margin: 0 0px;
+        }
+
+        .nav-right .dropdown-toggle {
+            text-decoration: none;
+        }
+        
+        /* Additional style for "Placed" badge */
+        .status-badge.placed {
+            background-color: #FDF8E2;
+            color: #C29E34;
+        }
+        
+        /* Status badges for all order statuses */
+        .status-badge.Return-Request {
+            background-color: #E2E3E5;
+            color: #41464b;
+        }
+        
+        .status-badge.Returned {
+            background-color: #CFF4FC;
+            color: #055160;
+        }
+        
+        /* Mobile sidebar toggle */
+        .sidebar-toggle {
+            display: none;
+            background-color: #6B46C1;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar-container {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                display: none; /* Hide by default on mobile */
+            }
+            
+            .sidebar-container.active {
+                display: block;
+            }
+            
+            .sidebar-toggle {
+                display: block;
+            }
+            
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .order-info {
+                margin-top: 10px;
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .view-btn {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+            
+            .order-item {
+                flex-direction: column;
+            }
+            
+            .item-status {
+                text-align: left;
+                margin-top: 10px;
+            }
+        }
+        
+        /* Active sidebar tab styling */
+        .nav-item.active {
+            background-color: #f0f0f0;
+            border-left: 3px solid #6B46C1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Include the header partial -->
+    <%- include('../partials/header') %>
+    
+    <!-- Main content container with sidebar -->
+    <div class="main-container">
+        <!-- Mobile sidebar toggle button -->
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i> Menu
+        </button>
+        
+        <!-- Sidebar container -->
+        <div class="sidebar-container" id="sidebarContainer">
+            <%- include('../partials/profileSidebar') %>
+        </div>
+        
+        <!-- Content container -->
+        <div class="content-container">
+            <h1 class="page-title">My Orders</h1>
+            
+            <!-- Order cards will be rendered here -->
+            <% if (orders && orders.length > 0) { %>
+                <% orders.forEach(order => { %>
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-id">Order #<%= order.orderId %></div>
+                            <div class="order-info">
+                                <div>Order Date: <%= new Date(order.createdAt).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></div>
+                                <div>Payment Status: <%= order.paymentStatus %></div>
+                            </div>
+                            <a href="/user/orders/<%= order._id %>" class="view-btn">View</a>
+                        </div>
+                        <div class="order-items">
+                            <% order.orderItems.forEach(item => { %>
+                                <div class="order-item">
+                                    <% if (item.productId && item.productId.images && item.productId.images.length > 0) { %>
+                                        <img src="<%= item.productId.images[0] %>" alt="<%= item.productId.name %>" class="item-image">
+                                    <% } else { %>
+                                        <img src="/api/placeholder/80/80" alt="Product" class="item-image">
+                                    <% } %>
+                                    <div class="item-details">
+                                        <a href="/product/<%= item.productId ? item.productId._id : '' %>" class="item-name">
+                                            <%= item.productId ? item.productId.name : 'Product no longer available' %>
+                                        </a>
+                                        <% if (item.productId && item.productId.brand) { %>
+                                            <div class="item-variant">Brand: <%= item.productId.brand %></div>
+                                        <% } %>
+                                        <div class="item-price">₹ <%= item.price %> × <%= item.quantity %></div>
+                                    </div>
+                                    <div class="item-status">
+                                        <% 
+                                        let statusClass = "";
+                                        switch(item.deliveryStatus) {
+                                            case "Pending":
+                                                statusClass = "status-pending";
+                                                break;
+                                            case "Processing":
+                                                statusClass = "status-processing";
+                                                break;
+                                            case "Shipped":
+                                                statusClass = "status-shipped";
+                                                break;
+                                            case "Delivered":
+                                                statusClass = "status-delivered";
+                                                break;
+                                            case "Cancelled":
+                                                statusClass = "status-cancelled";
+                                                break;
+                                            case "Return Request":
+                                                statusClass = "Return-Request";
+                                                break;
+                                            case "Returned":
+                                                statusClass = "Returned";
+                                                break;
+                                            default:
+                                                statusClass = "placed";
+                                        }
+                                        %>
+                                        <div class="status-badge <%= statusClass %>"><%= item.deliveryStatus %></div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                        <div class="order-footer">
+                            <div class="total-amount">
+                                <% if (order.discount > 0) { %>
+                                    Original: <span style="text-decoration: line-through; color: #888; margin-right: 10px;">₹ <%= order.totalAmount %></span>
+                                    Discount: <span style="color: #e53e3e; margin-right: 10px;">- ₹ <%= order.discount %></span>
+                                <% } %>
+                                Total: <span>₹ <%= order.finalAmount %></span>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <!-- Empty state when no orders -->
+                <div class="no-orders">
+                    <h3>You haven't placed any orders yet</h3>
+                    <p>Browse our products and place your first order!</p>
+                    <a href="/shop" class="view-btn" style="display: inline-block; margin-top: 15px;">Shop Now</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS for dropdown functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple code to toggle dropdown in mobile view
+        document.querySelectorAll('.dropdown-toggle').forEach(function(dropdown) {
+            dropdown.addEventListener('click', function() {
+                const parent = this.closest('.dropdown');
+                parent.classList.toggle('active');
+            });
+        });
+        
+        // Toggle sidebar on mobile
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebarContainer');
+            sidebar.classList.toggle('active');
+        });
+        
+        // Set active sidebar item
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set "orders" as active
+            const ordersTab = document.getElementById('orders');
+            if (ordersTab) {
+                ordersTab.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

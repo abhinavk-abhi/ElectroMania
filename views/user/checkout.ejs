@@ -475,7 +475,7 @@
                     }
                     if (data.success) {
                         // Redirect to success page
-                        window.location.href = '/order/success?orderId=' + data.orderId;
+                        window.location.href = '/user/success?orderId=' + data.orderId;
                     } else {
                         // Show error message
                         showError(data.error || 'Failed to place order. Please try again.');

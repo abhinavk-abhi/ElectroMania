@@ -10,6 +10,7 @@
     import addressController from '../controller/addressController.js';
     import wishlistController from "../controller/wishlistController.js";
     import checkOutController from '../controller/checkOutController.js';
+    import orderController from '../controller/orderController.js'
 
 
     //User Login
@@ -65,5 +66,10 @@
     //Checkout
     router.get('/checkout',userAuth.isLogin,checkOutController.loadCheckOut)
     router.post('/placeOrder',userAuth.isLogin,checkOutController.placeOrder)
+    router.get('/success',userAuth.isLogin,checkOutController.orderSuccess)
+
+    //user orders 
+    router.get('/orders',userAuth.isLogin , orderController.loadOrders)
+    router.get('/orders/:orderId',userAuth.isLogin,orderController.orderDetail)
 
     export default router;                      

@@ -67,6 +67,10 @@ const userModel = new Schema({
     couponOwned : {
         type : Schema.Types.ObjectId,
         ref : "coupon"
+    },
+    wallet : {
+        type : Number,
+        default : 0
     }
 },{timestamps:true})
 

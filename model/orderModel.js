@@ -34,8 +34,21 @@ const orderModel = new Schema({
     deliveryStatus : {
         type : String,
         default : "Pending",
-        enum : ["Pending","Processing","Shipped", "Delivered", "Cancelled","Return Request", "Returned"]
+        enum : ["Pending","Processing","Shipped", "Out for delivery","Delivered", "Cancelled","Return Request", "Returned"]
     },
+
+    returnedAt: { type: Date, default: null },
+
+    returnStatus: { type: String, enum: ['None', 'Pending', 'Approved', 'Rejected'], default: 'None' },
+
+    returnReason: { type: String, default: '' },
+
+    cancelled: { type: Boolean, default: false },
+
+    cancelledAt: { type: Date, default: null },
+    
+    cancelReason: { type: String, default: '' }
+
     }],
 
     totalAmount : {
@@ -76,6 +89,12 @@ const orderModel = new Schema({
     paymentMethod : {
         type : String,
         enum : ["COD" ,"RAZORPAY" , "PAYPAL" , "WALLET" ]
+    },
+
+    deliveredAt : {
+        type : Date ,
+        default : null,
+        required : false
     }
     
   

@@ -71,5 +71,8 @@
     //user orders 
     router.get('/orders',userAuth.isLogin , orderController.loadOrders)
     router.get('/orders/:orderId',userAuth.isLogin,orderController.orderDetail)
+    router.post('return-item',userAuth.isLogin, orderController.returnOrder)
+    router.post('/cancel-item',userAuth.isLogin, orderController.cancelItem)
+    router.post('/cancel-return')
 
-    export default router;                      
+    export default router;

@@ -1,0 +1,177 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wallet - ElectroMania</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .wallet-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .balance-card {
+            background-color: #f9f0ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .transaction-card {
+            background-color: #f9f0ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-icon {
+            background-color: #f7f7f7;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+        }
+
+        .add-money-btn {
+            background-color: #563d7c;
+            color: white;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .add-money-btn:hover {
+            background-color: #4a3269;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .wallet-tip {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+
+<body>
+
+    <%- include ('../partials/header') %>
+
+        <div class="container-fluid px-4 py-4">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3"><%- include('../partials/profileSidebar')%></div>
+
+                <!-- Main Content -->
+                <div class="col-md-9">
+                    <!-- Wallet Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3" style="width: 45px; height: 45px;">
+                                <i class="fas fa-wallet text-purple-700" style="font-size: 30px; color: #563d7c;"></i>
+                            </div>
+                            <div>
+                                <h3 class="fw-bold mb-0">Your Wallet</h3>
+                                <p class="text-muted mb-0">Manage your balance</p>
+                            </div>
+                        </div>
+                        <button class="add-money-btn">
+                            <i class="fas fa-plus me-1"></i> Add Money
+                        </button>
+                    </div>
+
+                    <!-- Balance and Transaction Info -->
+                    <% if (user && user.wallet > 0) { %>
+                    <div class="row mb-4">
+                        <!-- Current Balance -->
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="balance-card">
+                                <p class="mb-2 fw-medium">CURRENT BALANCE</p>
+                                <h2 class="fw-bold mb-0">₹ <%= user.wallet %></h2>
+                            </div>
+                        </div>
+
+                        <!-- Last Transaction -->
+                        <!-- <div class="col-md-6">
+                            <div class="transaction-card">
+                                <p class="mb-2 fw-medium">LAST TRANSACTION</p>
+                                <h6 class="mb-0">5/1/2025 - Product purchased - ₹4668</h6>
+                            </div>
+                        </div> -->
+                    </div> 
+                    <% } %>
+
+                    <!-- Features -->
+                    <div class="row mb-4">
+                        <!-- Fast Checkout -->
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="feature-card">
+                                <div class="feature-icon mb-3">
+                                    <i class="fas fa-bolt" style="color: #563d7c; font-size: 24px;"></i>
+                                </div>
+                                <h5 class="fw-semibold mb-2">Fast Checkout</h5>
+                                <p class="text-muted small mb-0">Pay instantly without entering card details.</p>
+                            </div>
+                        </div>
+
+                        <!-- Secure Payments -->
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="feature-card">
+                                <div class="feature-icon mb-3">
+                                    <i class="fas fa-shield-alt" style="color: #563d7c; font-size: 24px;"></i>
+                                </div>
+                                <h5 class="fw-semibold mb-2">Secure Payments</h5>
+                                <p class="text-muted small mb-0">Your money is safe with us.</p>
+                            </div>
+                        </div>
+
+                        <!-- Exclusive Offers -->
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon mb-3">
+                                    <i class="fas fa-gift" style="color: #563d7c; font-size: 24px;"></i>
+                                </div>
+                                <h5 class="fw-semibold mb-2">Exclusive Offers</h5>
+                                <p class="text-muted small mb-0">Get discounts when you use wallet.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wallet Tip -->
+                    <div class="wallet-tip mt-4">
+                        <h5 class="fw-semibold mb-3">Wallet Tip</h5>
+                        <p class="mb-0">Keep a minimum balance of ₹500 to enjoy seamless shopping and exclusive wallet-only discounts!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>

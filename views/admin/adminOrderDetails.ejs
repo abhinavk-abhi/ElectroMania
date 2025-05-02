@@ -396,20 +396,38 @@
         </tbody>
       </table>
       
-      <div class="update-status w-50">
-        <select class="select-status" id="orderStatusSelect">
+      <div class="update-status w-25">
+        <select class="select-status" id="orderStatusSelect-<%= item._id %>" <%= item.deliveryStatus === "Delivered"  ? "disabled" : "" %>>
           <option value="">Change Order Status</option>
           <option value="Pending" <%= item.deliveryStatus === "Pending" ? "selected" : "" %>>Pending</option>
           <option value="Processing" <%= item.deliveryStatus === "Processing" ? "selected" : "" %>>Processing</option>
           <option value="Shipped" <%= item.deliveryStatus === "Shipped" ? "selected" : "" %>>Shipped</option>
           <option value="Out for delivery" <%= item.deliveryStatus === "Out for delivery" ? "selected" : "" %>>Out for delivery</option>
           <option value="Delivered" <%= item.deliveryStatus === "Delivered" ? "selected" : "" %>>Delivered</option>
-          <option value="Cancelled" <%= item.deliveryStatus === "Cancelled" ? "selected" : "" %>>Cancelled</option>
-          <option value="Return Request" <%= item.deliveryStatus === "Return Request" ? "selected" : "" %>>Return Request</option>
-          <option value="Returned" <%= item.deliveryStatus === "Returned" ? "selected" : "" %>>Returned</option>
         </select>
-        <button class="action-button" onclick="updateOrderStatus('<%= item._id %>')">Update Status</button>
+        
+        <button class="action-button <%= item.deliveryStatus === 'Delivered' ? 'd-none' : '' %>" onclick="updateOrderStatus('<%= item._id %>')">Update Status</button>
+
       </div>
+
+
+     <% if(item.returnStatus === "Pending"){ %>
+      <div class="mt-4">
+        <h4 class="text-lg font-semibold mb-2">Return Request</h4>
+      <div class="mb-3">
+        <label class="block mb-1 font-medium">Reason for Return:</label>
+        <div class="p-3 border rounded bg-gray-50 w-25">
+          <%= item.returnReason || 'No reason provided' %>
+        </div>
+      </div>
+      
+      <div class="update-status w-50">
+        <button class="action-button" style="background-color: #4CAF50;" onclick="updateReturnStatus('<%= order._id %>','<%= item._id %>', 'Approved')">Approve</button>
+        <button class="action-button" style="background-color: #f44336;" onclick="updateReturnStatus('<%= order._id %>','<%= item._id %>', 'Rejected')">Reject</button>
+      </div>
+      </div>
+      <% } %>
+
       <% }) %>
       
   </div>
@@ -505,6 +523,51 @@ async function updateOrderStatus(id) {
     } catch (error) {
         console.log(error)
     }
+}
+
+async function updateReturnStatus(orderId,itemId,status){
+  try {
+    if(!orderId || !itemId || !status ){
+      Swal.fire({
+        icon : "warning",
+        text : "Credentials are missing",
+        timer : 1500,
+        showConfirmButton :false
+      })
+    }
+
+    const response = await fetch('/admin/orderReturn',{
+      method : "POST",
+      headers : { "Content-Type" : "application/json" },
+      body : JSON.stringify({
+        orderId,
+        itemId,
+        status
+      })
+    })
+
+    const data = await response.json()
+    
+    if(!response.ok){
+      Swal.fire({
+        icon : "error",
+        text : data.error,
+        timer : 1500,
+        showConfirmButton : false
+      })
+    }
+
+
+
+  } catch (error) {
+    console.log(error)
+    Swal.fire({
+      icon : "error",
+      text : error.message || "Something went wrong.",
+      timer : 1500,
+      showConfirmButton :false
+    })
+  }
 }
   
 </script>

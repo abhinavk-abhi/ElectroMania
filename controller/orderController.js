@@ -119,8 +119,9 @@ const cancelItem = async (req,res)=>{
 
 
 const returnOrder = async (req,res)=>{
+    console.log("qwertyuiopqwertyuiop")
     try {
-        console.log("qwertyuiopqwertyuiop")
+        
         const { orderId , itemId , returnReason } = req.body;
 
         const order = await Order.findOne({ _id : orderId }).populate("orderItems.productId")
@@ -139,8 +140,8 @@ const returnOrder = async (req,res)=>{
             return res.status(404).json({ message: "Failed to fetch the product Details" });
         }
 
-        productTobeReturned.returnReason = returnReason;
-        productTobeReturned.returnStatus = 'Pending';
+        productToBeReturned.returnReason = returnReason;
+        productToBeReturned.returnStatus = 'Pending';
 
         await order.save();
         return res.status(200).json({ message: "Return requested" });

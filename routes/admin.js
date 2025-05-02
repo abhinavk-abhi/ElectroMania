@@ -37,6 +37,6 @@ router.get('/customers/filter',adminAuth.checkSession, customerController.filter
 router.get('/orders',adminAuth.checkSession,adminOrder.loadOrder)
 router.get('/orders/:orderId',adminAuth.checkSession,adminOrder.loadDetails)
 router.put('/orders/status/:itemId',adminAuth.checkSession,adminOrder.updateStatus)
-
+router.post('/orderReturn',adminAuth.checkSession,adminOrder.orderReturn)
 
 export default router;

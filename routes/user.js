@@ -10,7 +10,8 @@
     import addressController from '../controller/addressController.js';
     import wishlistController from "../controller/wishlistController.js";
     import checkOutController from '../controller/checkOutController.js';
-    import orderController from '../controller/orderController.js'
+    import orderController from '../controller/orderController.js';
+    import walletController from '../controller/walletController.js'
 
 
     //User Login
@@ -71,8 +72,13 @@
     //user orders 
     router.get('/orders',userAuth.isLogin , orderController.loadOrders)
     router.get('/orders/:orderId',userAuth.isLogin,orderController.orderDetail)
-    router.post('return-item',userAuth.isLogin, orderController.returnOrder)
+    router.post('/return-item',userAuth.isLogin, orderController.returnOrder)
     router.post('/cancel-item',userAuth.isLogin, orderController.cancelItem)
     router.post('/cancel-return')
+
+
+    //Wallet 
+    router.get('/wallet',userAuth.isLogin,walletController.loadWallet);
+
 
     export default router;

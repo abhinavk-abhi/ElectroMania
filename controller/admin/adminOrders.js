@@ -16,8 +16,8 @@ const loadOrder = async (req,res)=>{
         const orders = await Order.find(filter)
         .populate('userId')
         .sort({createdAt : -1})
-        .skip(skip)
-        .limit(limit)
+      
+        
 
         const totalOrders = await Order.countDocuments(filter);
         const totalPages = Math.ceil(totalOrders / limit);
@@ -104,9 +104,100 @@ const updateStatus = async (req,res)=>{
     }
 }
 
+const orderReturn = async (req,res)=>{
+    try {
+        const {orderId , itemId , status } = req.body
+
+        const order = await Order.findOne({_id : orderId})
+        if(!order){
+            return res.status(404).json({ error : "Order not found."})
+        }
+
+        const product = order.orderItems.find(item=>item._id.toString() === itemId.toString())
+
+        if(!product){
+            return res.status(404).json({ error : "Product not found"})
+        }
+
+        const reStock = product.quantity;
+
+        const itemTotal = product.quantity * product.price;
+
+        const totalOrderPrice = order.totalAmount;
+        const totalDiscount = order.discount;
+
+        const itemDiscountShare = totalOrderPrice === 0 ? 0 : (itemTotal / totalOrderPrice) * totalDiscount;
+
+        const refundAmount = Math.round(itemTotal - itemDiscountShare)
+
+        console.log("Refund amount of return product -->" , refundAmount)
+
+        const productId = product.productId;
+        const userId = order.userId;
+
+        if(product.returnStatus === "Approved"){
+            return res.status(400).json({ error : "Item already returned." });
+        }
+
+        if(status === "Approved"){
+
+            product.returnStatus = status;
+            product.returnedAt = new Date();
+            product.quantity = 0;
+            product.price = 0;
+            product.deliveryStatus = "Returned";
+
+            let newPrice = 0;
+            for (let i of order.orderItems){
+                newPrice += (i.quantity * i.price)
+            }
+
+            order.totalAmount = newPrice;
+            order.discount = order.discount - itemDiscountShare;
+
+            order.finalAmount = Math.round(newPrice - order.discount)
+            order.paymentStatus = "Refunded"
+
+            const allReturned = order.orderItems.every(i => i.returnStatus==='Approved');
+            if (allReturned) {
+                order.orderStatus = 'Returned';
+                order.paymentStatus ='Refunded';
+            }
+      
+            await order.save();
+
+            await Product.findOneAndUpdate(
+                {_id : productId},
+                { $inc :{ stock : reStock }}
+            )
+
+            const userUpdate = await User.findOneAndUpdate(
+                {_id : userId },
+                {
+                    $inc : { wallet : refundAmount }
+                },
+                {new : true}
+            );
+
+            return res.status(200).json({ message : "Return Approved."})
+        }
+
+        if(status === "Rejected"){
+            product.returnStatus = status;
+            await order.save()
+
+            return res.status(200).json({ message : "Return Rejected"})
+        }
+
+    } catch (error) {
+        console.log("Return request process => ",error)
+        return res.status(500).json({ message : "Internal server error"})
+    }
+}
+
 export default {
     loadOrder,
     loadDetails,
     updateStatus,
-    
+    orderReturn
 }

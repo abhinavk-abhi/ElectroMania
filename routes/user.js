@@ -63,6 +63,11 @@
     router.get('/checkOutAddress',userAuth.isLogin,addressController.addCheckOutAddress)
     router.post('/checkOutAddress',userAuth.isLogin,addressController.saveCheckOutAddress)
 
+    //Privacy settings
+    router.get('/privacy',userAuth.isLogin,profileController.privacy)
+    router.post('/check-old-password', userAuth.isLogin ,profileController.checkOldPassword)
+    router.post('/privacy',userAuth.isLogin, profileController.changePass)
+
 
     //Checkout
     router.get('/checkout',userAuth.isLogin,checkOutController.loadCheckOut)
@@ -74,11 +79,15 @@
     router.get('/orders/:orderId',userAuth.isLogin,orderController.orderDetail)
     router.post('/return-item',userAuth.isLogin, orderController.returnOrder)
     router.post('/cancel-item',userAuth.isLogin, orderController.cancelItem)
-    router.post('/cancel-return')
+    router.post('/cancel-return',userAuth.isLogin,orderController.cancelReturn)
 
 
     //Wallet 
     router.get('/wallet',userAuth.isLogin,walletController.loadWallet);
+
+
+    //Invoice
+    router.get('/download-invoice/:orderId',userAuth.isLogin,orderController.invoice)
 
 
     export default router;

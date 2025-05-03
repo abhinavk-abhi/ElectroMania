@@ -84,13 +84,16 @@ const updateStatus = async (req,res)=>{
         });
       }
 
-      if (order.orderItems.every(item => item.deliveryStatus === "Delivered")) {
-        order.paymentStatus = "Paid";
-        order.deliveredAt = Date.now()
-      } else {
-        order.paymentStatus = "Pending";
-      }
+    //   if (order.orderItems.every(item => item.deliveryStatus === "Delivered")) {
+    //     order.paymentStatus = "Paid";
+    //     order.deliveredAt = Date.now()
+    //   } else {
+    //     order.paymentStatus = "Pending";
+    //   }
       
+      if(order.orderItems.every(item => item.deliveryStatus === "Delivered" && order.paymentMethod == "COD")){
+        order.paymentStatus = "Paid"
+      }
 
         productDetails.deliveryStatus =status;
 

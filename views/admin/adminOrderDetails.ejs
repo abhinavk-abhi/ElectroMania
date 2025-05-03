@@ -362,12 +362,10 @@
             <th>Unit Price</th>
             <th>Qty</th>
             <th>Subtotal</th>
-         
           </tr>
         </thead>
         <tbody>
           <% order.orderItems.forEach(item => { %>
-           
             <tr>
               <td>
                 <div class="product-name">
@@ -390,46 +388,47 @@
               <td>₹<%= item.price %></td>
               <td><%= item.quantity %></td>
               <td>₹<%= item.price * item.quantity %></td>
-             
             </tr>
-          
+            
+            <tr>
+              <td colspan="5">
+                <% if (item.deliveryStatus !== "Returned" && item.deliveryStatus !== "Cancelled") { %>
+                  <div class="update-status W-25">
+                    <select class="select-status" id="orderStatusSelect-<%= item._id %>" <%= item.deliveryStatus === "Delivered" ? "disabled" : "" %> >
+                      <option value="">Change Order Status</option>
+                      <option value="Pending" <%= item.deliveryStatus === "Pending" ? "selected" : "" %>>Pending</option>
+                      <option value="Processing" <%= item.deliveryStatus === "Processing" ? "selected" : "" %>>Processing</option>
+                      <option value="Shipped" <%= item.deliveryStatus === "Shipped" ? "selected" : "" %>>Shipped</option>
+                      <option value="Out for delivery" <%= item.deliveryStatus === "Out for delivery" ? "selected" : "" %>>Out for delivery</option>
+                      <option value="Delivered" <%= item.deliveryStatus === "Delivered" ? "selected" : "" %>>Delivered</option>
+                    </select>
+                    
+                    <button class="action-button <%= item.deliveryStatus === 'Delivered' ? 'd-none' : '' %>" onclick="updateOrderStatus('<%= item._id %>')">Update Status</button>
+                  </div>
+  <% } %>
+
+                <% if(item.returnStatus === "Pending"){ %>
+                  <div class="mt-4">
+                    <h4 class="text-lg font-semibold mb-2">Return Request</h4>
+                    <div class="mb-3">
+                      <label class="block mb-1 font-medium">Reason for Return:</label>
+                      <div class="p-3 border rounded bg-gray-50">
+                        <%= item.returnReason || 'No reason provided' %>
+                      </div>
+                    </div>
+                    
+                    <div class="update-status">
+                      <button class="action-button" style="background-color: #4CAF50;" onclick="updateReturnStatus('<%= order._id %>','<%= item._id %>', 'Approved')">Approve</button>
+                      <button class="action-button" style="background-color: #f44336;" onclick="updateReturnStatus('<%= order._id %>','<%= item._id %>', 'Rejected')">Reject</button>
+                    </div>
+                  </div>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
         </tbody>
       </table>
-      
-      <div class="update-status w-25">
-        <select class="select-status" id="orderStatusSelect-<%= item._id %>" <%= item.deliveryStatus === "Delivered"  ? "disabled" : "" %>>
-          <option value="">Change Order Status</option>
-          <option value="Pending" <%= item.deliveryStatus === "Pending" ? "selected" : "" %>>Pending</option>
-          <option value="Processing" <%= item.deliveryStatus === "Processing" ? "selected" : "" %>>Processing</option>
-          <option value="Shipped" <%= item.deliveryStatus === "Shipped" ? "selected" : "" %>>Shipped</option>
-          <option value="Out for delivery" <%= item.deliveryStatus === "Out for delivery" ? "selected" : "" %>>Out for delivery</option>
-          <option value="Delivered" <%= item.deliveryStatus === "Delivered" ? "selected" : "" %>>Delivered</option>
-        </select>
-        
-        <button class="action-button <%= item.deliveryStatus === 'Delivered' ? 'd-none' : '' %>" onclick="updateOrderStatus('<%= item._id %>')">Update Status</button>
-
-      </div>
-
-
-     <% if(item.returnStatus === "Pending"){ %>
-      <div class="mt-4">
-        <h4 class="text-lg font-semibold mb-2">Return Request</h4>
-      <div class="mb-3">
-        <label class="block mb-1 font-medium">Reason for Return:</label>
-        <div class="p-3 border rounded bg-gray-50 w-25">
-          <%= item.returnReason || 'No reason provided' %>
-        </div>
-      </div>
-      
-      <div class="update-status w-50">
-        <button class="action-button" style="background-color: #4CAF50;" onclick="updateReturnStatus('<%= order._id %>','<%= item._id %>', 'Approved')">Approve</button>
-        <button class="action-button" style="background-color: #f44336;" onclick="updateReturnStatus('<%= order._id %>','<%= item._id %>', 'Rejected')">Reject</button>
-      </div>
-      </div>
-      <% } %>
-
-      <% }) %>
-      
+    </div>
   </div>
   
   <div class="two-column">
@@ -484,7 +483,8 @@
 
 async function updateOrderStatus(id) {
     try {
-        const selectElement = document.getElementById('orderStatusSelect');
+      
+        const selectElement = document.getElementById(`orderStatusSelect-${id}`);
         const status = selectElement.value;
         const itemId = id;
         const orderId = document.getElementById("orderId").value;

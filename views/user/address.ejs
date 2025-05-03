@@ -143,8 +143,6 @@
       border-bottom: 1px solid #eee;
     }
 
-
-
     .manage-address-container {
       max-width: 900px;
       margin: 20px auto;
@@ -366,10 +364,6 @@
       }
     }
 
-
-    /* Add Font Awesome if not already included */
-    /* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> */
-
     /* Responsive */
     @media (max-width: 600px) {
       .header {
@@ -429,9 +423,6 @@
                     <%= details.addressType%>
                   </span>
                   <div class="card-actions">
-                    
-                    
-                    
                     <div class="dropdown">
                       <button class="btn btn-light border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -450,19 +441,17 @@
                               </form>                                          
                           </li>
                       </ul>
-                  </div>
-                 
+                    </div>
                   </div>
                 </div>
-                </div>
-
-                <%})%>
-                <% }) %>
-                  <% } else { %>
-                    <p>No address found. Add a new one!</p>
-                    <% } %>
+                <% }); %>
+              <% }); %>
+            <% } else { %>
+              <p>No address found. Add a new one!</p>
+            <% } %>
           </div>
         </div>
+    </div>
 
         <script>
           document.addEventListener("DOMContentLoaded", () => {

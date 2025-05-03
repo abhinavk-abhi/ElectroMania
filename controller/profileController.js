@@ -1,6 +1,7 @@
 import User from '../model/userModel.js'
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
+import bcrypt from "bcrypt";
 
 const loadProfile = async (req,res)=>{
     try {
@@ -115,7 +116,7 @@ const emailOtp = async (req,res)=>{
 
 const otpVerify = async (req,res)=>{
     try {
-       
+      
         const  {formOtp , formEmail , requestForm } = req.body.details;
         const otp = req.session.otp;
         if(!formOtp || !formEmail || !requestForm){
@@ -138,14 +139,15 @@ const otpVerify = async (req,res)=>{
 }
 
 const saveEdits = async (req,res)=>{
-  
+ 
     try {      
-        const userId = req.query.id;
+        const userId = req.session.user._id || req.session._id;
+      
         let {name,email,gender,mobile} = req.body
         const user = await User.findOne({_id : userId})
         
         if(!userId || !name || ! email || !gender || !mobile ){
-            return res.status(404).json({error : "Credentials are missing"})
+            return res.status(404).json({error : "Missdwe"})
         }   
         if(!user){
             return res.status(404).json({error : "User not found"})
@@ -170,10 +172,74 @@ const saveEdits = async (req,res)=>{
     }
 }
 
+const privacy = async (req,res)=>{
+    try {
+        const user = req.session.user || req.user;
+         
+        res.render("user/privacy", {user})
+    } catch (error) {
+        console.log("load privacy error =>", error)
+        return res.status(500).json({ message : "Failed to  load privacy page."})
+    }
+}
+
+const checkOldPassword = async (req,res)=>{
+    try {
+        const user = req.session.user 
+        const {oldPassword} = req.body;
+        let password 
+        if(user.password){
+            password = user.password
+        } else {
+         const findedUser = await User.findOne({_id: user._id})
+         password = findedUser.password
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword,password)
+
+        if(isMatch){
+            return res.status(200).json({
+                valid : true
+            })
+        } else {
+            return res.status(401).json({
+                valid : false
+            })
+        }
+
+    } catch (error) {
+        console.log("checking old password error =>>>" , error)
+    }
+}
+
+const changePass = async (req,res)=>{
+    try {
+        const {oldPassword,newPassword} = req.body;
+        const userId = req.session.user._id;
+
+        const hashedPass = await bcrypt.hash(newPassword,10)
+
+        const user = await User.findOneAndUpdate(
+            {_id : userId},
+            { $set : {password : hashedPass}}
+        )
+
+        return res.status(200).json({ message : "Password updated successfully." })
+
+    } catch (error) {
+        console.log("Password update  error from privacy =>",error)
+        return res.status(500).json({ message :"Internal server error."})
+    }
+}
+
+
 export default { 
     loadProfile,
     editInformation,
     emailOtp,
     saveEdits,
-    otpVerify
+    otpVerify,
+    privacy,
+    checkOldPassword,
+    changePass
 }

@@ -604,202 +604,235 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
 
-    function previewImage(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('profilePicPreview').src = e.target.result;
-            }
-            reader.readAsDataURL(file);
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profilePicPreview').src = e.target.result;
         }
+        reader.readAsDataURL(file);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Check if profile element exists before trying to add class
+    const profileElement = document.getElementById("profile");
+    if (profileElement) {
+        profileElement.classList.add("active");
     }
 
-            document.addEventListener("DOMContentLoaded", () => {
-                document.getElementById("profile").classList.add("active");
+    document.getElementById("editProfile").addEventListener("submit", async function (e) {
+        e.preventDefault()
+        // Clear all previous error messages
+        document.querySelectorAll(".errorText").forEach(el => el.innerText = "");
 
+        const formData = new FormData(document.getElementById("editProfile"));
 
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const genderMale = document.getElementById("male").checked;
+        const genderFemale = document.getElementById("female").checked;
+        const userEmail = document.getElementById("userEmail").value
+        const id = document.getElementById("userId").value
+        let gender;
 
-                document.getElementById("editProfile").addEventListener("submit", async function () {
-                    // Clear all previous error messages
-                    document.querySelectorAll(".errorText").forEach(el => el.innerText = "");
+        let isValid = true;
+        const errorMessages = document.querySelectorAll(".errorText");
 
-                    const formData = new FormData(document.getElementById("editProfile"));
+        if (!name) {
+            errorMessages[0].innerText = "Name is required.";
+            isValid = false;
+        }
 
+        if (!genderMale && !genderFemale) {
+            errorMessages[1].innerText = "Please select your gender.";
+            isValid = false;
+        }
 
-                    const name = document.getElementById("name").value.trim();
-                    const email = document.getElementById("email").value.trim();
-                    const phone = document.getElementById("phone").value.trim();
-                    const genderMale = document.getElementById("male").checked;
-                    const genderFemale = document.getElementById("female").checked;
-                    const userEmail = document.getElementById("userEmail").value
-                    const id = document.getElementById("userId").value
-                    let gender;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+            errorMessages[2].innerText = "Email is required.";
+            isValid = false;
+        } else if (!emailPattern.test(email)) {
+            errorMessages[2].innerText = "Enter a valid email.";
+            isValid = false;
+        }
 
-                    let isValid = true;
-                    const errorMessages = document.querySelectorAll(".errorText");
+        const phonePattern = /^[0-9]{10}$/;
+        if (!phone) {
+            errorMessages[3].innerText = "Phone number is required.";
+            isValid = false;
+        } else if (!phonePattern.test(phone)) {
+            errorMessages[3].innerText = "Enter a valid 10-digit phone number.";
+            isValid = false;
+        }
 
-                    if (!name) {
-                        errorMessages[0].innerText = "Name is required.";
-                        isValid = false;
-                    }
+        // Don't proceed if form is invalid
+        if (!isValid) {
+            return;
+        }
 
-                    if (!genderMale && !genderFemale) {
-                        errorMessages[1].innerText = "Please select your gender.";
-                        isValid = false;
-                    }
+        if (email !== userEmail) {
+            try {
+                const response = await fetch('/user/profile/emailOtp', {
+                    method: "post",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userEmail })
+                });
 
-                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!email) {
-                        errorMessages[2].innerText = "Email is required.";
-                        isValid = false;
-                    } else if (!emailPattern.test(email)) {
-                        errorMessages[2].innerText = "Enter a valid email.";
-                        isValid = false;
-                    }
+                const data = await response.json();
 
-                    const phonePattern = /^[0-9]{10}$/;
-                    if (!phone) {
-                        errorMessages[3].innerText = "Phone number is required.";
-                        isValid = false;
-                    } else if (!phonePattern.test(phone)) {
-                        errorMessages[3].innerText = "Enter a valid 10-digit phone number.";
-                        isValid = false;
-                    }
-
-                   
-                    
-
-                    document.getElementById("otpForm").addEventListener("submit", function (e) {
-                        e.preventDefault();
-                        const otp = document.getElementById("otpInput").value;
-
-
+                if (!response.ok) {
+                    Swal.fire({
+                        icon: "warning",
+                        text: data.error,
+                        timer: 2000,
+                        showConfirmButton: false,
                     });
+                } else {
+                    const otpModal = new bootstrap.Modal(document.getElementById("otpModal"));
+                    otpModal.show();
 
-                    if (email !== userEmail) {
-                        const response = await fetch('/user/profile/emailOtp', {
-                            method: "post",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify( {userEmail} )
-                        })
+                    // Remove any previous event listeners (to prevent duplicates)
+                    const otpForm = document.getElementById("otpForm");
+                    const newOtpForm = otpForm.cloneNode(true);
+                    otpForm.parentNode.replaceChild(newOtpForm, otpForm);
 
-                        const data = await response.json()
+                    newOtpForm.addEventListener("submit", async function (e) {
+                        e.preventDefault();
+                        const otpInput = document.getElementById("otpInput");
+                        const otp = otpInput.value;
 
-                        if (!response.ok) {
-                            Swal.fire({
-                                icon: "warning",
-                                text: data.error,
-                                timer: 2000,
-                                showConfirmButton: false,
-                            })
+                        if (!/^\d{4}$/.test(otp)) {
+                            otpInput.classList.add("is-invalid");
+                            return;
+                        }
 
-                        } else {
-                            const otpModal = new bootstrap.Modal(document.getElementById("otpModal"));
-                            otpModal.show();
+                        // Remove previous invalid state
+                        otpInput.classList.remove("is-invalid");
 
-                            document.getElementById("otpForm").addEventListener("submit", async function (e) {
-                                e.preventDefault();
-                                const otpInput = document.getElementById("otpInput");
-                                const otp = otpInput.value;
+                        const details = {
+                            formOtp: otp,
+                            formEmail: email,
+                            requestForm: "emailUpdate"
+                        };
 
-                                if (!/^\d{4}$/.test(otp)) {
-                                    otpInput.classList.add("is-invalid");
-                                    return;
-                                }
+                        try {
+                            // Send OTP for verification
+                            const otpVerify = await fetch('/user/userProfileOtp', {
+                                method: 'POST',
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ details })
+                            });
 
-                                // Remove previous invalid state
-                                otpInput.classList.remove("is-invalid");
+                            const result = await otpVerify.json();
 
-                                const details = {
-                                    formOtp : otp,
-                                    formEmail : email,
-                                    requestForm : "emailUpdate"
-                                }
-
-                                // Send OTP for verification
-                                const otpVerify = await fetch('/user/userProfileOtp', {
-                                    method: 'POST',
-                                    headers: { "Content-Type": "application/json" },
-                                    body: JSON.stringify({details})  // Include email if needed
+                            if (!otpVerify.ok) {
+                                Swal.fire({
+                                    icon: "error",
+                                    text: result.error || "Invalid OTP",
+                                    timer: 2000,
+                                    showConfirmButton: false
                                 });
+                            } else {
+                                try {
+                                    const saveChanges = await fetch('/user/userProfile', {
+                                        method: "put",
+                                        body: formData
+                                    });
 
-                                const result = await otpVerify.json();
+                                    const result = await saveChanges.json();
 
-                                if (!otpVerify.ok) {
+                                    if (!saveChanges.ok) {
+                                        Swal.fire({
+                                            icon: "warning",
+                                            text: result.error,
+                                            timer: 2000,
+                                            showConfirmButton: false
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            icon: "success",
+                                            text: result.message,
+                                            timer: 1500,
+                                            showConfirmButton: false
+                                        }).then(() => {
+                                            window.location.href = "/user/profile";
+                                        });
+                                    }
+                                } catch (error) {
+                                    console.error("Error saving changes:", error);
                                     Swal.fire({
                                         icon: "error",
-                                        text: result.error || "Invalid OTP",
+                                        text: "An error occurred while saving changes",
                                         timer: 2000,
                                         showConfirmButton: false
                                     });
-                                } else {
-
-                                const saveChanges = await fetch('/user/userProfile', {
-                                method: "put",
-                                body: formData
-                                })
-
-                                const result = await saveChanges.json()
-
-                                if (!saveChanges.ok) {
-                                Swal.fire({
-                                    icon: "warning",
-                                    text: result.error,
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                })
-                                } else {
-                                Swal.fire({
-                                    icon: "success",
-                                    text: result.message,
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                }).then((res)=>{
-                                    window.location.href = "/user/profile"
-                                })
                                 }
-
-                                }
-                            })
-                        
-
-                        }
-
-                        } else {
-                           
-                            const saveChanges = await fetch(`/user/userProfile?id=${id}`, {
-                                method: "put",
-                                body: formData
-                            })
-
-                            const result = await saveChanges.json()
-
-                            if (!saveChanges.ok) {
-                                Swal.fire({
-                                    icon: "warning",
-                                    text: result.error,
-                                    timer: 2500,
-                                    showConfirmButton: false
-                                }).then(()=>{
-                                    window.location.href = "/user/profile"
-                                })
-                            } else {
-                                Swal.fire({
-                                    icon: "success",
-                                    text: result.message,
-                                    timer: 4000,
-                                    showConfirmButton: false
-                                }).then(()=>{
-                                    window.location.href = "/user/profile"
-                                })
                             }
-
+                        } catch (error) {
+                            console.error("Error verifying OTP:", error);
+                            Swal.fire({
+                                icon: "error",
+                                text: "An error occurred while verifying OTP",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
                         }
-
                     });
+                }
+            } catch (error) {
+                console.error("Error sending OTP:", error);
+                Swal.fire({
+                    icon: "error",
+                    text: "An error occurred while sending OTP",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        } else {
+            try {
+                console.log(formData)
+                const saveChanges = await fetch(`/user/userProfile?id=${id}`, {
+                    method: "put",
+                    body: formData
+                });
 
-            });
+                const result = await saveChanges.json();
+
+                if (!saveChanges.ok) {
+                    Swal.fire({
+                        icon: "warning",
+                        text: result.error,
+                        timer: 2500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = "/user/profile";
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "success",
+                        text: result.message,
+                        timer: 4000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = "/user/profile";
+                    });
+                }
+            } catch (error) {
+                console.error("Error saving changes:", error);
+                Swal.fire({
+                    icon: "error",
+                    text: "An error occurred while saving changes",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }
+    });
+});
         </script>
 </body>
 

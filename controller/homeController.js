@@ -6,13 +6,17 @@ import Category from '../model/categoryModel.js'
 
 const loadHome = async (req,res)=>{
     try {
+        const limit = 8;
         const user = req.session.user;
+        const product = await Product.find({}).sort({createdAt : -1}).limit(limit)
 
         if(user){
             const userData = await User.findOne({_id:user})
-            res.render('home',{user:userData})
+            res.render('home',{user:userData,
+                products : product
+            })
         }else{
-        return res.render('home.ejs')
+        return res.render('home.ejs',{products : product})
         }
     } catch (error) {
         console.log(error)

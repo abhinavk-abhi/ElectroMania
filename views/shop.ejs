@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         :root {
             --primary-color: #ffffff;
@@ -271,9 +273,10 @@
             font-size: 0.9rem;
         }
 
+    
         /* Product Grid Styles */
         .product-card {
-            background: rgb(191, 190, 241);
+            background:#f8f9fa;
             border: none;
             border-radius: 8px;
             padding: 1rem;
@@ -300,7 +303,7 @@
             top: 0.75rem;
             right: 0.75rem;
             font-size: 1.3rem;
-            color: gray;
+            color:#e74c3c;
             cursor: pointer;
             z-index: 10;
         }
@@ -369,7 +372,7 @@
         }
 
         .btn-add-cart {
-            background-color: var(--primary-color);
+            background-color: #28a745;
             color: var(--text-light);
             width: 100%;
             padding: 0.6rem;
@@ -386,7 +389,7 @@
         }
 
         .btn-add-cart:hover {
-            background-color: #8ab6e2;
+            background-color: #10962f;
             color: var(--text-light);
         }
 
@@ -725,7 +728,7 @@
 
 
                                         <!-- Price & Discount (Static discount for now) -->
-                                        <h6 class="price mt-2">
+                                        <h6 class="price mt-2" style="color: #333333;">
                                             ₹ <%= product.price %>
                                                 <!-- Example Original Price (if you add productOffer later) -->
                                                 <!-- <span class="text-muted text-decoration-line-through">₹ <%=
@@ -733,7 +736,11 @@
                                         </h6>
 
                                         <!-- Cart Button -->
-                                        <button id="addToCartBtn" class="btn btn-primary btn-add-cart w-100" style="z-index: 1000;">
+                                        <button data-bs-userId = "<%= user._id %>"
+                                            data-bs-productId = "<%= product._id %>"
+                                            data-bs-price = "<%= product.price %>"
+                                            data-bs-basePrice = "<%= product.basePrice %>"
+                                            id="addToCartBtn" class="btn btn-primary btn-add-cart w-100" style="z-index: 1000;">
                                             <i class="bi bi-cart"></i> Cart
                                         </button>
                                     </div>
@@ -860,11 +867,11 @@
         addToCartBtn.addEventListener('click', async (e)=>{
         e.preventDefault();
 
-        const userId = document.getElementById('userId').value;
-        const productId = document.getElementById('productdbId').value;
-        const quantity = document.getElementById('quantity').value;
-        const price = document.getElementById('salePrice').value;
-        const basePrice = document.getElementById('basePrice').value;
+        const userId = addToCartBtn.getAttribute("userId")
+        const productId = addToCartBtn.getAttribute("productId")
+        const quantity = 1;
+        const price = addToCartBtn.getAttribute("price")
+        const basePrice = addToCartBtn.getAttribute("basePrice")
         console.log(userId + productId + quantity + price + basePrice)
 
         if(!userId){

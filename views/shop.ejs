@@ -553,7 +553,8 @@
     </style>
 </head>
 
-<body>
+<body data-user-id="<%= user ? user._id : '' %>">
+
     <!-- Navbar -->
     <nav class="navbar">
         <a href="/" class="brand-name">ElectroMania</a>
@@ -736,16 +737,18 @@
                                         </h6>
 
                                         <!-- Cart Button -->
-                                        <button data-bs-userId = "<%= user._id %>"
-                                            data-bs-productId = "<%= product._id %>"
-                                            data-bs-price = "<%= product.price %>"
-                                            data-bs-basePrice = "<%= product.basePrice %>"
-                                            id="addToCartBtn" class="btn btn-primary btn-add-cart w-100" style="z-index: 1000;">
-                                            <i class="bi bi-cart"></i> Cart
-                                        </button>
+                                        <button
+                                        data-product-id="<%= product._id %>"
+                                        data-price="<%= product.price %>"
+                                        data-base="<%= product.basePrice %>"
+                                        class="btn btn-primary btn-add-cart w-100"
+                                        style="z-index: 10;">
+                                        <i class="bi bi-cart"></i> Cart
+                                    </button>
+
                                     </div>
                                 </div>
-                        
+                    
                         </div>
                         <% }); %>
                 </div>
@@ -862,81 +865,79 @@
             });
         });
 
-        const addToCartBtn = document.getElementById("addToCartBtn")
-
-        addToCartBtn.addEventListener('click', async (e)=>{
-        e.preventDefault();
-
-        const userId = addToCartBtn.getAttribute("userId")
-        const productId = addToCartBtn.getAttribute("productId")
-        const quantity = 1;
-        const price = addToCartBtn.getAttribute("price")
-        const basePrice = addToCartBtn.getAttribute("basePrice")
-        console.log(userId + productId + quantity + price + basePrice)
-
-        if(!userId){
-            Swal.fire({
-                icon : 'error',
-                text : "Please login to continue.",
-                showConfirmButton : true,
-                confirmButtonText : "Login"
-            }).then((result)=>{
-                if(result.isConfirmed){
-                    window.location.href = '/user/login'
-                }
-            })
-        }
-
-        const productDetails = {
-            userId,
-            productId,
-            quantity,
-            price,
-            basePrice
-        }
-
-        console.log(productDetails)
-
-        try {
-            const response = await fetch('/user/addToCart',{
-                method : 'POST',
-                headers : { 'Content-Type' : 'application/json'},
-                body : JSON.stringify(productDetails)
-            });
-
-          
-
-            const data = await response.json()
-            console.log(data)
-            if(!response.ok){
+        const addToCartButtons = document.querySelectorAll(".btn-add-cart");
+    
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const userId = document.body.dataset.userId;
+            const productId = button.dataset.productId;
+            const quantity = 1;
+            const price = button.dataset.price;
+            const basePrice = button.dataset.base;
+            console.log(basePrice)
+            if (!userId) {
                 Swal.fire({
-                    icon : 'warning',
-                    text : data.error ,
-                    showConfirmButton : false ,
-                    timer : 2000
-                })
-            } else {
-                Swal.fire({
-                    icon : 'success',
-                    text : 'Added to cart successfully',
-                    showConfirmButton : true ,
-                    confirmButtonText : 'Go to Cart'
-                }).then((result)=>{
-                    if(result.isConfirmed) {
-                        window.location.href = '/user/cart'
+                    icon: 'error',
+                    text: "Please login to continue.",
+                    showConfirmButton: true,
+                    confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/user/login';
                     }
-                }) 
+                });
+                return;
             }
-        } catch (error) {
-            console.log(error)
-            Swal.fire({
-                icon : 'warning',
-                text : 'An error occured',
-                showConfirmButton : false,
-                timer : 2000
-            })
-        }
-    })
+            
+            const productDetails = {
+                userId,
+                productId,
+                quantity,
+                price,
+                basePrice
+            };
+            
+            try {
+                const response = await fetch('/user/addToCart', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productDetails)
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    Swal.fire({
+                        icon: 'warning',
+                        text: data.error,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'Added to cart successfully',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Go to Cart'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/user/cart';
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+                Swal.fire({
+                    icon: 'warning',
+                    text: 'An error occurred',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+        });
+    });
 
     </script>
 </body>

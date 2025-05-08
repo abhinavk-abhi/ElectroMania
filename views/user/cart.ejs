@@ -1,571 +1,623 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cart - ElectroMania</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        :root {
-            --primary-color: #28517D;
-            --secondary-color: #4D44AD;
-            --accent-color: #FF6B6B;
-        }
+      :root {
+        --primary-color: #28517d;
+        --secondary-color: #4d44ad;
+        --accent-color: #ff6b6b;
+      }
 
-        body {
-            background-color: #f5f7fa;
-            font-family: 'Poppins', sans-serif;
-            color: #333;
-        }
+      body {
+        background-color: #f5f7fa;
+        font-family: "Poppins", sans-serif;
+        color: #333;
+      }
 
-        .navbar {
-            background: linear-gradient(135deg, #28517D 0%, #4D44AD 100%);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 0 2rem;
-        }
+      .navbar {
+        background: linear-gradient(135deg, #28517d 0%, #4d44ad 100%);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 0 2rem;
+      }
 
-        .brand-name {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 2rem;
-            color: white;
-            letter-spacing: 0.5px;
-        }
+      .brand-name {
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-size: 2rem;
+        color: white;
+        letter-spacing: 0.5px;
+      }
 
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.9);
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
 
-        .nav-links a:hover {
-            color: white;
-            transform: translateY(-2px);
-        }
+      .nav-links a:hover {
+        color: white;
+        transform: translateY(-2px);
+      }
 
-        .search-container {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
+      .search-container {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50px;
+        transition: all 0.3s ease;
+      }
 
-        .search-container:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+      .search-container:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
 
-        .search-bar {
-            background: transparent;
-            border: none;
-            color: white;
-        }
+      .search-bar {
+        background: transparent;
+        border: none;
+        color: white;
+      }
 
-        .search-bar::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
+      .search-bar::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
 
-        .cart-container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            padding: 2rem;
-            margin: 2rem auto;
-            max-width: 1200px;
-            min-height: 60vh;
-        }
+      .cart-container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 1200px;
+        min-height: 60vh;
+      }
 
-        .cart-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
+      .cart-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
 
-        .cart-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--secondary-color);
-            border-radius: 3px;
-        }
+      .cart-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--secondary-color);
+        border-radius: 3px;
+      }
 
+      .cart-item {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--secondary-color);
+      }
+
+      .cart-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .cart-item img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        border-radius: 8px;
+        background: white;
+        padding: 0.5rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .item-title {
+        font-weight: 400;
+        font-size: medium;
+        color: #2d3748;
+      }
+
+      .item-price {
+        font-weight: 700;
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+      }
+
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .quantity-btn {
+        background: var(--secondary-color);
+        color: white;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .quantity-btn:hover {
+        background: #3a3288;
+        transform: scale(1.1);
+      }
+
+      .remove-btn {
+        background: #f8fafc;
+        color: var(--accent-color);
+        border: 1px solid var(--accent-color);
+        padding: 0.5rem 1.25rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .remove-btn:hover {
+        background: var(--accent-color);
+        color: white;
+      }
+
+      .order-summary {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border-top: 4px solid var(--secondary-color);
+      }
+
+      .summary-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 1.25rem;
+      }
+
+      .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        color: #4a5568;
+      }
+
+      .total {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed #cbd5e0;
+        color: var(--primary-color);
+      }
+
+      .continue-btn {
+        background: var(--secondary-color);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 50px;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(77, 68, 173, 0.3);
+      }
+
+      .continue-btn:hover {
+        background: #3a3288;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(77, 68, 173, 0.4);
+      }
+
+      /* Empty Cart Styles */
+      .empty-cart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 0;
+        text-align: center;
+      }
+
+      .empty-cart-icon {
+        font-size: 6rem;
+        color: #cbd5e0;
+        margin-bottom: 1.5rem;
+      }
+
+      .empty-cart-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 1rem;
+      }
+
+      .empty-cart-text {
+        color: #718096;
+        margin-bottom: 2rem;
+        max-width: 400px;
+      }
+
+      .shop-btn {
+        background: var(--secondary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        box-shadow: 0 4px 10px rgba(77, 68, 173, 0.3);
+      }
+
+      .shop-btn:hover {
+        background: #3a3288;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(77, 68, 173, 0.4);
+        color: white;
+      }
+
+      /* Footer Styles */
+      .footer {
+        background: linear-gradient(135deg, #28517d 0%, #4d44ad 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-top: 3rem;
+      }
+
+      .payment-methods img {
+        height: 30px;
+        margin-right: 1rem;
+        filter: brightness(0) invert(1);
+        opacity: 0.8;
+        transition: all 0.3s ease;
+      }
+
+      .payment-methods img:hover {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .social-links a {
+        color: white;
+        font-size: 1.25rem;
+        margin-left: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .social-links a:hover {
+        transform: translateY(-3px) scale(1.1);
+        color: #ffd700;
+      }
+
+      @media (max-width: 768px) {
         .cart-item {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-            border-left: 4px solid var(--secondary-color);
-        }
-
-        .cart-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .cart-item img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            border-radius: 8px;
-            background: white;
-            padding: 0.5rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .item-title {
-            font-weight: 400;
-            font-size: medium;
-            color: #2d3748;
-        }
-
-        .item-price {
-            font-weight: 700;
-            color: var(--secondary-color);
-            font-size: 1.1rem;
+          flex-direction: column;
+          text-align: center;
         }
 
         .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .quantity-btn {
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .quantity-btn:hover {
-            background: #3a3288;
-            transform: scale(1.1);
-        }
-
-        .remove-btn {
-            background: #f8fafc;
-            color: var(--accent-color);
-            border: 1px solid var(--accent-color);
-            padding: 0.5rem 1.25rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .remove-btn:hover {
-            background: var(--accent-color);
-            color: white;
-        }
-
-        .order-summary {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid var(--secondary-color);
-        }
-
-        .summary-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 1.25rem;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.75rem;
-            color: #4a5568;
-        }
-
-        .total {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px dashed #cbd5e0;
-            color: var(--primary-color);
-        }
-
-        .continue-btn {
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 0.75rem;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(77, 68, 173, 0.3);
-        }
-
-        .continue-btn:hover {
-            background: #3a3288;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(77, 68, 173, 0.4);
-        }
-
-        /* Empty Cart Styles */
-        .empty-cart {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 0;
-            text-align: center;
+          justify-content: center;
+          margin: 1rem 0;
         }
 
         .empty-cart-icon {
-            font-size: 6rem;
-            color: #cbd5e0;
-            margin-bottom: 1.5rem;
+          font-size: 4rem;
         }
 
         .empty-cart-title {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 1rem;
+          font-size: 1.5rem;
         }
-
-        .empty-cart-text {
-            color: #718096;
-            margin-bottom: 2rem;
-            max-width: 400px;
-        }
-
-        .shop-btn {
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(77, 68, 173, 0.3);
-        }
-
-        .shop-btn:hover {
-            background: #3a3288;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(77, 68, 173, 0.4);
-            color: white;
-        }
-
-        /* Footer Styles */
-        .footer {
-            background: linear-gradient(135deg, #28517D 0%, #4D44AD 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-
-        .payment-methods img {
-            height: 30px;
-            margin-right: 1rem;
-            filter: brightness(0) invert(1);
-            opacity: 0.8;
-            transition: all 0.3s ease;
-        }
-
-        .payment-methods img:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-        }
-
-        .social-links a {
-            color: white;
-            font-size: 1.25rem;
-            margin-left: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            transform: translateY(-3px) scale(1.1);
-            color: #FFD700;
-        }
-
-        @media (max-width: 768px) {
-            .cart-item {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .quantity-controls {
-                justify-content: center;
-                margin: 1rem 0;
-            }
-
-            .empty-cart-icon {
-                font-size: 4rem;
-            }
-
-            .empty-cart-title {
-                font-size: 1.5rem;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Navbar -->
     <%- include ('../partials/header' )%>
 
     <div class="container">
-        <div class="cart-container">
-            <h1 class="cart-title">Your Shopping Cart</h1>
-            
-            <% if (cart && cart.items.length > 0) { %>
-                <div class="row">
-                    <!-- Cart Items -->
-                    <div class="col-lg-8">
-                        <% cart.items.forEach((item,index) => { %>
-                            <div class="cart-item d-flex flex-column flex-md-row align-items-center justify-content-between">
-                                <div class="d-flex align-items-center mb-3 mb-md-0">
-                                    <img src="<%= item.productImage %>" alt="<%= item.name %>" class="me-3">
-                                    <div class="item-details">
-                                        <h3 class="item-title mb-1"><%= item.name %></h3>
-                                        <div class="item-price">₹<%= item.price %></div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <div class="quantity-controls me-4">
-                                    <button class="quantity-btn decrease" 
-                                    data-product-id="<%= item.productId._id %>" 
-                                    data-user-id="<%= cart.userId %>" 
-                                    data-count="-1">-</button>
-                                        <span class="quantity-display mx-2"><%= item.quantity %></span>
-                                        <button class="quantity-btn increase" 
-                                    data-product-id="<%= item.productId._id %>" 
-                                    data-user-id="<%= cart.userId %>" 
-                                    data-count="1">+</button>
-                                       
-                                    </div>
-                                    <button class="remove-btn"
-                                     data-product-id="<%= item.productId._id %>"
-                                    data-user-id="<%= cart.userId %>"
-                                    data-item-id="<%= item._id %>"
-                                    data-index="<%= index %>">
-                                        <i class="fas fa-trash-alt me-1"></i> Remove
-                                    </button>
-                                </div>
-                            </div>
-                        <% }) %>
-                    </div>
+      <div class="cart-container">
+        <h1 class="cart-title">Your Shopping Cart</h1>
 
-                    <!-- Order Summary -->
-                    <div class="col-lg-4 mt-4 mt-lg-0">
-                        <div class="order-summary">
-                            <h2 class="summary-title">Order Summary</h2>
-                            <% cart.items.forEach(item=>{ %>
-                                <div class="summary-item">
-                                    <span><%= item.quantity %> x <%= item.name %></span>
-                                    <span>₹<%= item.price * item.quantity %></span>
-                                </div>
-                            <% }) %>
-                            
-                            
-                            <div class="summary-item total">
-                                <span>Total</span>
-                                <span>₹<%= cart.items.reduce((total, item) => total + (item.price * item.quantity), 0) %></span>
-                            </div>
-                            
-                            <button id="checkOutBtn"
-                            data-cart-id="<%= cart._id %>" 
-                            data-user-id="<%= cart.userId %>"
-                            class="continue-btn">
-                                <i class="fas fa-credit-card me-2"></i> Proceed to Checkout
-                            </button>
-                        </div>
-                    </div>
+        <% if (cart && cart.items.length > 0) { %>
+        <div class="row">
+          <!-- Cart Items -->
+          <div class="col-lg-8">
+            <% cart.items.forEach((item,index) => { %>
+            <div
+              class="cart-item d-flex flex-column flex-md-row align-items-center justify-content-between"
+            >
+              <div class="d-flex align-items-center mb-3 mb-md-0">
+                <img
+                  src="<%= item.productImage %>"
+                  alt="<%= item.name %>"
+                  class="me-3"
+                />
+                <div class="item-details">
+                  <h3 class="item-title mb-1"><%= item.name %></h3>
+                  <div class="item-price">₹<%= item.price %></div>
                 </div>
-            <% } else { %>
-                <div class="empty-cart">
-                    <div class="empty-cart-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <h2 class="empty-cart-title">Your cart is empty</h2>
-                    <p class="empty-cart-text">Looks like you haven't added anything to your cart yet. Start shopping to find amazing products!</p>
-                    <a href="/shop" class="shop-btn">
-                        <i class="fas fa-store me-2"></i> Start Shopping
-                    </a>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="quantity-controls me-4">
+                  <button
+                    class="quantity-btn decrease"
+                    data-product-id="<%= item.productId._id %>"
+                    data-user-id="<%= cart.userId %>"
+                    data-count="-1"
+                  >
+                    -
+                  </button>
+                  <span class="quantity-display mx-2"
+                    ><%= item.quantity %></span
+                  >
+                  <button
+                    class="quantity-btn increase"
+                    data-product-id="<%= item.productId._id %>"
+                    data-user-id="<%= cart.userId %>"
+                    data-count="1"
+                  >
+                    +
+                  </button>
                 </div>
-            <% } %>
+                <button
+                  class="remove-btn"
+                  data-product-id="<%= item.productId._id %>"
+                  data-user-id="<%= cart.userId %>"
+                  data-item-id="<%= item._id %>"
+                  data-index="<%= index %>"
+                >
+                  <i class="fas fa-trash-alt me-1"></i> Remove
+                </button>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+
+          <!-- Order Summary -->
+          <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="order-summary">
+              <h2 class="summary-title">Order Summary</h2>
+              <% cart.items.forEach(item=>{ %>
+                <div class="summary-item" data-product-id="<%= item.productId._id %>">
+                    <span class="summary-item-name"><%= item.quantity %> x <%= item.name %></span>
+                    <span class="summary-item-price">₹<%= item.price * item.quantity %></span>
+                  </div>
+                  
+              <% }) %>
+
+              <div class="summary-item total">
+                <span>Total</span>
+                <span class="summary-total">₹<%= cart.items.reduce((total, item) => total + (item.price * item.quantity), 0) %></span>
+              </div>
+              
+
+              <button
+                id="checkOutBtn"
+                data-cart-id="<%= cart._id %>"
+                data-user-id="<%= cart.userId %>"
+                class="continue-btn"
+              >
+                <i class="fas fa-credit-card me-2"></i> Proceed to Checkout
+              </button>
+            </div>
+          </div>
         </div>
+        <% } else { %>
+        <div class="empty-cart">
+          <div class="empty-cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <h2 class="empty-cart-title">Your cart is empty</h2>
+          <p class="empty-cart-text">
+            Looks like you haven't added anything to your cart yet. Start
+            shopping to find amazing products!
+          </p>
+          <a href="/shop" class="shop-btn">
+            <i class="fas fa-store me-2"></i> Start Shopping
+          </a>
+        </div>
+        <% } %>
+      </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="payment-methods">
-                        <img src="/images/visa.png" alt="Visa">
-                        <img src="/images/mastercard.png" alt="Mastercard">
-                        <img src="/images/paypal.png" alt="PayPal">
-                    </div>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-12 text-center mt-3">
-                    <small>© 2024 ElectroMania - All Rights Reserved</small>
-                </div>
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div class="payment-methods">
+              <img src="/images/visa.png" alt="Visa" />
+              <img src="/images/mastercard.png" alt="Mastercard" />
+              <img src="/images/paypal.png" alt="PayPal" />
             </div>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="col-12 text-center mt-3">
+            <small>© 2024 ElectroMania - All Rights Reserved</small>
+          </div>
         </div>
+      </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Add animation to empty cart icon
-        document.addEventListener('DOMContentLoaded', function() {
+              // Add animation to empty cart icon
+              document.addEventListener('DOMContentLoaded', function() {
 
 
-            const checkOutBtn = document.getElementById('checkOutBtn')
+                  const checkOutBtn = document.getElementById('checkOutBtn')
 
-            checkOutBtn.addEventListener("click",async()=>{
-                const cartId = checkOutBtn.getAttribute('data-cart-id')
-                const userId = checkOutBtn.getAttribute('data-user-id')
-                window.location.href = `/user/checkout?cartId=${cartId}&userId=${userId}`
-            })
+                  checkOutBtn.addEventListener("click",async()=>{
+                      const cartId = checkOutBtn.getAttribute('data-cart-id')
+                      const userId = checkOutBtn.getAttribute('data-user-id')
+                      window.location.href = `/user/checkout?cartId=${cartId}&userId=${userId}`
+                  })
 
-            const emptyCartIcon = document.querySelector('.empty-cart-icon');
-            if (emptyCartIcon) {
-                emptyCartIcon.style.transform = 'scale(0.8)';
-                setTimeout(() => {
-                    emptyCartIcon.style.transition = 'all 0.5s ease';
-                    emptyCartIcon.style.transform = 'scale(1)';
-                }, 100);
-            }
+                  const emptyCartIcon = document.querySelector('.empty-cart-icon');
+                  if (emptyCartIcon) {
+                      emptyCartIcon.style.transform = 'scale(0.8)';
+                      setTimeout(() => {
+                          emptyCartIcon.style.transition = 'all 0.5s ease';
+                          emptyCartIcon.style.transform = 'scale(1)';
+                      }, 100);
+                  }
 
-             const buttons = document.querySelectorAll(".quantity-btn");
-    
-            buttons.forEach(button => {
-                button.addEventListener("click", async () => {
-                    const productId = button.getAttribute("data-product-id");
-                    const userId = button.getAttribute("data-user-id");
-                    const count = parseInt(button.getAttribute("data-count"));
-    
-    
-                    try {
-                        const response = await fetch('/user/cart', {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ productId, userId, count })
-                        });
-    
-                        const data = await response.json();
-    
-                        if (!response.ok) {
-                            Swal.fire({
-                                icon: 'warning',
-                                text: data.error || 'Failed to update the quantity',
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        } else {
-                            window.location.reload();
-                        }
-                    } catch (error) {
-                        console.error("Cart quantity error:", error);
-                        Swal.fire({
-                            icon: 'error',
-                            text: 'Some error occurred, please try again later.',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
-            });
+                   const buttons = document.querySelectorAll(".quantity-btn");
 
-        
-            const removeBtn = document.querySelectorAll(".remove-btn")
+                  buttons.forEach(button => {
+                      button.addEventListener("click", async () => {
+                          const productId = button.getAttribute("data-product-id");
+                          const userId = button.getAttribute("data-user-id");
+                          const count = parseInt(button.getAttribute("data-count"));
 
-            removeBtn.forEach(button =>{
-                button.addEventListener("click", async () => {
-                    const productId = button.getAttribute('data-product-id');
-                    const userId = button.getAttribute('data-user-id');
-                    const item_id = button.getAttribute('data-item-id')
-                    const index = button.getAttribute('data-index')
 
-                    console.log(index)
-                    try {
-                        const response = await fetch ('/user/cart',{
-                            method : "DELETE",
-                            headers : {"Content-Type" : "application/json"},
-                            body : JSON.stringify({
-                                productId : productId,
-                                userId : userId,
-                                item_id : item_id,
-                                index : index
-                            })
-                        })
+                          try {
+                              const response = await fetch('/user/cart', {
+                                  method: 'PATCH',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ productId, userId, count })
+                              });
 
-                        const data = await response.json()
+                              const data = await response.json();
 
-                        if(!response.ok){
-                            Swal.fire({
-                                icon : 'error',
-                                text : data.error || "Failed to remove the product",
-                                timer : 1500,
-                                showConfirmButton : false
-                            })
-                        }else{
-                            Swal.fire({
-                                icon : "success",
-                                text : data.message || "Product removed successfully",
-                                timer : 1500,
-                                showConfirmButton : false
-                            }).then((result)=>{
-                                window.location.reload()
-                            })
-                           
-                        }
-                    } catch (error) {
-                        console.log("remove error",error)
-                        Swal.fire({
-                            icon : "error",
-                            text : "Unexpected error occured",
-                            timer : 1500,
-                            showConfirmButton : false
-                        })
-                    }
-                })
-            })
+                              if (!response.ok) {
+                                  Swal.fire({
+                                      icon: 'warning',
+                                      text: data.error || 'Failed to update the quantity',
+                                      timer: 2000,
+                                      showConfirmButton: false
+                                  });
+                              } else {
+                                    // Update quantity display near buttons
+                                    const quantityDisplay = button.parentElement.querySelector(".quantity-display");
+                                    quantityDisplay.innerText = data.updatedQuantity;
 
-           
-        
-        });
+                                    // Update order summary for this item
+                                    const productId = button.getAttribute("data-product-id");
+                                    const summaryItem = document.querySelector(`.summary-item[data-product-id="${productId}"]`);
+
+                                    if (summaryItem) {
+                                        const nameSpan = summaryItem.querySelector(".summary-item-name");
+                                        const priceSpan = summaryItem.querySelector(".summary-item-price");
+                                    
+                                        const productName = nameSpan.innerText.split(' x ')[1]; // Keep product name
+                                        nameSpan.innerText = `${data.updatedQuantity} x ${productName}`;
+                                        priceSpan.innerText = `₹${data.updatedQuantity * data.productPrice}`;
+                                    }
+
+                                    // Update total
+                                    const totalDisplay = document.querySelector(".summary-total");
+                                    totalDisplay.innerText = `₹${data.updatedTotal}`;
+                                }                               
+                            } catch (error) {
+                              console.error("Cart quantity error:", error);
+                              Swal.fire({
+                                  icon: 'error',
+                                  text: 'Some error occurred, please try again later.',
+                                  confirmButtonText: 'OK'
+                              });
+                          }
+                      });
+                  });
+
+
+                  const removeBtn = document.querySelectorAll(".remove-btn")
+
+                  removeBtn.forEach(button =>{
+                      button.addEventListener("click", async () => {
+                          const productId = button.getAttribute('data-product-id');
+                          const userId = button.getAttribute('data-user-id');
+                          const item_id = button.getAttribute('data-item-id')
+                          const index = button.getAttribute('data-index')
+
+                          console.log(index)
+                          try {
+                              const response = await fetch ('/user/cart',{
+                                  method : "DELETE",
+                                  headers : {"Content-Type" : "application/json"},
+                                  body : JSON.stringify({
+                                      productId : productId,
+                                      userId : userId,
+                                      item_id : item_id,
+                                      index : index
+                                  })
+                              })
+
+                              const data = await response.json()
+
+                              if(!response.ok){
+                                  Swal.fire({
+                                      icon : 'error',
+                                      text : data.error || "Failed to remove the product",
+                                      timer : 1500,
+                                      showConfirmButton : false
+                                  })
+                              }else{
+                                  Swal.fire({
+                                      icon : "success",
+                                      text : data.message || "Product removed successfully",
+                                      timer : 1500,
+                                      showConfirmButton : false
+                                  }).then((result)=>{
+                                      window.location.reload()
+                                  })
+
+                              }
+                          } catch (error) {
+                              console.log("remove error",error)
+                              Swal.fire({
+                                  icon : "error",
+                                  text : "Unexpected error occured",
+                                  timer : 1500,
+                                  showConfirmButton : false
+                              })
+                          }
+                      })
+                  })
+
+
+
+              });
     </script>
-</body>
-
+  </body>
 </html>

@@ -725,22 +725,19 @@
                                         </h6>
                                         </a>
 
-                                        <!-- Rating (Static for now, as data is missing) -->
-
-
+                                    
                                         <!-- Price & Discount (Static discount for now) -->
-                                        <h6 class="price mt-2" style="color: #333333;">
-                                            ₹ <%= product.price %>
-                                                <!-- Example Original Price (if you add productOffer later) -->
-                                                <!-- <span class="text-muted text-decoration-line-through">₹ <%=
-                                                        product.price * product.productOffer %></span> -->
-                                        </h6>
+                                            <% const displayOffer = Math.max(product.productOffer || 0, product.category.offer || 0); if (displayOffer > 0) {  %>
+                                                <span class="text-success fs-4  me-2">₹<%= Math.round(product.price - (product.price * displayOffer / 100)) %></span>   
+                                                <del class="text-danger fs-6 me-3">₹<%= product.price %></del>
+                                                <% } %>
+                                        
 
                                         <!-- Cart Button -->
                                         <button
                                         data-product-id="<%= product._id %>"
-                                        data-price="<%= product.price %>"
-                                        data-base="<%= product.basePrice %>"
+                                        data-price="<%= Math.round(product.price - (product.price * displayOffer / 100)) %>"
+                                        data-base="<%= product.price %>"
                                         class="btn btn-primary btn-add-cart w-100"
                                         style="z-index: 10;">
                                         <i class="bi bi-cart"></i> Cart

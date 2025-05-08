@@ -139,7 +139,12 @@ const incCartQua = async (req,res)=>{
 
 
         await cart.save()
-        return res.status(200).json({ success: true });
+        return res.status(200).json({ 
+            success: true, 
+            updatedQuantity : item.quantity,
+            productPrice : item.price,
+            updatedTotal : ( item.price * item.quantity)
+        });
     } catch (error) {
         console.log("cart quantity ====>>  ",error)
         return res.status(500).json({message : "Unexpected error occured please try again later."})

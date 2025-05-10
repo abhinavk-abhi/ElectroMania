@@ -405,7 +405,7 @@
                     
                     <button class="action-button <%= item.deliveryStatus === 'Delivered' ? 'd-none' : '' %>" onclick="updateOrderStatus('<%= item._id %>')">Update Status</button>
                   </div>
-  <% } %>
+    <% } %>
 
                 <% if(item.returnStatus === "Pending"){ %>
                   <div class="mt-4">
@@ -516,6 +516,8 @@ async function updateOrderStatus(id) {
             }).then(()=>{
                 const statusDisplay = document.getElementById(`status-display-${itemId}`);
                 statusDisplay.textContent = data.selectedStatus;
+               statusDisplay.className = `status-badge status-${data.selectedStatus.toLowerCase()}`;
+                
             })
 
         }

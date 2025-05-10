@@ -482,7 +482,7 @@
               </div>
             
             <% } else if(item.returnStatus === 'Pending') { %>
-              <div class="item-status status-return-requested">Return Requested</div>
+              <div id="returnRequest" class="item-status status-return-requested">Return Requested</div>
               <button class="action-button cancel-return-button"
                       onclick="cancelReturn('<%= order._id %>', '<%= item._id %>')">
                 Cancel Return
@@ -568,7 +568,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-function returnItem(orderId, itemId) {
+      function returnItem(orderId, itemId) {
+        const statusBox = document.getElementById("returnRequest")
             Swal.fire({
                 title: 'Return Item',
                 text: 'Please select a reason for return',
@@ -623,7 +624,8 @@ function returnItem(orderId, itemId) {
                                 timer: 1200,
                                 showConfirmButton: false,
                             }).then(() => {
-                                location.reload();
+                                statusBox.innerText = "Return Requested"
+                                statusBox.className= "item-status status-return-requested";
                             });
                         })
                         .catch(error => {

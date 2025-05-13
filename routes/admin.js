@@ -10,7 +10,7 @@ import adminOrder from '../controller/admin/adminOrders.js';
 
 router.get('/',adminAuth.isLogin,adminController.loadLogin)
 router.post('/login',adminController.login)
-
+router.get('/logout',adminAuth.checkSession,adminController.logout)
 
 router.get('/dashboard',adminAuth.checkSession,adminController.loadHome)
 

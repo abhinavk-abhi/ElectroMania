@@ -92,6 +92,17 @@ const loadProducts = async (req,res)=>{
     }
 }
 
+const logout = async (req,res)=>{
+    try {
+        req.session.admin = null;
+        req.session.destroy()
+        res.render('admin/login' , {errorMessage : ""})
+    } catch (error) {
+        console.log("logout error => " , error)
+        res.status(500).json({error : "Internal server error"})
+    }
+}
+
 
 
 export default { 
@@ -100,4 +111,5 @@ export default {
                 loadHome, 
                 loadCustomer , 
                 loadProducts,
+                logout
             }

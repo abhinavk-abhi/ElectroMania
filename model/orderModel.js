@@ -51,6 +51,11 @@ const orderModel = new Schema({
 
     }],
 
+    deliveyCharge : {
+        type : Number ,
+        required : false,
+    },
+
     totalAmount : {
         type : Number,
         required : true

@@ -85,6 +85,10 @@ const placeOrder = async (req,res)=>{
             const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
             return `ORD-${nanoid()}`;
           };
+
+          if(totalAmount > 1000){
+            let deliveryCharge = 50
+          }
           
 
     const orderId = await generateOrderId()
@@ -99,6 +103,7 @@ const placeOrder = async (req,res)=>{
                 price : item.price
             }
         }),
+        deliveryCharge,
         totalAmount,
         finalAmount : totalAmount,
         shippingAddress : selectedAddress,

@@ -345,7 +345,7 @@
         <div class="info-group">
           <div class="info-label">Payment Status</div>
           <div class="info-value">
-            <span class="status-badge status-<%= order.paymentStatus.toLowerCase() %>"><%= order.paymentStatus %></span>
+            <span id="paymentStatus" class="status-badge status-<%= order.paymentStatus.toLowerCase() %>"><%= order.paymentStatus %></span>
           </div>
         </div>
         <div class="info-group">
@@ -391,7 +391,7 @@
             </tr>
             
             <tr>
-              <td colspan="5">
+              <td id="statusUpdate" colspan="5">
                 <% if (item.deliveryStatus !== "Returned" && item.deliveryStatus !== "Cancelled") { %>
                   <div class="update-status W-25">
                     <select class="select-status" id="orderStatusSelect-<%= item._id %>" <%= item.deliveryStatus === "Delivered" ? "disabled" : "" %> >
@@ -408,7 +408,7 @@
     <% } %>
 
                 <% if(item.returnStatus === "Pending"){ %>
-                  <div class="mt-4">
+                  <div id="returnContainer" class="mt-4">
                     <h4 class="text-lg font-semibold mb-2">Return Request</h4>
                     <div class="mb-3">
                       <label class="block mb-1 font-medium">Reason for Return:</label>
@@ -488,6 +488,7 @@ async function updateOrderStatus(id) {
         const status = selectElement.value;
         const itemId = id;
         const orderId = document.getElementById("orderId").value;
+        const statusUpdate = document.getElementById("statusUpdate")
 
         const response = await fetch(`/admin/orders/status/${itemId}`,{
             method : "PUT",
@@ -514,10 +515,13 @@ async function updateOrderStatus(id) {
                 timer : 2000,
                 showConfirmButton : false
             }).then(()=>{
-                const statusDisplay = document.getElementById(`status-display-${itemId}`);
-                statusDisplay.textContent = data.selectedStatus;
-               statusDisplay.className = `status-badge status-${data.selectedStatus.toLowerCase()}`;
-                
+              const statusDisplay = document.getElementById(`status-display-${itemId}`);
+              statusDisplay.textContent = data.selectedStatus;
+              statusDisplay.className = `status-badge status-${data.selectedStatus.toLowerCase()}`;
+              
+              if(data.selectedStatus === "Delivered"){
+                statusUpdate.className = "d-none"
+              }
             })
 
         }
@@ -538,6 +542,9 @@ async function updateReturnStatus(orderId,itemId,status){
       })
     }
 
+    const returnContainer = document.getElementById("returnContainer")
+    
+
     const response = await fetch('/admin/orderReturn',{
       method : "POST",
       headers : { "Content-Type" : "application/json" },
@@ -557,6 +564,18 @@ async function updateReturnStatus(orderId,itemId,status){
         timer : 1500,
         showConfirmButton : false
       })
+    } else {
+      returnContainer.className = "d-none"
+      const statusDisplay = document.getElementById(`status-display-${itemId}`);
+      statusDisplay.textContent = data.selectedStatus;
+      statusDisplay.className = `status-badge status-${data.selectedStatus.toLowerCase()}`;
+      const paymentStatus = document.getElementById("paymentStatus")
+      paymentStatus.textContent = data.paymentStatus;
+      paymentStatus.className = `status-badge status- ${data.paymentStatus.toLowerCase()}`
+      const statusUpdate = document.getElementById("statusUpdate")
+      if(data.selectedStatus === "Delivered"){
+        statusUpdate.className = "d-none"
+      }
     }
 
 

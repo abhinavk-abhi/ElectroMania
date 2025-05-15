@@ -159,12 +159,14 @@ const orderReturn = async (req,res)=>{
             order.discount = order.discount - itemDiscountShare;
 
             order.finalAmount = Math.round(newPrice - order.discount)
-            order.paymentStatus = "Refunded"
+            // order.paymentStatus = "Refunded"
 
+            let paymentStatus = order.paymentStatus;
             const allReturned = order.orderItems.every(i => i.returnStatus==='Approved');
             if (allReturned) {
                 order.orderStatus = 'Returned';
                 order.paymentStatus ='Refunded';
+                paymentStatus = order.paymentStatus;
             }
       
             await order.save();
@@ -182,14 +184,20 @@ const orderReturn = async (req,res)=>{
                 {new : true}
             );
 
-            return res.status(200).json({ message : "Return Approved."})
+            return res.status(200).json({ message : "Return Approved.",
+                selectedStatus : "Returned",
+                paymentStatus : paymentStatus
+            })
         }
 
         if(status === "Rejected"){
             product.returnStatus = status;
             await order.save()
 
-            return res.status(200).json({ message : "Return Rejected"})
+            return res.status(200).json({ message : "Return Rejected",
+                selectedStatus : "Return Rejected",
+                paymentStatus : paymentStatus
+            })
         }
 
     } catch (error) {

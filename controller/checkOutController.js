@@ -86,8 +86,9 @@ const placeOrder = async (req,res)=>{
             return `ORD-${nanoid()}`;
           };
 
-          if(totalAmount > 1000){
-            let deliveryCharge = 50
+          let deliveryCharge = 0;
+          if(totalAmount > 500){
+            deliveryCharge = 50;
           }
           
 

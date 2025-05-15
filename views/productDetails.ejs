@@ -12,7 +12,7 @@
     <style>
         /* Product Details Styles */
         body {
-            background-color: #28517D;
+            background-color: #ffffff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -199,6 +199,10 @@
         justify-content: center;
         width: 30px;
         height: 40px;
+    }
+
+    .cart-btn {
+        background-color: #4b449783;
     }
 
          .signup-btn, .icon-btn {
@@ -537,8 +541,7 @@
                         </ul>
                     </div>
                 <% } else { %>
-                    <a href="/user/login" class="btn btn-outline-light" >Login</a>
-                    <a href="/register" class="btn btn-outline-light">Sign Up</a>
+                    <a href="/user/login" class="btn btn-outline-light" >Sign in</a>
                 <% } %>
             </div>
             
@@ -596,8 +599,8 @@
 
                         <!-- Action Buttons -->
                         <div class="d-flex gap-3 mt-4">
-                            <button id="addtocartBtn" class="btn btn-primary flex-grow-1">Add to Cart</button>
-                            <button class="btn btn-outline-secondary w-50" id="addToWishlistBtn"><i class="fa fa-heart me-2"></i><span class="wishlist-text">Add to Wishlist</span></button>
+                            <button id="addtocartBtn" class="btn cart-btn flex-grow-1">Add to Cart</button>
+                            <button class="btn btn-outline-secondary  w-50" id="addToWishlistBtn"><i class="fa fa-heart me-2"></i><span class="wishlist-text">Add to Wishlist</span></button>
                         </div>
 
                         <div class="row g-3 my-3">
@@ -639,7 +642,7 @@
                             <img src="<%= product.images[0] %>" alt="<%= product.name %>">
                             <h6><%= product.name %></h6>
                             <div class="price">₹<%= product.price %></div>
-                            <button class="btn btn-primary btn-sm w-100">Add to Cart</button>
+                            <button class="btn cart-btn btn-sm w-100">Add to Cart</button>
                         </div>
                         </a>
                     </div>

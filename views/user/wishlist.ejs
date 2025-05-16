@@ -140,6 +140,13 @@
       font-size: 16px;
       color: #666;
     }
+
+    .remove {
+      color: red;
+      display: flex;
+      align-items:start;
+      cursor: pointer;
+    }
     
     /* Media queries for responsiveness */
     @media (max-width: 1100px) {
@@ -170,7 +177,7 @@
     }
   </style>
 </head>
-<body>
+<body data-user-id="<%= user ? user._id : '' %>">
   <%- include('../partials/header') %>
   
   <div class="main-content">
@@ -180,6 +187,11 @@
           <% if(wishlist && wishlist.products && wishlist.products.length > 0) { %>
               <% wishlist.products.forEach(product => { %>
                   <div class="product-card">
+                    <div class="remove"
+                    data-product-id="<%= product._id %>"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </div>
                       <img src="<%= product.images[0] %>" alt="<%= product.name %>">
                       <div class="product-name"><%= product.name %></div>
                       <!-- <div class="rating">★★★★☆ (<%= product.reviewCount %>)</div> -->
@@ -291,6 +303,73 @@
             }
         });
     });
+
+   const remove =  document.querySelectorAll(".remove")
+   remove.forEach(button=>{
+    button.addEventListener("click", async (e)=>{
+      e.preventDefault()
+
+      try {
+        const userId = document.body.dataset.userId;
+        const productId = button.getAttribute("data-product-id");
+
+         if (!userId) {
+                Swal.fire({
+                    icon: 'error',
+                    text: "Please login to continue.",
+                    showConfirmButton: true,
+                    confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/user/login';
+                    }
+                });
+                return;
+            }
+
+            const productDetails = {
+                userId,
+                productId
+            };
+
+            const response = await fetch('/user/wishlist/remove', {
+                method: 'DELETE',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(productDetails)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                Swal.fire({
+                    icon: "error",
+                    text: data.error || "Something went wrong",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    position: "top-end",
+                    text: data.message,
+                    timer: 1500,
+                    showConfirmButton: false,
+                }).then(()=>{
+                  window.location.reload()
+                });
+            }
+      } catch (error) {
+        console.log(error)
+        Swal.fire({
+                    icon: "error",
+                    text: data.error || "Something went wrong",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+      }
+    })
+   })
+
+
   </script>
 </body>
 </html>

@@ -75,7 +75,35 @@ const loadWishlist = async (req, res) => {
   }
 };
 
+const remove = async(req,res)=>{
+  try{
+  const { userId , productId } = req.body;
+
+  const wishlist = await Wishlist.findOne({userId : userId})
+
+ if(!wishlist){
+  return res.status(404).json({error : "Failed to fetch wishlist!"})
+ }
+
+const index = await wishlist.products.indexOf(productId);
+
+
+ wishlist.products.splice(index,1)
+
+ await wishlist.save()
+
+ return res.status(200).json({ message : "Product removed from wishlist!"})
+
+} catch (error) {
+  console.log(error)
+  return res.status(500).json({ error : "Internal server error"})
+}
+}
+
+
+
 export default {
   addToWishlist,
   loadWishlist,
+  remove
 };

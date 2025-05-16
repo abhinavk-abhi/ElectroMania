@@ -413,7 +413,7 @@
         }
 
         .page-item.active .page-link {
-            background-color: var(--accent-color);
+            background-color: var(--text-light);
             border-color: var(--accent-color);
         }
 
@@ -708,7 +708,9 @@
                            
                                 <div id="productCard" class="card product-card">
                                     <!-- Wishlist Icon -->
-                                    <div class="wishlist-icon">
+                                    <div class="wishlist-icon"
+                                    data-product-id="<%= product._id %>"
+                                    >                                    
                                         <i class="fa-heart far"></i>
                                     </div>
                                     <a href="/productDetails/<%= product._id%>">
@@ -862,7 +864,7 @@
             });
         });
 
-        const addToCartButtons = document.querySelectorAll(".btn-add-cart");
+    const addToCartButtons = document.querySelectorAll(".btn-add-cart");
     
     addToCartButtons.forEach(button => {
         button.addEventListener('click', async (e) => {
@@ -935,6 +937,66 @@
             }
         });
     });
+
+  const addToWishlistBtns = document.querySelectorAll(".wishlist-icon"); // Correct selector
+
+addToWishlistBtns.forEach(button => {
+    button.addEventListener("click", async function (e) {
+        e.preventDefault();
+        try {
+            const userId = document.body.dataset.userId;
+            const productId = this.getAttribute("data-product-id"); // Use data attribute from the icon/button
+
+            if (!userId) {
+                Swal.fire({
+                    icon: 'error',
+                    text: "Please login to continue.",
+                    showConfirmButton: true,
+                    confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/user/login';
+                    }
+                });
+                return;
+            }
+
+            const productDetails = {
+                userId,
+                productId
+            };
+
+            const response = await fetch('/user/addToWishlist', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(productDetails)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                Swal.fire({
+                    icon: "error",
+                    text: data.error || "Something went wrong",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    position: "top-end",
+                    text: data.message,
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
+            }
+
+        } catch (error) {
+            console.error("Add to wishlist error: ", error);
+        }
+    });
+});
+
+
 
     </script>
 </body>

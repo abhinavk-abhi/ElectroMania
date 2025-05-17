@@ -186,7 +186,7 @@
       <div class="product-grid">
           <% if(wishlist && wishlist.products && wishlist.products.length > 0) { %>
               <% wishlist.products.forEach(product => { %>
-                  <div class="product-card">
+                  <div class="product-card product-card-<%= product._id %>">
                     <div class="remove"
                     data-product-id="<%= product._id %>"
                     >
@@ -288,7 +288,8 @@
                         if(result.isConfirmed) {
                             window.location.href = '/user/cart'
                         }else {
-                          window.location.reload()
+                        const card = document.querySelector(`.product-card-${productId}`)
+                        card.classList.add("d-none")
                         }
                     });
                 }
@@ -354,7 +355,8 @@
                     timer: 1500,
                     showConfirmButton: false,
                 }).then(()=>{
-                  window.location.reload()
+                  const card = document.querySelector(`.product-card-${productId}`)
+                  card.classList.add("d-none")
                 });
             }
       } catch (error) {

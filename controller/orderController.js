@@ -50,7 +50,7 @@ const cancelItem = async (req,res)=>{
         }
 
         const item = order.orderItems.find(i=> i._id.toString() == itemId);
-        console.log("orde====>>>>>>>>"+order)
+
         if(!item){
             return res.status(404).send("Product not found in the order")
         }
@@ -118,7 +118,7 @@ const cancelItem = async (req,res)=>{
 
 
 const returnOrder = async (req,res)=>{
-    console.log("qwertyuiopqwertyuiop")
+
     try {
         
         const { orderId , itemId , returnReason } = req.body;
@@ -191,7 +191,7 @@ const invoice = async (req, res) => {
             .populate({
                 path: 'orderItems.productId'
             })
-        console.log(order)
+   
 
         if (!order) {
             return res.status(404).json({ message: "Order not found" });
@@ -321,7 +321,7 @@ const invoice = async (req, res) => {
                 doc.rect(50, yPosition - 5, 500, 25)
                    .fill('#FBFBFB');
             }
-            // console.log(item)
+
             const product = item.productId || {};
             const productName = product.name || item.name || 'Unknown Product';
             const price = Math.round(product.price - (product.price * product.productOffer / 100))|| 0; 

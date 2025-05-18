@@ -42,7 +42,7 @@ const loadDetails = async (req,res)=>{
 
         res.render('admin/adminOrderDetails',{order})
     } catch (error) {
-        
+        console.log("loadDetails error=>" + error)
     }
 }
 
@@ -50,8 +50,6 @@ const updateStatus = async (req,res)=>{
     try {
         const itemId = req.params.itemId;
         const {status , orderId} = req.body
-        console.log(itemId)
-        console.log(req.body)
        
         const order = await Order.findOne({_id : orderId})
 
@@ -132,8 +130,6 @@ const orderReturn = async (req,res)=>{
         const itemDiscountShare = totalOrderPrice === 0 ? 0 : (itemTotal / totalOrderPrice) * totalDiscount;
 
         const refundAmount = Math.round(itemTotal - itemDiscountShare)
-
-        console.log("Refund amount of return product -->" , refundAmount)
 
         const productId = product.productId;
         const userId = order.userId;

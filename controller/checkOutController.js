@@ -49,7 +49,7 @@ const loadCheckOut = async (req,res)=>{
 const placeOrder = async (req,res)=>{
     try {
         const {cartId,userId,addressId,addressDetailIndex,paymentMethod,couponCode} = req.body;
-        console.log(req.body)
+
 
         const user = await User.findOne({_id:userId})
         if(!user){
@@ -116,12 +116,9 @@ const placeOrder = async (req,res)=>{
 
     await newOrder.save();
 
-    console.log("order created");
-
-
     cart.items = [];
     await cart.save();
-    console.log("cart cleared")
+
 
 
     res.status(201).json({

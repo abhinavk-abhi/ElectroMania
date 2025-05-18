@@ -29,7 +29,6 @@ const addCategory = async (req,res)=>{
     try {
         const {addName , addDescription} = req.body;
 
-        // console.log(req.body.addStatus)
 
         let addStatus = req.body.addStatus === "Active" ? true:false;
 

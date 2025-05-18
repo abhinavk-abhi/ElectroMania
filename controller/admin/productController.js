@@ -46,7 +46,7 @@ const productLoad = async (req, res) => {
 
     const totalProducts = await Product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limit);
-    // console.log(category)
+ 
     res.render("admin/products", {
       title: "Products",
       errorMessage: "",

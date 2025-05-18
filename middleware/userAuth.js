@@ -9,7 +9,7 @@ const isLogin = async (req, res, next) => {
         console.error("Middleware isLogin error:", error);
         next(error);
     }
-};
+}
 
 
 export default {

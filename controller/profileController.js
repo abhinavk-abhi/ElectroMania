@@ -44,9 +44,9 @@ const otpGenerator = () => Math.floor(1000 + Math.random() * 9000);
 
 const emailOtp = async (req,res)=>{
     try {
-        console.log(req.body)
+
         const {userEmail} = req.body;
-        console.log("email of requested user"+userEmail)
+
         if(!userEmail){
             return res.status(404).json({error : "Email credentials are missing"})
         }

@@ -5,7 +5,7 @@ import Wishlist from  '../model/wishlistModel.js'
 
 const addToCart = async (req,res)=>{
     try {
-        console.log(req.body)
+   
      const {userId , productId , quantity , price , basePrice } = req.body;
   
 

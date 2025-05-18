@@ -72,8 +72,6 @@ const userIdGenerator = async () => {
 
 const registerUser = async (req, res) => {
   try {
-
-    // console.log(`register user accessed`);
     
     const { fullName, email, phone, password } = req.body;
 
@@ -196,9 +194,6 @@ const otpVerify = async (req,res)=>{
     const formOtp = req.body.otp;
     const {userId,email,password,name,phone} = req.session.newUser;
 
-    console.log("Session OTP:", sentOtp);
-    console.log("Form OTP:", formOtp);
-    console.log(requestForm)
 
     if(Date.now()>expiryTime){
       return res.status(400).json({
@@ -213,7 +208,6 @@ const otpVerify = async (req,res)=>{
     }
 
     if(sentOtp == formOtp){
-      console.log('OTP matched. Verification completed.')
 
       if(requestForm === 'register'){
         const newUser = new User ({
@@ -225,7 +219,6 @@ const otpVerify = async (req,res)=>{
         })
 
         await newUser.save()
-        console.log('User created')
         return res.status(200).json({
           success:true,
           message : 'OTP verification completed',
@@ -427,9 +420,6 @@ const sendForgotOtp = async (req,res)=>{
       res.status(500).json({ message: "Server error while sending OTP" });
     }
 
-   
-
- 
   } catch (error) {
     console.log(error)
     return res.status(500).send(error.message)
@@ -481,7 +471,7 @@ const loadChangePassword = async (req,res)=>{
 }
 
 const changePassword = async (req,res)=>{
-  console.log('kdfkljkf;j')
+
   try {
     const {newPassword} = req.body;
     const user = req.session.user;

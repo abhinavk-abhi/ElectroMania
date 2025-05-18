@@ -28,7 +28,6 @@ const userInfo = async  (req,res)=>{
     .sort({createdAt : -1})
     .skip(skip)
     .limit(limit)
-    // console.log(customers)
 
     const totalCustomers = await User.countDocuments(filter);
     const totalPages = Math.ceil(totalCustomers / limit)

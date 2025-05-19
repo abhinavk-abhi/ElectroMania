@@ -2,52 +2,56 @@ import mongoose from "mongoose";
 const {Schema} = mongoose;
 
 const couponModel = new Schema({
-    categoryId : {
-        type : Schema.Types.ObjectId,
-        ref : "category",
-        required : true
+     name: {
+        type: String,
+        required: true,
+        unique: true,
     },
-    couponName : {
-        type : String,
-        required : true,
-        unique : true
+    code : {
+        type: String,
+        required: true,
+        unique: true,
     },
-    couponCode : {
-        type : String,
-        required : true,
-        unique : true
+    description : {
+        type: String,
     },
-    createdOn : {
-        type : Date,
-        default : Date.now,
-        required : true
+    startDate: {
+        type: Date,
+        required: true
     },
-    expiryDate : {
-        type : Date,
-        required : true
+    expiryDate: {
+        type: Date,
+        required: true
     },
-    discountPrice : {
+    minPrice: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    offerPrice: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    usageType: {
+        type: String,
+        enum: ["single-use", "multi-use"],
+        default: "single-use",
+    },
+    usersUsed: {
+        type: [Schema.Types.ObjectId],
+        ref: 'User',
+        default: []
+    },
+    used : {
         type : Number,
-        required : true
+        default : 0
     },
-    minimumPrice : {
-        type : Number,
-        required : true
+    status: {
+        type: String,
+        enum: ['Active', 'Inactive'],
+        default: 'Active'
     },
-    isList : {
-        type : Boolean,
-        default : true
-    },
-    userId : {
-        type : Schema.Types.ObjectId,
-        ref : "user",
-        required : true
-    },
-    limit : {
-        type : Number,
-        required : true
-    },
-   
-},{timestamps : true})
+},{timestamps : true});
 
 export default mongoose.model("Coupon",couponModel)

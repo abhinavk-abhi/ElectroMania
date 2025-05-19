@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .illustration {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5 3.9 4 4 0 0 1-5-3.9 4 4 0 0 1-5-3.9A10 10 0 0 0 12 2z"/><path d="M8 16s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+        
+        .shake {
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="font-['Inter'] bg-gray-50 min-h-screen flex items-center">
+    <div class="container mx-auto px-4 py-12">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto">
+            <div class="md:flex">
+                <!-- Left side - Content -->
+                <div class="p-8 md:p-12 md:w-1/2 flex flex-col justify-center">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <h1 class="ml-4 text-2xl font-bold text-gray-800">Payment Failed</h1>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-8 text-lg leading-relaxed">
+                        Your payment couldn't be processed at this time. Please check your payment details and try again.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500 mb-2">Possible reasons:</p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Insufficient funds in your account</li>
+                                <li>Incorrect card details entered</li>
+                                <li>Card expired or not activated</li>
+                                <li>Daily transaction limit reached</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                        <a href="/shop" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors text-center">
+                            Continue Shopping
+                        </a>
+                        <a href="/checkout" class="px-6 py-3 bg-red-600 rounded-lg text-white font-medium hover:bg-red-700 transition-colors text-center shadow-sm shake">
+                            Try Again
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Right side - Illustration -->
+                <div class="md:w-1/2 bg-gradient-to-br from-red-50 to-pink-50 flex items-center justify-center p-8 md:p-12">
+                    <div class="illustration w-full h-64 md:h-full relative">
+                        <!-- This is a placeholder for an illustration -->
+                        <!-- In a real implementation, you would use an actual illustration SVG or image -->
+                        <div class="absolute bottom-0 left-0 right-0 text-center text-gray-400 text-sm">
+                            Illustration of disappointed person
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional help section -->
+            <div class="bg-gray-50 px-8 py-6 border-t border-gray-200">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span class="text-sm text-gray-500">Need help? Contact our <a href="#" class="text-red-600 hover:underline">support team</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effect to buttons
+            const tryAgainBtn = document.querySelector('a[href="/checkout"]');
+            tryAgainBtn.addEventListener('mouseenter', function() {
+                this.classList.remove('shake');
+                // Trigger reflow to restart animation
+                void this.offsetWidth;
+                this.classList.add('shake');
+            });
+            
+            // Simulate a credit card error if needed
+            const errorMessages = [
+                "Card declined",
+                "Insufficient funds",
+                "Invalid CVV",
+                "Expired card"
+            ];
+            
+            // Uncomment to show random error message after delay
+            /*
+            setTimeout(() => {
+                const randomError = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+                const errorElement = document.createElement('div');
+                errorElement.className = 'mt-4 p-3 bg-red-50 text-red-600 rounded text-sm';
+                errorElement.textContent = `Error: ${randomError}`;
+                tryAgainBtn.parentNode.insertBefore(errorElement, tryAgainBtn.nextSibling);
+            }, 1500);
+            */
+        });
+    </script>
+</body>
+</html> 

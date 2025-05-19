@@ -7,6 +7,7 @@ import productController from '../controller/admin/productController.js';
 import categoryController from '../controller/admin/categoryController.js';
 import upload from '../middleware/imageUpload.js';
 import adminOrder from '../controller/admin/adminOrders.js';
+import couponController from '../controller/admin/couponController.js';
 
 router.get('/',adminAuth.isLogin,adminController.loadLogin)
 router.post('/login',adminController.login)
@@ -38,5 +39,9 @@ router.get('/orders',adminAuth.checkSession,adminOrder.loadOrder)
 router.get('/orders/:orderId',adminAuth.checkSession,adminOrder.loadDetails)
 router.put('/orders/status/:itemId',adminAuth.checkSession,adminOrder.updateStatus)
 router.post('/orderReturn',adminAuth.checkSession,adminOrder.orderReturn)
+
+
+//Coupon
+router.get('/coupons',adminAuth.checkSession,couponController.loadCoupons)
 
 export default router;

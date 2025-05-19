@@ -1,78 +1,275 @@
-
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Lost in Neon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+        
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Outfit', sans-serif;
-            background: #192430;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0a0a1a;
+            color: #e0e0ff;
+            overflow: hidden;
+            height: 100vh;
         }
-
-        .error-container {
-            width: 700px;
-            margin: 0 auto;
-            padding: 50px;
-            background: #FFFFFF;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            gap: 50px;
+        
+        .cyberpunk-font {
+            font-family: 'Orbitron', sans-serif;
         }
-
-        .error-image-container {
-            flex: 1;
+        
+        .neon-text {
+            text-shadow: 0 0 5px #00f0ff, 0 0 10px #00a2ff, 0 0 15px #0062ff;
         }
-
-        .error-image {
-            width: 280px;
-            height: auto;
+        
+        .neon-pink {
+            text-shadow: 0 0 5px #ff00f0, 0 0 10px #ff00a0, 0 0 15px #ff0060;
         }
-
-        .error-content {
-            flex: 1;
+        
+        .neon-purple {
+            text-shadow: 0 0 5px #b400ff, 0 0 10px #8000ff, 0 0 15px #4000ff;
         }
-
-        .error-title {
-            font-size: 20px;
-            color: #192430;
-            margin: 0 0 8px 0;
-            line-height: 1.4;
+        
+        .glitch {
+            position: relative;
         }
-
-        .error-title span {
-            color: #28517D;
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
-
-        .error-message {
-            font-size: 15px;
-            color: #666;
-            margin: 0 0 16px 0;
+        
+        .glitch::before {
+            color: #0ff;
+            animation: glitch-effect 3s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
         }
-
-        .home-link {
-            color: #28517D;
-            text-decoration: none;
+        
+        .glitch::after {
+            color: #f0f;
+            animation: glitch-effect 2s infinite reverse;
+            clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
         }
-
-        .home-link:hover {
-            text-decoration: underline;
+        
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 255, 255, 0.1) 0%,
+                rgba(0, 255, 255, 0) 10%
+            );
+            background-size: 100% 8px;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateY(0%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #00f0ff;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+        
+        .neon-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px #00f0ff, 0 0 20px #00a2ff;
+        }
+        
+        .neon-btn:hover {
+            box-shadow: 0 0 15px #00f0ff, 0 0 30px #00a2ff, 0 0 45px #0062ff;
+            transform: translateY(-2px);
+        }
+        
+        .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+            transition: all 0.5s;
+        }
+        
+        .neon-btn:hover::before {
+            left: 100%;
+        }
+        
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.2;
         }
     </style>
 </head>
-<body>
-    <div class="error-container">
-        <div class="error-image-container">
-            <img src="/images/404.png" alt="404 Error" class="error-image">
+<body class="relative">
+    <div class="grid-overlay"></div>
+    <div class="scanline"></div>
+    
+    <!-- Matrix rain effect -->
+    <canvas id="matrix" class="matrix-rain"></canvas>
+    
+    <div class="container mx-auto px-4 h-full flex flex-col justify-center items-center">
+        <div class="text-center mb-12 relative">
+            <h1 class="text-9xl font-bold cyberpunk-font neon-text glitch mb-4" data-text="404">404</h1>
+            <h2 class="text-4xl cyberpunk-font neon-pink mb-6">SYSTEM ERROR</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">
+                <span class="neon-purple">>></span> 
+                <span id="terminal-text"></span>
+                <span class="terminal-cursor"></span>
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 mt-10">
+                <a href="/" class="neon-btn px-8 py-3 rounded-full border-2 border-cyan-400 text-cyan-400 font-bold text-lg uppercase tracking-wider">
+                    <i class="fas fa-home mr-2"></i> Return Home
+                </a>
+            </div>
         </div>
-        <div class="error-content">
-            <h1 class="error-title">Page not found<br><span>ERROR 404</span></h1>
-            <p class="error-message">Looks like the page doesn't exist</p>
-            <p>Back to <a href="/" class="home-link">home</a></p>
+        
+        <div class="absolute bottom-10 left-0 right-0 text-center text-sm opacity-70">
+            <p>Neon City Systems v3.2.7 | Connection lost | Firewall active</p>
         </div>
     </div>
+    
+    <script>
+        // Terminal typing effect
+        const terminalText = document.getElementById('terminal-text');
+        const messages = [
+            "ERROR: Page not found in current dimension.",
+            "WARNING: Quantum link disrupted.",
+            "ALERT: You've entered a null sector.",
+            "INFO: Try rerouting through main hub.",
+            "SYSTEM: Firewall protocols engaged."
+        ];
+        
+        let messageIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        function typeTerminalText() {
+            const currentMessage = messages[messageIndex];
+            
+            if (isDeleting) {
+                terminalText.textContent = currentMessage.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                terminalText.textContent = currentMessage.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            if (!isDeleting && charIndex === currentMessage.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                messageIndex = (messageIndex + 1) % messages.length;
+            }
+            
+            const typingSpeed = isDeleting ? 50 : 100;
+            setTimeout(typeTerminalText, typingSpeed + Math.random() * 50);
+        }
+        
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+        
+        const alphabet = katakana + latin + nums + symbols;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+        
+        function drawMatrixRain() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+        
+        // Initialize effects
+        window.addEventListener('load', () => {
+            typeTerminalText();
+            setInterval(drawMatrixRain, 30);
+        });
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 </body>
+</html>

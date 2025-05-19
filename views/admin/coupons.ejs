@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroMania - Categories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Font Awesome (for modals) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .brand-name {
+            font-family: 'Bellefair', serif;
+            font-size: 28px;
+            font-weight: normal;
+            text-decoration: none;
+            color: #192430;
+        }
+
+        .new-btn-2{
+                background-color: #3e29a8;
+                border-radius: 10px;
+                width: fit-content;
+                color: #e0e0e0;
+            }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-right .search-container {
+            position: relative;
+        }
+
+        .nav-right input {
+            padding: 8px 15px 8px 35px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            width: 200px;
+            font-size: 14px;
+            background: #f5f5f5;
+        }
+
+        .nav-right .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 16px;
+        }
+
+        .nav-right .new-btn {
+            background: #3b6da1;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .nav-right .new-btn:hover {
+            background: #2d5480;
+        }
+
+        .nav-right .filter-btn {
+            color: #666;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .nav-right a.profile-icon {
+            color: #666;
+            font-size: 24px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-right a.profile-icon:hover {
+            color: #28517D;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #f9f9f9;
+            padding: 20px 0;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: #192430;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            position: relative;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .sidebar a.active {
+            background: #3b6da1;
+            color: white;
+        }
+
+        .sidebar a:hover {
+            background: #d9dbdd;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 30px 30px;
+            flex: 1;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            color: #192430;
+            margin-bottom: 20px;
+        }
+
+        /* Filters and Search */
+        .filter-search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .filter-select {
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            max-width: 180px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .search-container input {
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .search-container button {
+            background: #3b6da1;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background: #2d5480;
+        }
+
+        /* Category Table */
+        .category-table {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-table table {
+            width: 100%;
+        }
+
+        .category-table th {
+            background: #3b6da1;
+            color: white;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .category-table td {
+            padding: 12px;
+            font-size: 14px;
+            color: #192430;
+            vertical-align: middle;
+        }
+
+        .category-table .category-description {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .category-table .actions button {
+            color: #4a00e0;
+            font-size: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .category-table .actions button:hover {
+            color: #28517D;
+        }
+
+        /* Pagination */
+        .pagination-custom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .pagination-custom .page-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pagination-custom .page-nav a {
+            color: #666;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .pagination-custom .page-nav a.active {
+            background: #e0e0e0;
+        }
+
+        .pagination-custom .page-nav a:hover {
+            background: #f5f5f5;
+        }
+
+        /* Modal Image Upload (for Edit Modal only) */
+        .image-upload-slot {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .image-upload-dropzone {
+            width: 100%;
+            height: 100%;
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .image-upload-dropzone i {
+            font-size: 24px;
+            color: #666;
+        }
+
+        .image-upload-dropzone p {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+
+        .image-preview {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .image-preview .remove-image-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff0101;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .image-upload-slot.filled .image-upload-dropzone {
+            display: none;
+        }
+
+        .image-upload-slot.filled .image-preview {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 200px;
+            }
+
+            .nav-right input {
+                width: 150px;
+            }
+
+            .category-table th,
+            .category-table td {
+                font-size: 13px;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: static;
+                top: auto;
+                padding: 10px 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .navbar {
+                padding: 10px 20px;
+            }
+
+            .brand-name {
+                font-size: 24px;
+            }
+
+            .nav-right {
+                gap: 15px;
+            }
+
+            .nav-right input {
+                width: 120px;
+                padding: 6px 12px 6px 30px;
+            }
+
+            .nav-right .new-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .category-table th,
+            .category-table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .category-table .actions button {
+                font-size: 14px;
+            }
+
+            .filter-search-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .filter-select,
+            .search-container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 15px;
+                height: auto;
+            }
+
+            .brand-name {
+                margin-bottom: 10px;
+            }
+
+            .nav-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .nav-right input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .nav-right .new-btn {
+                width: 100%;
+            }
+
+            .category-table {
+                overflow-x: auto;
+            }
+
+            .category-table th,
+            .category-table td {
+                font-size: 11px;
+                padding: 6px;
+            }
+
+            .category-table .actions button {
+                font-size: 12px;
+            }
+
+          
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/admin" class="brand-name">ElectroMania</a>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/admin/dashboard"><i class="bi bi-grid"></i> Dashboard</a>
+        <a href="/admin/categories" class="active"><i class="bi bi-tag"></i> Categories</a>
+        <a href="/admin/products"><i class="bi bi-box"></i> Products</a>
+        <a href="/admin/customers"><i class="bi bi-people"></i> Customers</a>
+        <a href="/admin/orders"><i class="bi bi-cart"></i> Orders</a>
+        <a href="/admin/coupons"><i class="bi bi-ticket"></i> Coupons</a>
+        <a href="/admin/sales-report"><i class="bi bi-bar-chart"></i> Sales Report</a>
+        <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2 class="dashboard-title">Coupons</h2>
+
+        <!-- Filters and Search -->
+        <div class="filter-search-container">
+            <div>
+                <select class="filter-select">
+                    <option disabled hidden>Filter ⇅</option>
+                    <option value="1" <%= selectedFilter === undefined ? 'selected' : '' %>>All</option>
+                    <option value="true" <%= selectedFilter === 'true' ? 'selected' : '' %>>Active</option>
+                    <option value="false" <%= selectedFilter === 'false' ? 'selected' : '' %>>Blocked</option>
+                </select>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <button type="button" class="new-btn-2 btn" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                    New
+                </button>
+                <form class="search-container" id="searchForm">
+                    <input id="searchInput" type="search" placeholder="Search category name..." value="<%= searchQuery || '' %>">
+                    <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Category Modal -->
+        <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 700px;">
+                <div class="modal-content shadow-lg border-0 rounded-3">
+                    <div class="modal-header text-white" style="background-color: #3e29a8; height: 50px;">
+                        <h5 class="modal-title fw-bold" id="addCategoryModalLabel">Add Category</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form  id="addCategoryForm" >
+                            <div class="mb-4">
+                                <label for="addName" class="form-label fw-semibold">Category Name</label>
+                                <input type="text" class="form-control rounded-3" id="addName" name="addName" placeholder="Enter Category Name">
+                                <div id="addNameError" style="font-size: 0.8em; color: #ff0101;"></div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="addDescription" class="form-label fw-semibold">Category Description</label>
+                                <textarea class="form-control rounded-3" id="addDescription" name="addDescription" rows="3" placeholder="Enter Category Description"></textarea>
+                                <div id="addDescriptionError" style="font-size: 0.8em; color: #ff0101;"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div class="w-50 me-2">
+                                    <label for="addStatus" class="form-label fw-semibold">Visibility Status</label>
+                                    <select class="form-select rounded-3" id="addStatus" name="addStatus">
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn px-4 py-2 text-white shadow-sm align-self-end" style="background-color: #3e29a8;">
+                                    <i class="fa fa-plus-circle me-2"></i> Add Category
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Category Modal -->
+        <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 700px;">
+                <div class="modal-content shadow-lg border-0 rounded-3">
+                    <div class="modal-header text-white" style="background-color: #3e29a8; height: 50px;">
+                      
+                        <h5 class="modal-title fw-bold" id="editCategoryModalLabel">Update Category</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form id="editCategoryForm"  class="needs-validation" novalidate>
+                            <div class="mb-4">
+                                <label for="editName" class="form-label fw-semibold">Category Name</label>
+                                <input type="text" class="form-control rounded-3" id="editName" name="editName" placeholder="Enter Category Name" >
+                                <div id="editNameError" style="font-size: 0.8em; color: #ff0101;"></div>
+                            </div>
+                            <div class="d-flex w-100 gap-5">
+                                <div class="mb-4 w-100">
+                                    <label for="editDescription" class="form-label fw-semibold">Category Description</label>
+                                    <input type="hidden" id="originalCategoryName" name="originalCategoryName">
+                                    <textarea class="form-control rounded-3" id="editDescription" name="editDescription" rows="3" placeholder="Enter Category Description"></textarea>
+                                    <div id="editDescriptionError" style="font-size: 0.8em; color: #ff0101;"></div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div class="w-50 me-2">
+                                    <label for="editStatus" class="form-label fw-semibold">Visibility Status</label>
+                                    <select class="form-select rounded-3" id="editStatus" name="editStatus">
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn px-4 py-2 text-white shadow-sm align-self-end" style="background-color: #3e29a8;">
+                                    <i class="fa fa-check-circle me-2"></i> Update Category
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Table -->
+        <div class="category-table">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>SL No</th>
+                        <th class="text-start ps-5">Coupon Name</th>
+                        <th>Coupon Code</th>
+                        <th>Start Date</th>
+                        <th>Expiry Date</th>
+                        <th>Min Price</th>
+                        <th>Offer Price</th>
+                        <th>Used</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(coupons && coupons.length>0){ %>
+                    <% coupons.forEach((category, index) => { %>
+                    <tr>
+                        <td><%= category.name %></td>
+                        <td class="category-description"><%= category.description %></td>
+                        <td><%= category.itemsCount %></td>
+                        <td><%= new Date(category.createdAt).toLocaleString("en-IN", { 
+                            day: "2-digit", 
+                            month: "short", 
+                            year: "numeric", 
+                            timeZone: "Asia/Kolkata"
+                        }) %></td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <p style="color: #3e29a8; margin: 0;" class="<%= category.visibility ? '' : 'd-none' %>">
+                                    <i class="fa-solid fa-eye"></i>
+                                </p>   
+                                <p style="color: #9c9999; margin: 0;" class="<%= category.visibility ? 'd-none' : '' %>">
+                                    <i class="fa-solid fa-eye-slash"></i>
+                                </p>
+                            </div>
+                        </td>
+                        <td class="actions">
+                            <button 
+                                class="btn btn-sm" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editCategoryModal"
+                                onclick="openEditModal(
+                                    '<%= category.name %>', 
+                                    '<%= category.description %>', 
+                                    '<%= category.visibility %>',
+                                )">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-custom">
+            <div class="page-nav">
+                <% if (currentPage > 1) { %>
+                    <a href="?page=<%= currentPage - 1 %>">«</a>
+                <% } %>
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                    <a href="?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                    <a href="?page=<%= currentPage + 1 %>">»</a>
+                <% } %>
+            </div>
+        </div>
+    </div>

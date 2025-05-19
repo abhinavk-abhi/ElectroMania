@@ -60,6 +60,9 @@ app.use((req, res, next) => {
 app.use("/user", userRoute);
 app.use("/admin", adminRoute);
 app.use("/", homeRoute);
+app.get('*',(req,res)=>{
+  res.render("404")
+})
 
 
 

@@ -43,5 +43,6 @@ router.post('/orderReturn',adminAuth.checkSession,adminOrder.orderReturn)
 
 //Coupon
 router.get('/coupons',adminAuth.checkSession,couponController.loadCoupons)
+router.post('/coupons',adminAuth.checkSession,couponController.addCoupon)
 
 export default router;

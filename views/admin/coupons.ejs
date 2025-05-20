@@ -14,9 +14,8 @@
     <style>
         :root {
     --primary-color: #3b6da1;
-    --secondary-color: #2ecc71;
-    --font-color: #333;
-    --bg-color: #f9f9f9;
+    --success : #0eb96a;
+    --danger : #b90e0e
 }
         * {
             margin: 0;
@@ -368,6 +367,21 @@
             display: block;
         }
 
+        .stock-color {
+            background-color: var(--success);
+            border-radius: 28px;
+            padding: 9px 8px;
+            width: 100px;
+            }
+
+        .no-stock-color {
+            background-color: var(--danger);
+            border-radius: 28px;
+            padding: 9px 8px;
+            width: 100px;
+        }
+
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
@@ -550,7 +564,7 @@
                 <div class="modal fade" id="addCouponModal" tabindex="-1" aria-labelledby="addCouponModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 700px;">
                         <div class="modal-content shadow-lg border-0 rounded-3">
-                            <div class="modal-header text-white" style="background-color: var(--secondary); height: 50px;">
+                            <div class="modal-header text-white" style="background-color: var(--primary-color); height: 50px;">
                                 <h5 class="modal-title fw-bold" id="addCouponModalLabel">Add new Coupon</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
@@ -608,7 +622,7 @@
                                             </select>
                                         </div>
 
-                                        <button type="submit" class="btn w-50 px-4 py-2 text-white shadow-sm align-self-end" style="background-color: var(--secondary);">
+                                        <button type="submit" class="btn w-50 px-4 py-2 text-white shadow-sm align-self-end" style="background-color: var(--primary-color);">
                                             <i class="fa fa-plus-circle me-2"></i> Add Coupon
                                         </button>
                                     </div>
@@ -622,7 +636,7 @@
                 <div class="modal fade" id="editCouponModal" tabindex="-1" aria-labelledby="editCouponModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 700px;">
                         <div class="modal-content shadow-lg border-0 rounded-3">
-                            <div class="modal-header text-white" style="background-color: var(--secondary); height: 50px;">
+                            <div class="modal-header text-white" style="background-color: var(--primary-color); height: 50px;">
                                 <input type="hidden" id="originalCouponName" name="originalCouponName">
                                 <h5 class="modal-title fw-bold" id="editCouponModalLabel">Update Coupon</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -685,7 +699,7 @@
                                                 <option value="multi-use">Reusable</option>
                                             </select>
                                         </div>
-                                        <button type="submit" class="w-100 btn px-4 py-2 text-white shadow-sm align-self-end" style="background-color: var(--secondary);">
+                                        <button type="submit" class="w-100 btn px-4 py-2 text-white shadow-sm align-self-end" style="background-color: var(--primary-color);">
                                             <i class="fa fa-check-circle me-2"></i> Update Coupon
                                         </button>
                                     </div>
@@ -698,60 +712,67 @@
         <!-- Category Table -->
         <div class="category-table">
             <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>SL No</th>
-                        <th class="text-start ps-5">Coupon Name</th>
-                        <th>Coupon Code</th>
-                        <th>Start Date</th>
-                        <th>Expiry Date</th>
-                        <th>Min Price</th>
-                        <th>Offer Price</th>
-                        <th>Used</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if(coupons && coupons.length>0){ %>
-                    <% coupons.forEach((coupon, index) => { %>
-                    <tr>
-                        <td><%= coupon.name %></td>
-                        <td class="category-description"><%= coupon.description %></td>
-                        <td><%= coupon.itemsCount %></td>
-                        <td><%= new Date(coupon.createdAt).toLocaleString("en-IN", { 
-                            day: "2-digit", 
-                            month: "short", 
-                            year: "numeric", 
-                            timeZone: "Asia/Kolkata"
-                        }) %></td>
-                        <td>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <p style="color: #3e29a8; margin: 0;" class="<%= category.visibility ? '' : 'd-none' %>">
-                                    <i class="fa-solid fa-eye"></i>
-                                </p>   
-                                <p style="color: #9c9999; margin: 0;" class="<%= category.visibility ? 'd-none' : '' %>">
-                                    <i class="fa-solid fa-eye-slash"></i>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="actions">
-                            <button 
-                                class="btn btn-sm" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#editCategoryModal"
-                                onclick="openEditModal(
-                                    '<%= coupon.name %>', 
-                                    '<%= coupon.description %>', 
-                                    '<%= coupon.visibility %>',
-                                )">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <% }) %>
-                    <% } %>
-                </tbody>
+               <thead>
+                                        <tr>
+                                            <th>SL No</th>
+                                            <th class="text-start ps-5">Coupon Name</th>
+                                            <th>Coupon Code</th>
+                                            <th>Start Date</th>
+                                            <th>Expiry Date</th>
+                                            <th>Min Price</th>
+                                            <th>Offer Price</th>
+                                            <th>Used</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% coupons.reverse().forEach((coupon, index) => { %>
+                                        <tr>
+                                            <td><%= index + 1 %></td>
+                                            <td class="text-start ps-4"><%= coupon.name %></td>
+                                            <td><%= coupon.code %></td>
+                                            <td><%= new Date(coupon.startDate).toLocaleDateString("en-GB") %></td>
+                                            <td><%= new Date(coupon.expiryDate).toLocaleDateString("en-GB") %></td>
+                                            <td><%= coupon.minPrice %></td>
+                                            <td><%= coupon.offerPrice %></td>
+                                            <td><%= coupon.used %></td>
+                                            <td>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <p style=" margin: 0;" class="badge stock-color <%= coupon.status === 'Active' ? '' : 'd-none' %>">
+                                                        Active
+                                                    </p>   
+                                                    <p style="margin: 0;" class="badge no-stock-color <%= coupon.status === 'Active' ? 'd-none' : '' %>">
+                                                        Expired
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button 
+                                                    class="btn btn-sm me-2" 
+                                                    style="color: var(--secondary);"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editCouponModal"
+                                                    onclick="openEditModal(
+                                                        '<%= coupon.name %>',
+                                                        '<%= coupon.code %>', 
+                                                        '<%= coupon.description %>', 
+                                                        '<%= coupon.startDate.toISOString %>', 
+                                                        '<%= coupon.expiryDate.toISOString %>',
+                                                        '<%= coupon.minPrice %>',
+                                                        '<%= coupon.offerPrice %>',
+                                                        '<%= coupon.status %>',
+                                                        '<%= coupon.usageType %>'
+                                                    )">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                                <button class="deleteButton btn btn-sm me-2" data-coupon-name="<%= coupon.name %>">
+                                                    <i class="fa-solid fa-trash" style="color: var(--secondary);"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                    </tbody>
             </table>
         </div>
 

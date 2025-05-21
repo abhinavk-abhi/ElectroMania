@@ -10,6 +10,7 @@ import connectDB from "./config/db.js";
 import session from "express-session";
 import passport from "./config/passport.js";
 import expressLayouts from 'express-ejs-layouts'
+import Product from './model/productModel.js'
 env.config();
 connectDB();
 
@@ -60,9 +61,7 @@ app.use((req, res, next) => {
 app.use("/user", userRoute);
 app.use("/admin", adminRoute);
 app.use("/", homeRoute);
-app.get('*',(req,res)=>{
-  res.render("404")
-})
+
 
 
 
@@ -73,9 +72,11 @@ app.get(
 app.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/register" }),
-  (req, res) => {
+  async (req, res) => {
     req.session.user = req.user;
-    res.render("home");
+    const limit = 8;
+    const products = await Product.find({}).sort({createdAt : -1}).limit(limit)
+    res.render("home",{products});
   }
 );
 

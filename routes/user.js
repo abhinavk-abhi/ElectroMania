@@ -60,6 +60,7 @@
     router.get('/addAddress',userAuth.isLogin,addressController.loadAddAddress)
     router.post('/address',userAuth.isLogin,addressController.newAddress)
     router.get('/editaddress',userAuth.isLogin,addressController.loadEditAddress);
+    
     router.delete('/address',userAuth.isLogin,addressController.deleteAddress)
     router.get('/checkOutAddress',userAuth.isLogin,addressController.addCheckOutAddress)
     router.post('/checkOutAddress',userAuth.isLogin,addressController.saveCheckOutAddress)

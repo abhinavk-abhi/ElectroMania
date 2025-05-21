@@ -458,7 +458,7 @@
                               </a>
                           </li>
                           <li>
-                              <form id="deleteAddressForm">
+                              <form id="deleteAddressForm" class="deleteForm">
                                   <input type="hidden" name="userId" class="userId" id="userId" value="<%= address.userId %>">
                                   <input type="hidden" name="index" class="index" id="index" value="<%= index %>">
                                   <button type="submit" class="dropdown-item text-danger">Delete</button>
@@ -478,17 +478,19 @@
       </div>
     </div>
 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
         <script>
           document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("addresses").classList.add("active");
           })
 
-          const deleteForm = document.getElementById('deleteAddressForm')
+          const deleteForm = document.querySelectorAll(".deleteForm")
 
           const userId = document.getElementById('userId').value 
           const index = document.getElementById('index').value
 
-          deleteForm.addEventListener('submit', async (event)=>{
+          deleteForm.forEach((address) =>{
+          address.addEventListener('submit', async (event)=>{
             event.preventDefault()
 
             const result = await Swal.fire({
@@ -526,5 +528,6 @@
                 }
                 
               }         
+          })
           })
         </script>

@@ -17,6 +17,7 @@ const loadCheckOut = async (req,res)=>{
     const user = await User.findOne({_id:userId})
     const address = await Address.find({userId})
     const cart = await Cart.findOne({userId}).populate('items.productId')
+    
    
 
     let cartTotal = 0;
@@ -33,10 +34,11 @@ const loadCheckOut = async (req,res)=>{
 
     const coupons = await Coupon.find({
         status : 'Active',
-        startDate : { $lte : currentDate},
-        expiryData : { $gte : currentDate},
-        minPricee : { $lte : grandTotal}
+        startDate : {$lte : currentDate},
+        expiryDate : {$gte : currentDate},
+        minPrice : {$lte : grandTotal}
     });
+   
 
     res.render('user/checkout' , { coupons , user , address , cart , calculatedValues : { cartTotal , deliveryCharge , grandTotal }})
 

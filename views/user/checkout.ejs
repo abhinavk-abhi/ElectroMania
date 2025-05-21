@@ -109,10 +109,45 @@
             margin-top: 10px;
             display: none;
         }
+         .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dotted #d1479260;
+        }
+                /* Coupon styles */
+        .coupon-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .coupon-container select {
+            flex-grow: 1;
+            margin-right: 10px;
+            margin-bottom: 0;
+            max-width: 75%;
+        }
+                .apply-coupon-btn { 
+            background-color: #2d27a0;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .apply-coupon-btn:hover {
+            background-color: #b13f7d;
+        }
+
     </style>
 </head>
 <body>
-    <!-- Include your header here -->
+    <%- include ('../partials/header') %>
     
     <div class="checkout-container">
         <h1 class="mb-4">Checkout</h1>
@@ -162,7 +197,8 @@
             </div>
             
             <!-- 2. Payment Method Selection -->
-            <div class="checkout-section">
+             <div class="checkout-section d-flex justify-content-between " >
+            <div class="checkout-section w-50">
                 <div class="section-title">
                     <i class="fas fa-credit-card me-2"></i> Payment Method
                 </div>
@@ -226,6 +262,29 @@
                     </div>
                 </div>
             </div>
+               <div>
+                 <div class="price-item">
+                    <span>Available Coupon</span>
+                    <div class="coupon-container">
+                        <select id="couponSelect">
+                            <option value="">Select Available Coupon</option>
+                            <% if (coupons && coupons.length> 0) { %>
+                                <% coupons.forEach(coupon=> { %>
+                                    <option value="<%= coupon._id %>" data-discount="<%= coupon.offerPrice %>"
+                                        data-name="<%= coupon.name %>" data-min="<%= coupon.minimumPrice %>">
+                                        <%= coupon.name %> - ₹<%= coupon.offerPrice %> Off (Min: ₹<%=
+                                                    coupon.minimumPrice %>)
+                                    </option>
+                                    <% }); %>
+                                        <% } %>
+                        </select>
+                        <button id="applyCouponBtn" class="apply-coupon-btn">Apply</button>
+                    </div>
+                </div>
+               </div>    
+            </div>
+
+            
             
             <!-- 3. Order Summary -->
             <div class="checkout-section">
@@ -325,8 +384,12 @@
             const paymentRadios = document.querySelectorAll('.payment-radio');
             const continueBtn = document.getElementById('continueBtn');
             const errorMessage = document.getElementById('errorMessage');
-            const applyCouponBtn = document.getElementById('applyCoupon');
-         
+            const couponSelect = document.getElementById('couponSelect');
+            const applyCouponBtn = document.getElementById('applyCouponBtn');
+            let totalAmount = '<%= calculatedValues.grandTotal %>';
+            let appliedCouponId = null;
+            let appliedCouponDiscount = 0;
+            let originalTotal = parseFloat(totalAmount);
         
             // Add click events to address cards
             document.querySelectorAll('.address-card').forEach(card => {
@@ -493,6 +556,100 @@
              }
         }
     })
+
+        applyCouponBtn.addEventListener('click', function () {
+                // If a coupon is already applied, this will be a "Remove" action
+                if (appliedCouponId) {
+                    // Remove coupon discount
+                    appliedCouponId = null;
+                    appliedCouponDiscount = 0;
+
+                    // Hide the coupon discount row
+                    document.getElementById('couponDiscountRow').style.display = 'none';
+
+                    // Reset total to original amount
+                    document.getElementById('orderTotal').textContent = `₹${originalTotal.toFixed(2)}`;
+
+                    const selectedOption = couponSelect.options[couponSelect.selectedIndex];
+                    if (selectedOption.dataset.fullText) {
+                        selectedOption.text = selectedOption.dataset.fullText;
+                    }
+
+                    // Reset the select dropdown
+                    couponSelect.disabled = false;
+                    couponSelect.selectedIndex = 0;
+
+                    // Change button text back to "Apply"
+                    applyCouponBtn.textContent = 'Apply';
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Coupon Removed',
+                        text: 'The coupon has been removed from your order.',
+                        confirmButtonColor: '#d14792',
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    })
+
+                    return;
+                }
+
+                // This is an "Apply" action
+                const selectedCoupon = couponSelect.options[couponSelect.selectedIndex];
+                const couponId = couponSelect.value;
+
+                if (!couponId) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No Coupon Selected',
+                        text: 'Please select a coupon from the dropdown.',
+                        confirmButtonColor: '#d14792'
+                    });
+                    return;
+                }
+
+                const discount = parseFloat(selectedCoupon.dataset.discount) || 0;
+                const couponName = selectedCoupon.dataset.name || 'Coupon';
+                const minAmount = parseFloat(selectedCoupon.dataset.min) || 0;
+
+                // Check if order meets minimum amount requirement
+                if (originalTotal < minAmount) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Cannot Apply Coupon',
+                        text: `This coupon requires a minimum order of ₹${minAmount.toFixed(2)}.`,
+                        confirmButtonColor: '#d14792'
+                    });
+                    return;
+                }
+
+                // Display the coupon discount
+                document.getElementById('couponDiscount').textContent = `-₹${discount.toFixed(2)}`;
+                document.getElementById('couponDiscountRow').style.display = 'flex';
+
+                // Calculate new total with discount
+                const newTotal = Math.max(0, originalTotal - discount);
+                document.getElementById('orderTotal').textContent = `₹${newTotal.toFixed(2)}`;
+
+                // Store the applied coupon info
+                appliedCouponId = couponId;
+                appliedCouponDiscount = discount;
+
+                // Disable the select dropdown while coupon is applied
+                couponSelect.disabled = true;
+
+                // Change button text to "Remove"
+                applyCouponBtn.textContent = 'Remove';
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Coupon Applied!',
+                    text: `${couponName} has been applied to your order.`,
+                    confirmButtonColor: '#d14792',
+                    timer: 1500
+                });
+            });
                 
 
     </script>

@@ -221,19 +221,13 @@
                           </div>
                       </div>
                           <div id="addressTypeError" style="font-size: 0.8em; color: #ff0101;"></div>
-                          
+                          <input type="hidden" name="_id" id="_id" value="<%= address._id %>">
+
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn" style="background-color: #6510DC; color: #ffffff;">Save Address</button>
                                 <button type="button" class="btn btn-secondary" onclick="window.history.back();">Cancel</button>
-                            </div>
-                            <!-- <div class="d-flex align-items-center gap-2">
-                                <input type="radio" name="addressType" id="addressHome" value="home">
-                                <label for="addressType">Home</label>
-                                <input type="radio" name="addressType" id="addressWork" value="work">
-                                <label for="addressType">Work</label>
-                                <div id="addressTypeError" style="font-size: 0.8em; color: #ff0101;"></div>
-                            </div> -->                      
+                            </div>              
                                                    
                         </div>
                     </form>
@@ -258,6 +252,7 @@
             const altNumber = document.getElementById('altNumber').value;
             const zipCode = document.getElementById('zipCode').value;
             const addressType = document.querySelector('input[name="addressType"]:checked')?.value;
+            const _id = document.getElementById('_id').value;
 
             const errors = {
                 name: document.getElementById("nameError"),
@@ -325,10 +320,10 @@
             // Stop if validation fails
             if (hasError) return;
 
-            const formData = { name, phone, addressLine1, addressLine2, landmark, city, state, country, altNumber, zipCode, addressType }
+            const formData = { _id, name, phone, addressLine1, addressLine2, landmark, city, state, country, altNumber, zipCode, addressType }
 
             try {
-                const response = await fetch('/user/address', {
+                const response = await fetch('/user/editAddress', {
                     method : 'POST',
                     headers : { 'Content-Type' : 'application/json'},
                     body : JSON.stringify(formData)

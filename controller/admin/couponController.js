@@ -61,6 +61,7 @@ const addCoupon = async (req,res)=>{
 
          return res.status(200).json({ message: 'Coupon added successfully' });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error : "Internal server error"})
     }
 } 
@@ -100,7 +101,7 @@ const editCoupon = async (req,res)=>{
     )
 
     if(coupon) {
-        return res.statur(200).json({ message : "Coupon updated successfully"})
+        return res.status(200).json({ message : "Coupon updated successfully"})
     } else {
         return res.status(400).json({ error : "Coupon update failed"})
     }

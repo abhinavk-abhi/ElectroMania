@@ -153,8 +153,13 @@
         <h1 class="mb-4">Checkout</h1>
         
         <form id="checkoutForm">
+           
+            
+       <!-- Address and Paymetn section -->
+             <div class="checkout-section d-flex justify-content-between " >
+
             <!-- 1. Address Selection Section -->
-            <div class="checkout-section">
+            <div class="checkout-section w-50">
                 <div class="section-title">
                     <i class="fas fa-map-marker-alt me-2"></i> Delivery Address
                 </div>
@@ -195,9 +200,9 @@
                     <% } %>
                     </div>
             </div>
-            
-            <!-- 2. Payment Method Selection -->
-             <div class="checkout-section d-flex justify-content-between " >
+
+
+     <!-- 2. Payment Method Selection -->
             <div class="checkout-section w-50">
                 <div class="section-title">
                     <i class="fas fa-credit-card me-2"></i> Payment Method
@@ -263,24 +268,7 @@
                 </div>
             </div>
                <div>
-                 <div class="price-item">
-                    <span>Available Coupon</span>
-                    <div class="coupon-container">
-                        <select id="couponSelect">
-                            <option value="">Select Available Coupon</option>
-                            <% if (coupons && coupons.length> 0) { %>
-                                <% coupons.forEach(coupon=> { %>
-                                    <option value="<%= coupon._id %>" data-discount="<%= coupon.offerPrice %>"
-                                        data-name="<%= coupon.name %>" data-min="<%= coupon.minimumPrice %>">
-                                        <%= coupon.name %> - ₹<%= coupon.offerPrice %> Off (Min: ₹<%=
-                                                    coupon.minimumPrice %>)
-                                    </option>
-                                    <% }); %>
-                                        <% } %>
-                        </select>
-                        <button id="applyCouponBtn" class="apply-coupon-btn">Apply</button>
-                    </div>
-                </div>
+                
                </div>    
             </div>
 
@@ -327,7 +315,7 @@
                                 </span>
                             </div>
                             
-                            <div id="appliedCouponRow" class="price-row" style="display: none;">
+                            <div id="couponDiscountRow" class="price-row" style="display: none;">
                                 <span>Coupon Discount</span>
                                 <span id="couponDiscount">-₹0.00</span>
                             </div>
@@ -340,17 +328,21 @@
                         
                         <!-- Coupon Section -->
                         <% if (coupons && coupons.length > 0) { %>
-                            <div class="coupon-section">
+                            <div class="coupon-section w-50">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code">
-                                    <button class="btn btn-outline-secondary" type="button" id="applyCoupon">Apply</button>
+                                    <select class="form-select " id="couponSelect">
+                                        <option value="" selected>Select a coupon</option>
+                                        <% coupons.forEach((coupon) => { %>
+                                            <option value="<%= coupon._id %>" 
+                                                    data-discount="<%= coupon.offerPrice %>"
+                                                    data-name="<%= coupon.name %>" 
+                                                    data-min="<%= coupon.minPrice %>">
+                                                <%= coupon.code %> - ₹<%= coupon.offerPrice %> OFF (Min: ₹<%= coupon.minPrice %>)
+                                        </option>
+                                        <% }); %>
+                                    </select>
+                                    <button class="btn btn-outline-secondary" type="button" id="applyCouponBtn" >Apply</button>
                                 </div>
-                                <small class="text-muted">Available coupons: 
-                                    <% coupons.forEach((coupon, index) => { %>
-                                        <span class="badge bg-light text-dark"><%= coupon.code %></span>
-                                        <%= index < coupons.length - 1 ? ',' : '' %>
-                                    <% }); %>
-                                </small>
                             </div>
                         <% } %>
                     <% } else { %>
@@ -386,10 +378,10 @@
             const errorMessage = document.getElementById('errorMessage');
             const couponSelect = document.getElementById('couponSelect');
             const applyCouponBtn = document.getElementById('applyCouponBtn');
-            let totalAmount = '<%= calculatedValues.grandTotal %>';
+            let totalAmount = document.getElementById('grandTotal')
             let appliedCouponId = null;
             let appliedCouponDiscount = 0;
-            let originalTotal = parseFloat(totalAmount);
+            let originalTotal = parseFloat(totalAmount.value);
         
             // Add click events to address cards
             document.querySelectorAll('.address-card').forEach(card => {
@@ -456,31 +448,7 @@
                 });
             }
             
-            // Apply coupon functionality
-            if (applyCouponBtn) {
-                applyCouponBtn.addEventListener('click', function() {
-                    const couponCode = document.getElementById('couponCode').value;
-                    if (!couponCode) {
-                        showError('Please enter a coupon code');
-                        return;
-                    }
-                    
-                    // Here you would normally validate the coupon with the server
-                    // For now, we'll just show a dummy discount
-                    document.getElementById('appliedCouponRow').style.display = 'flex';
-                    document.getElementById('couponDiscount').textContent = '-₹100.00';
-                    
-                    // Update the grand total (simulated)
-                    const currentTotal = parseFloat('<%= calculatedValues.grandTotal %>');
-                    const discountAmount = 100;
-                    document.getElementById('grandTotal').textContent = '₹' + (currentTotal - discountAmount).toFixed(2);
-                    
-                    // Disable the coupon input and button
-                    document.getElementById('couponCode').disabled = true;
-                    applyCouponBtn.disabled = true;
-                    applyCouponBtn.textContent = 'Applied';
-                });
-            }
+           
             
             // Function to show error message
             function showError(message) {
@@ -555,7 +523,7 @@
                 continueBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Complete Order';
              }
         }
-    })
+  
 
         applyCouponBtn.addEventListener('click', function () {
                 // If a coupon is already applied, this will be a "Remove" action
@@ -566,14 +534,16 @@
 
                     // Hide the coupon discount row
                     document.getElementById('couponDiscountRow').style.display = 'none';
+                    
 
                     // Reset total to original amount
-                    document.getElementById('orderTotal').textContent = `₹${originalTotal.toFixed(2)}`;
+                    document.getElementById('grandTotal').textContent = `₹${originalTotal.toFixed(2)}`;
 
                     const selectedOption = couponSelect.options[couponSelect.selectedIndex];
                     if (selectedOption.dataset.fullText) {
                         selectedOption.text = selectedOption.dataset.fullText;
                     }
+                    console.log(selectedOption)
 
                     // Reset the select dropdown
                     couponSelect.disabled = false;
@@ -651,7 +621,8 @@
                 });
             });
                 
-
+  })
     </script>
 </body>
 </html>
+

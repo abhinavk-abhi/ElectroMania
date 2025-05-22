@@ -217,6 +217,46 @@ const saveCheckOutAddress = async (req,res)=>{
     }
 }
 
+const editAddress = async (req,res)=>{
+    try {
+
+        const  { _id, name, phone, addressLine1, addressLine2, landmark, city, state, country, altNumber, zipCode, addressType } = req.body;
+        const userId = req.session.user?.id ?? req.session.user?._id ?? null;
+        
+        if(!userId ){
+            return res.status(400).json({ error : "UserId is required"})
+        }
+
+        if(!name || !phone || !zipCode || !addressLine1 || !city || !state || !addressType ){
+            return res.status(400).json({ error : "All fields are required"})
+        }
+
+        let userAddress = await Address.findOne({ userId });
+
+        const address = userAddress.details.find(addr => addr._id.toString() === _id.toString());
+
+        address.name = name;
+        address.phone = phone;
+        address.addressLine1 = addressLine1;
+        address.addressLine2 = addressLine2;
+        address.landmark = landmark;
+        address.city = city;
+        address.state = state;
+        address.country = country;
+        address.altNumber = altNumber;
+        address.zipCode = zipCode;
+        address.addressType = addressType;
+
+        await address.save()
+        
+        return res.status(200).json({ message : "Address updated successfully."})
+        
+    } catch (error) {
+        console.log("Edit address error => "+error)
+        return res.status(500).json({ error : "Failed to update address" })
+    }
+}
+
 export default {
     loadAddress,
     newAddress,
@@ -224,6 +264,6 @@ export default {
     loadAddAddress,
     deleteAddress,
     addCheckOutAddress,
-    saveCheckOutAddress
-
+    saveCheckOutAddress,
+    editAddress
 }

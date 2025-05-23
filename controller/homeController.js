@@ -7,7 +7,7 @@ import Category from '../model/categoryModel.js'
 const loadHome = async (req,res)=>{
     try {
         const limit = 8;
-        const user = req.session.user;
+        const user = req.session.user || req.user;
         const product = await Product.find({}).sort({createdAt : -1}).limit(limit)
 
         if(user){

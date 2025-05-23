@@ -74,9 +74,7 @@ app.get(
   passport.authenticate("google", { failureRedirect: "/register" }),
   async (req, res) => {
     req.session.user = req.user;
-    const limit = 8;
-    const products = await Product.find({}).sort({createdAt : -1}).limit(limit)
-    res.render("home",{products});
+    res.redirect('/')
   }
 );
 

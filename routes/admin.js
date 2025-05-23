@@ -8,6 +8,7 @@ import categoryController from '../controller/admin/categoryController.js';
 import upload from '../middleware/imageUpload.js';
 import adminOrder from '../controller/admin/adminOrders.js';
 import couponController from '../controller/admin/couponController.js';
+import salesController from '../controller/admin/salesController.js';
 
 router.get('/',adminAuth.isLogin,adminController.loadLogin)
 router.post('/login',adminController.login)
@@ -45,5 +46,10 @@ router.post('/orderReturn',adminAuth.checkSession,adminOrder.orderReturn)
 router.get('/coupons',adminAuth.checkSession,couponController.loadCoupons)
 router.post('/coupons',adminAuth.checkSession,couponController.addCoupon)
 router.put('/coupons',adminAuth.checkSession,couponController.editCoupon)
+
+// These routes will be available at:
+router.get('/sales-report', adminAuth.checkSession, salesController.getSalesReport);           // /admin/sales-report
+router.get('/sales-report/pdf', adminAuth.checkSession, salesController.exportToPDF);         // /admin/sales-report/pdf
+router.get('/sales-report/excel', adminAuth.checkSession, salesController.exportToExcel);     // /admin/sales-report/excel
 
 export default router;

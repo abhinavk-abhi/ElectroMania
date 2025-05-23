@@ -74,6 +74,7 @@
     //Checkout
     router.get('/checkout',userAuth.isLogin,checkOutController.loadCheckOut)
     router.post('/placeOrder',userAuth.isLogin,checkOutController.placeOrder)
+    router.post('/verifyPayment',userAuth.isLogin,checkOutController.verifyPayment)
     router.get('/success',userAuth.isLogin,checkOutController.orderSuccess)
 
     //user orders 

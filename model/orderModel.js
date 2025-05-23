@@ -100,8 +100,19 @@ const orderModel = new Schema({
         type : Date ,
         default : null,
         required : false
-    }
-    
+    },  
+    razorpayOrderId: {
+        type: String,
+     default: null
+    },
+    razorpayPaymentId: {
+        type: String,
+        default: null
+    },
+    razorpaySignature: {
+        type: String,
+        default: null
+    }     
   
 },{timestamps : true})
 

@@ -54,7 +54,7 @@
                     <p class="text-gray-600 mb-8 text-lg leading-relaxed">
                         Your payment couldn't be processed at this time. Please check your payment details and try again.
                     </p>
-                    
+                   
                     <div class="space-y-4">
                         <div>
                             <p class="text-sm font-medium text-gray-500 mb-2">Possible reasons:</p>
@@ -71,7 +71,7 @@
                         <a href="/shop" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors text-center">
                             Continue Shopping
                         </a>
-                        <a href="/checkout" class="px-6 py-3 bg-red-600 rounded-lg text-white font-medium hover:bg-red-700 transition-colors text-center shadow-sm shake">
+                        <a href="/user/checkout?cartId=<%= cartId %>&userId=<%= userId %>" class="px-6 py-3 bg-red-600 rounded-lg text-white font-medium hover:bg-red-700 transition-colors text-center shadow-sm shake">
                             Try Again
                         </a>
                     </div>
@@ -80,10 +80,9 @@
                 <!-- Right side - Illustration -->
                 <div class="md:w-1/2 bg-gradient-to-br from-red-50 to-pink-50 flex items-center justify-center p-8 md:p-12">
                     <div class="illustration w-full h-64 md:h-full relative">
-                        <!-- This is a placeholder for an illustration -->
-                        <!-- In a real implementation, you would use an actual illustration SVG or image -->
+                      <img src="../../public/images/paymentError.svg" alt="">
                         <div class="absolute bottom-0 left-0 right-0 text-center text-gray-400 text-sm">
-                            Illustration of disappointed person
+                           
                         </div>
                     </div>
                 </div>
@@ -102,10 +101,12 @@
     </div>
 
     <script>
-        // Add some interactive elements
+        // Add some interactive elements || /user/checkout?cartId=${cartId}&userId=${userId}
         document.addEventListener('DOMContentLoaded', function() {
             // Add hover effect to buttons
-            const tryAgainBtn = document.querySelector('a[href="/checkout"]');
+            const userId = document.getElementById('userId')
+            const cartId = document.getElementById('cartId')
+            const tryAgainBtn = document.querySelector('a[href=`/user/checkout?cartId=${cartId}&userId=${useId}`]');
             tryAgainBtn.addEventListener('mouseenter', function() {
                 this.classList.remove('shake');
                 // Trigger reflow to restart animation

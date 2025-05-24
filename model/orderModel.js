@@ -112,7 +112,14 @@ const orderModel = new Schema({
     razorpaySignature: {
         type: String,
         default: null
-    }     
+    },
+    orderStatus : {
+        type : String,
+        default : "Success"
+    },
+    paymentError : {
+        type : String
+    }    
   
 },{timestamps : true})
 

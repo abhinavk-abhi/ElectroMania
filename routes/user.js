@@ -76,6 +76,8 @@
     router.post('/placeOrder',userAuth.isLogin,checkOutController.placeOrder)
     router.post('/verifyPayment',userAuth.isLogin,checkOutController.verifyPayment)
     router.get('/success',userAuth.isLogin,checkOutController.orderSuccess)
+    router.post('/updatePaymentFailure',userAuth.isLogin,checkOutController.failureUpdate)
+    router.get('/paymentFailure',userAuth.isLogin,checkOutController.failurePage)
 
     //user orders 
     router.get('/orders',userAuth.isLogin , orderController.loadOrders)

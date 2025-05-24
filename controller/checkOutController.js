@@ -53,7 +53,7 @@ const loadCheckOut = async (req,res)=>{
     }
 }
 
-// const placeOrder = async (req,res)=>{
+
 //     try {
 //         const {cartId,userId,addressId,addressDetailIndex,paymentMethod,couponId } = req.body;
 
@@ -520,9 +520,34 @@ const orderSuccess = async (req,res)=>{
     }
 }
 
+const failureUpdate = async (req, res) => {
+  try {
+    const { orderId, error } = req.body;
+    // Update order status to 'Payment Failed'
+    await Order.findByIdAndUpdate(orderId, { 
+      paymentStatus: 'Failed',
+      paymentError: error,
+      orderStatus: 'Payment Failed'
+    });
+    res.json({ success: true });
+  } catch (err) {
+    res.json({ success: false, error: err.message });
+  }
+}
+
+const failurePage = async (req, res) => {
+  const { orderId } = req.query;
+  const userId = req.session.user._id || req.user._id
+  const cart = await Cart.findOne({userId : userId})
+  const cartId = cart._id;
+  res.render('user/paymentFailed', { cartId,userId });
+}
+
 export default {
     loadCheckOut,
     placeOrder,
     orderSuccess,
-    verifyPayment
+    verifyPayment,
+    failureUpdate,
+    failurePage
 }

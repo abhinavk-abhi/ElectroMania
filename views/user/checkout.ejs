@@ -535,7 +535,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         icon: "success",
         title: "Coupon Removed",
         text: "The coupon has been removed from your order.",
-        confirmButtonColor: "#d14792",
+        confirmButtonColor: "#9b95df",
         timer: 1500,
       })
 
@@ -551,7 +551,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         icon: "warning",
         title: "No Coupon Selected",
         text: "Please select a coupon from the dropdown.",
-        confirmButtonColor: "#d14792",
+        confirmButtonColor: "#9b95df",
       });
       return;
     }
@@ -566,7 +566,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         icon: "error",
         title: "Cannot Apply Coupon",
         text: `This coupon requires a minimum order of ₹${minAmount.toFixed(2)}.`,
-        confirmButtonColor: "#d14792",
+        confirmButtonColor: "#9b95df",
       });
       return;
     }
@@ -593,12 +593,36 @@ document.addEventListener("DOMContentLoaded", async function () {
       icon: "success",
       title: "Coupon Applied!",
       text: `${couponName} has been applied to your order.`,
-      confirmButtonColor: "#d14792",
+      confirmButtonColor: "#9b95df",
       timer: 1500,
     });
   });
 
   //-------------------------------------------------------------------//
+
+  // Function to handle payment failure
+  function handlePaymentFailure(orderId, error) {
+    // Update order status to payment failed on server
+    fetch("/user/updatePaymentFailure", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderId: orderId,
+        error: error
+      }),
+    }).then(response => response.json())
+      .then(data => {
+        // Redirect to payment failure page regardless of server response
+        window.location.href = "/user/paymentFailure?orderId=" + orderId;
+      })
+      .catch(err => {
+        console.error("Error updating payment failure:", err);
+        // Still redirect to failure page even if server update fails
+        window.location.href = "/user/paymentFailure?orderId=" + orderId;
+      });
+  }
 
   // Function to handle Razorpay payment
   function handleRazorpayPayment(orderData, orderDetails) {
@@ -618,7 +642,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         color: "#9b95df"
       },
       handler: async function (response) {
-        // Payment successful
+        // Payment successful - verify with server
         try {
           const verifyResponse = await fetch("/user/verifyPayment", {
             method: "POST",
@@ -636,33 +660,41 @@ document.addEventListener("DOMContentLoaded", async function () {
           const verifyData = await verifyResponse.json();
 
           if (verifyData.success) {
-            // Redirect to success page
+            // Payment verified successfully - redirect to success page
             window.location.href = "/user/success?orderId=" + orderData.orderId;
           } else {
-            showError("Payment verification failed. Please contact support.");
+            // Payment verification failed - redirect to failure page
+            handlePaymentFailure(orderData.orderId, "Payment verification failed");
           }
         } catch (error) {
           console.error("Payment verification error:", error);
-          showError("Payment verification failed. Please contact support.");
+          // Network or server error during verification - redirect to failure page
+          handlePaymentFailure(orderData.orderId, "Payment verification error: " + error.message);
         }
       },
       modal: {
         ondismiss: function() {
-          // Re-enable the button if payment is cancelled
+          // Re-enable the button if payment modal is dismissed
           continueBtn.disabled = false;
           continueBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Complete Order';
           
-          Swal.fire({
-            icon: "info",
-            title: "Payment Cancelled",
-            text: "Your payment was cancelled. Your order is still pending.",
-            confirmButtonColor: "#d14792",
-          });
+          // Payment was dismissed/cancelled - redirect to failure page
+          handlePaymentFailure(orderData.orderId, "Payment cancelled by user");
         }
       }
     };
 
     const rzp = new Razorpay(options);
+    
+    // Handle payment errors (network issues, card declined, etc.)
+    rzp.on('payment.failed', function (response) {
+      console.error('Payment failed:', response.error);
+      
+      // Payment failed - redirect to failure page with error details
+      const errorMsg = response.error.description || response.error.reason || "Payment failed";
+      handlePaymentFailure(orderData.orderId, errorMsg);
+    });
+
     rzp.open();
   }
 

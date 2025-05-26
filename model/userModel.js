@@ -19,7 +19,7 @@ const userModel = new Schema({
         type : String,
         required : false
     },
-    googeId : {
+    googleId : {
         type : String,
         unique : true,
         sparse : true

@@ -270,56 +270,119 @@
             Object.values(errors).forEach((el) => el.innerText = "");
 
             let hasError = false;
+                    
+            // Helper function to check if a string contains only whitespace or special characters
+            function isValidString(str) {
+               return str && str.trim().length > 0 && /^[a-zA-Z0-9\s\-\.\,\#]+$/.test(str.trim());
+            }
 
-            if (!name) {
-                errors.name.innerText = "Full name is required";
+            // Helper function to validate phone numbers (must be 10 digits and not all same digits)
+            function isValidPhone(phone) {
+                const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
+                if (!/^\d{10}$/.test(cleanPhone)) return false;
+            
+                // Check if all digits are the same (invalid patterns like 1111111111)
+                const firstDigit = cleanPhone[0];
+                if (cleanPhone.split('').every(digit => digit === firstDigit)) return false;
+
+                // Check for other common invalid patterns
+                const invalidPatterns = [
+                    '1234567890',
+                    '0987654321',
+                    '1111111111',
+                    '2222222222',
+                    '3333333333',
+                    '4444444444',
+                    '5555555555',
+                    '6666666666',
+                    '7777777777',
+                    '8888888888',
+                    '9999999999',
+                    '0000000000'
+                ];
+
+                return !invalidPatterns.includes(cleanPhone);
+            }
+
+            // Name validation
+            const trimmedName = name ? name.trim() : '';
+            if (!trimmedName) {
+               errors.name.innerText = "Full name is required";
                 hasError = true;
-            } else if (name.length < 3) {
+            } else if (trimmedName.length < 3) {
                 errors.name.innerText = "Full name must be at least 3 characters";
                 hasError = true;
+            } else if (!/^[a-zA-Z\s\-\.]+$/.test(trimmedName)) {
+                errors.name.innerText = "Full name can only contain letters, spaces, hyphens, and periods";
+                hasError = true;
             }
 
-            if (!addressLine1) {
+            // Address Line 1 validation
+            const trimmedAddress = addressLine1 ? addressLine1.trim() : '';
+            if (!trimmedAddress) {
                 errors.addressLine1.innerText = "Address Line 1 is required";
                 hasError = true;
+            } else if (!isValidString(addressLine1)) {
+                errors.addressLine1.innerText = "Please enter a valid address";
+                hasError = true;
             }
-
-            if (!phone) {
+            
+            // Phone validation
+            const trimmedPhone = phone ? phone.trim() : '';
+            if (!trimmedPhone) {
                 errors.phone.innerText = "Phone number is required";
                 hasError = true;
-            } else if (!/^\d{10}$/.test(phone)) {
-                errors.phone.innerText = "Phone number must be 10 digits";
+            } else if (!isValidPhone(trimmedPhone)) {
+                errors.phone.innerText = "Please enter a valid 10-digit phone number";
                 hasError = true;
             }
 
-            if (altNumber && !/^\d{10}$/.test(altNumber)) {
-                errors.phone.innerText = "Alternate number must be 10 digits";
-                hasError = true;
+            // Alternate number validation (if provided)
+            if (altNumber) {
+                const trimmedAltNumber = altNumber.trim();
+                if (trimmedAltNumber && !isValidPhone(trimmedAltNumber)) {
+                    errors.phone.innerText = "Please enter a valid 10-digit alternate number";
+                    hasError = true;
+                }
             }
-
-            if (!city) {
+            
+            // City validation
+            const trimmedCity = city ? city.trim() : '';
+            if (!trimmedCity) {
                 errors.city.innerText = "City is required";
                 hasError = true;
+            } else if (!/^[a-zA-Z\s\-\.]+$/.test(trimmedCity)) {
+                errors.city.innerText = "City can only contain letters, spaces, hyphens, and periods";
+                hasError = true;
             }
 
-            if (!state) {
+            // State validation
+            const trimmedState = state ? state.trim() : '';
+            if (!trimmedState) {
                 errors.state.innerText = "State is required";
                 hasError = true;
+            } else if (!/^[a-zA-Z\s\-\.]+$/.test(trimmedState)) {
+                errors.state.innerText = "Please enter a valid state";
+                hasError = true;
             }
-
-            if (!zipCode) {
+            
+            // Zip Code validation
+            const trimmedZipCode = zipCode ? zipCode.trim() : '';
+            if (!trimmedZipCode) {
                 errors.zipCode.innerText = "Zip Code is required";
                 hasError = true;
-            } else if (!/^\d{5,6}$/.test(zipCode)) {
-                errors.zipCode.innerText = "Zip Code must be 5-6 digits";
+            } else if (!/^\d{5}(-\d{4})?$/.test(trimmedZipCode)) {
+                errors.zipCode.innerText = "Zip Code must be 5 digits or 5-4 format (e.g., 12345 or 12345-6789)";
                 hasError = true;
             }
-
-            if (!addressType) {
+            
+            // Address Type validation
+            const trimmedAddressType = addressType ? addressType.trim() : '';
+            if (!trimmedAddressType) {
                 errors.addressType.innerText = "Address type is required";
                 hasError = true;
             }
-
+            
             // Stop if validation fails
             if (hasError) return;
 

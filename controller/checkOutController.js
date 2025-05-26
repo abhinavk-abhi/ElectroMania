@@ -287,7 +287,7 @@ const placeOrder = async (req, res) => {
         }
 
         let deliveryCharge = 0;
-        if (totalAmount > 500) {
+        if (totalAmount < 1000) {
             deliveryCharge = 50;
         }
 

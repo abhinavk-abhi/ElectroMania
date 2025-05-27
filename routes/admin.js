@@ -9,6 +9,7 @@ import upload from '../middleware/imageUpload.js';
 import adminOrder from '../controller/admin/adminOrders.js';
 import couponController from '../controller/admin/couponController.js';
 import salesController from '../controller/admin/salesController.js';
+import dashboardController from '../controller/admin/dashboard.js'
 
 router.get('/',adminAuth.isLogin,adminController.loadLogin)
 router.post('/login',adminController.login)
@@ -51,5 +52,14 @@ router.put('/coupons',adminAuth.checkSession,couponController.editCoupon)
 router.get('/sales-report', adminAuth.checkSession, salesController.getSalesReport);           // /admin/sales-report
 router.get('/sales-report/pdf', adminAuth.checkSession, salesController.exportToPDF);         // /admin/sales-report/pdf
 router.get('/sales-report/excel', adminAuth.checkSession, salesController.exportToExcel);     // /admin/sales-report/excel
+
+
+router.get('/dashboard', dashboardController.getDashboard);
+router.get('/dashboard/data', dashboardController.getDashboardData);
+router.get('/dashboard/products', dashboardController.getBestSellingProducts);
+router.get('/dashboard/categories', dashboardController.getBestSellingCategories);
+router.get('/dashboard/brands', dashboardController.getBestSellingBrands);
+router.get('/dashboard/orders', dashboardController.getRecentOrders);
+
 
 export default router;

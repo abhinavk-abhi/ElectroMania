@@ -326,7 +326,7 @@
         <a href="/admin/customers"><i class="bi bi-people"></i> Customers</a>
         <a href="/admin/orders"><i class="bi bi-cart active"></i> Orders</a>
         <a href="/admin/coupons"><i class="bi bi-ticket"></i> Coupons</a>
-        <a href="/admin/sales-report"><i class="bi bi-bar-chart"></i> Sales Report</a>
+        <a href="/admin/sales-report" class="active"><i class="bi bi-bar-chart"></i> Sales Report</a>
         <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
     </div>
     <div class="main-container">
@@ -421,7 +421,7 @@
                                 <td>
                                     <% if (order.orderItems && order.orderItems.length > 0) { %>
                                         <% order.orderItems.forEach((item, index) => { %>
-                                            <%= item.productId.name || 'Product' %><%= index < order.orderItems.length - 1 ? ', ' : '' %>
+                                            <%= item.productId?.name || 'Product' %><%= index < order.orderItems.length - 1 ? ', ' : '' %>
                                         <% }) %>
                                     <% } else { %>
                                         N/A

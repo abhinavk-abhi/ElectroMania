@@ -16,8 +16,14 @@ const loadOrder = async (req,res)=>{
         const orders = await Order.find(filter)
         .populate('userId')
         .sort({createdAt : -1})
+        .limit(limit)
+        .skip(skip)
       
-        
+        const lastIndex = page * limit;
+        const slNo = [];
+        for(let i = lastIndex - (limit-1); i <= lastIndex ; i++){
+            slNo.push(i)
+        }
 
         const totalOrders = await Order.countDocuments(filter);
         const totalPages = Math.ceil(totalOrders / limit);
@@ -26,6 +32,7 @@ const loadOrder = async (req,res)=>{
             searchQuery : query,
             currentPage: page,
             totalPages: totalPages,
+            slNo
         })
 
     } catch (error) {

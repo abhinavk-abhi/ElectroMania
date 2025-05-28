@@ -352,9 +352,6 @@
     <!-- Navbar -->
     <nav class="navbar">
         <a href="/admin" class="brand-name">ElectroMania</a>
-       
-
-            <a href="#" class="profile-icon"><i class="bi bi-person-circle"></i></a>
         </div>
     </nav>
 
@@ -364,7 +361,7 @@
         <a href="/admin/categories"><i class="bi bi-tag"></i> Categories</a>
         <a href="/admin/products"><i class="bi bi-box"></i> Products</a>
         <a href="/admin/customers" ><i class="bi bi-people"></i> Customers</a>
-        <a href="/admin/orders"><i class="bi bi-cart active"></i> Orders</a>
+        <a href="/admin/orders" class="active"><i class="bi bi-cart active"></i> Orders</a>
         <a href="/admin/coupons"><i class="bi bi-ticket"></i> Coupons</a>
         <a href="/admin/sales-report"><i class="bi bi-bar-chart"></i> Sales Report</a>
         <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
@@ -386,58 +383,55 @@
             </form>
         </div>
 
-
-        <!-- Products Table -->
-        <div class="products-table">
-            <table class="table">
-                <% if(orders && orders.length > 0) { %>
-                <thead>
-                    <tr>
-                        <th>SL No</th>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Date</th>
-                        <th>No of Products</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% orders.forEach((order, index) => { %>
+        <% if (orders && orders.length > 0) { %>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle order-table">
+                    <thead>
                         <tr>
-                          <td><%= index + 1 %></td>
-                          <td><%= order.orderId %></td>
-                          <td><%= order.userId.name %></td>
-                          <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
-                          <td><%= order.orderItems.length %></td>
-                          <td>₹<%= order.finalAmount.toFixed(2) %></td>
-                          <td>
-                            <span class="badge <%= order.orderItems[0].deliveryStatus === 'Delivered' ? 'bg-success' : 
-                                                   order.orderItems[0].deliveryStatus === 'Processing' ? 'bg-warning' : 
-                                                   order.orderItems[0].deliveryStatus === 'Shipped' ? 'bg-info' : 'bg-secondary' %>">
-                              <%= order.orderItems[0].deliveryStatus %>
-                            </span>
-                          </td>
-                          <td>
-                            <a href="/admin/orders/<%= order._id %>">
-                            <button class="btn btn-sm btn-primary">
-                              <i class="bi bi-eye"></i> View
-                            </button>
-                        </a>
-                          </td>
+                            <th>SL No</th>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>No of Products</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Details</th>
                         </tr>
-                        <% }) %>
-                      </tbody>
-            </table>
-        </div>
-    </div>
-    <% } else { %>
-        <div class="container mt-4">
-          <div class="alert alert-info" role="alert">
-            <i class="bi bi-info-circle me-2"></i> No orders found
-          </div>
-        </div>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach((order, index) => { %>
+                            <tr>
+                              <td><%= slNo[index] %></td>
+                              <td><%= order.orderId %></td>
+                              <td><%= order.userId.name %></td>
+                              <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+                              <td><%= order.orderItems.length %></td>
+                              <td>₹<%= order.finalAmount.toFixed(2) %></td>
+                              <td>
+                                <span class="badge <%= order.orderItems[0].deliveryStatus === 'Delivered' ? 'bg-success' : 
+                                                       order.orderItems[0].deliveryStatus === 'Processing' ? 'bg-warning' : 
+                                                       order.orderItems[0].deliveryStatus === 'Shipped' ? 'bg-info' : 'bg-secondary' %>">
+                                  <%= order.orderItems[0].deliveryStatus %>
+                                </span>
+                              </td>
+                              <td>
+                                <a href="/admin/orders/<%= order._id %>">
+                                <button class="btn btn-sm btn-primary">
+                                  <i class="bi bi-eye"></i> View
+                                </button>
+                            </a>
+                              </td>
+                            </tr>
+                            <% }) %>
+                          </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div class="container mt-4">
+              <div class="alert alert-info" role="alert">
+                <i class="bi bi-info-circle me-2"></i> No orders found
+              </div>
+            </div>
         <% } %>
 
         <!-- Pagination Controls -->

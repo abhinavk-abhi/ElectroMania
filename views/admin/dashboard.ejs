@@ -354,10 +354,7 @@
     <nav class="navbar">
         <a href="/admin" class="brand-name">ElectroMania</a>
         <div class="nav-right">
-            <div class="search-container">
-                <input type="search" placeholder="Search here...">
-                <i class="bi bi-search search-icon"></i>
-            </div>
+           
             <select class="filter-select" id="periodFilter" onchange="updateDashboard()">
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
@@ -365,8 +362,6 @@
                 <option value="yearly">Yearly</option>
             </select>
             <button class="export-btn" onclick="exportData()">Export</button>
-            <a href="#" class="filter-btn"><i class="bi bi-funnel"></i></a>
-            <a href="#" class="profile-icon"><i class="bi bi-person-circle"></i></a>
         </div>
     </nav>
 
@@ -437,60 +432,27 @@
         <!-- Best Selling Products -->
         <div class="row g-4 mb-4">
             <div class="col-md-4">
-                <div class="best-selling-table">
+                <div class="chart-container">
                     <h5>Top 10 Best Selling Products</h5>
-                    <div id="productsTable">
-                        <div class="loading">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
+                    <canvas id="productsChart"></canvas>
                 </div>
             </div>
             
             <div class="col-md-4">
-                <div class="best-selling-table">
+                <div class="chart-container">
                     <h5>Top 10 Best Selling Categories</h5>
-                    <div id="categoriesTable">
-                        <div class="loading">
-                            <div class="spinner-border text-warning" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
+                    <canvas id="categoriesChart"></canvas>
                 </div>
             </div>
             
             <div class="col-md-4">
-                <div class="best-selling-table">
+                <div class="chart-container">
                     <h5>Top 10 Best Selling Brands</h5>
-                    <div id="brandsTable">
-                        <div class="loading">
-                            <div class="spinner-border text-info" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
+                    <canvas id="brandsChart"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Orders -->
-        <div class="row g-4">
-            <div class="col-12">
-                <div class="orders-table">
-                    <h5>Recent Orders</h5>
-                    <div id="recentOrdersTable">
-                        <div class="loading">
-                            <div class="spinner-border text-success" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Bootstrap JS -->
@@ -498,7 +460,7 @@
 
     <script>
         // Global variables for charts
-        let salesChart, ordersChart;
+        let salesChart, ordersChart, productsChart, categoriesChart, brandsChart;
         let currentPeriod = 'monthly';
 
         // Initialize dashboard
@@ -513,6 +475,9 @@
         function initializeCharts() {
             const salesCtx = document.getElementById('salesChart').getContext('2d');
             const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+            const productsCtx = document.getElementById('productsChart').getContext('2d');
+            const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
+            const brandsCtx = document.getElementById('brandsChart').getContext('2d');
 
             salesChart = new Chart(salesCtx, {
                 type: 'line',
@@ -578,6 +543,99 @@
                     }
                 }
             });
+
+            // Products Chart
+            productsChart = new Chart(productsCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: [],
+                        backgroundColor: '#3b6da1',
+                        borderColor: '#28517D',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Categories Chart
+            categoriesChart = new Chart(categoriesCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: [],
+                        backgroundColor: '#ffc107',
+                        borderColor: '#d39e00',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Brands Chart
+            brandsChart = new Chart(brandsCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: [],
+                        backgroundColor: '#17a2b8',
+                        borderColor: '#138496',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
 
         // Load dashboard statistics
@@ -626,134 +684,61 @@
                 const productsResponse = await fetch('/admin/dashboard/data?type=products');
                 const productsResult = await productsResponse.json();
                 if (productsResult.success) {
-                    renderProductsTable(productsResult.data);
+                    updateProductsChart(productsResult.data);
                 }
 
                 // Load best selling categories
                 const categoriesResponse = await fetch('/admin/dashboard/data?type=categories');
                 const categoriesResult = await categoriesResponse.json();
                 if (categoriesResult.success) {
-                    renderCategoriesTable(categoriesResult.data);
+                    updateCategoriesChart(categoriesResult.data);
                 }
 
                 // Load best selling brands
                 const brandsResponse = await fetch('/admin/dashboard/data?type=brands');
                 const brandsResult = await brandsResponse.json();
                 if (brandsResult.success) {
-                    renderBrandsTable(brandsResult.data);
+                    updateBrandsChart(brandsResult.data);
                 }
             } catch (error) {
                 console.error('Error loading best selling data:', error);
             }
         }
 
-        // Render products table
-        function renderProductsTable(products) {
-            const container = document.getElementById('productsTable');
-            if (products.length === 0) {
-                container.innerHTML = '<p class="text-center text-muted">No data available</p>';
-                return;
-            }
+        // Update products chart
+        function updateProductsChart(products) {
+            if (products.length === 0) return;
 
-            let html = `
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Brand</th>
-                            <th>Sold</th>
-                            <th>Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
+            const labels = products.map(product => product.name.substring(0, 20) + '...');
+            const data = products.map(product => product.totalQuantity);
 
-            products.forEach(product => {
-                html += `
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                ${product.image ? `<img src="${product.image}" alt="${product.name}" style="width: 30px; height: 30px; object-fit: cover; margin-right: 10px; border-radius: 4px;">` : ''}
-                                <span style="font-size: 12px;">${product.name.substring(0, 20)}...</span>
-                            </div>
-                        </td>
-                        <td style="font-size: 12px;">${product.brand}</td>
-                        <td><span class="badge bg-primary">${product.totalQuantity}</span></td>
-                        <td style="font-size: 12px;">₹${product.totalRevenue.toLocaleString()}</td>
-                    </tr>
-                `;
-            });
-
-            html += '</tbody></table>';
-            container.innerHTML = html;
+            productsChart.data.labels = labels;
+            productsChart.data.datasets[0].data = data;
+            productsChart.update();
         }
 
-        // Render categories table
-        function renderCategoriesTable(categories) {
-            const container = document.getElementById('categoriesTable');
-            if (categories.length === 0) {
-                container.innerHTML = '<p class="text-center text-muted">No data available</p>';
-                return;
-            }
+        // Update categories chart
+        function updateCategoriesChart(categories) {
+            if (categories.length === 0) return;
 
-            let html = `
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Sold</th>
-                            <th>Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
+            const labels = categories.map(category => category.name);
+            const data = categories.map(category => category.totalQuantity);
 
-            categories.forEach(category => {
-                html += `
-                    <tr>
-                        <td>${category.name}</td>
-                        <td><span class="badge bg-warning">${category.totalQuantity}</span></td>
-                        <td>₹${category.totalRevenue.toLocaleString()}</td>
-                    </tr>
-                `;
-            });
-
-            html += '</tbody></table>';
-            container.innerHTML = html;
+            categoriesChart.data.labels = labels;
+            categoriesChart.data.datasets[0].data = data;
+            categoriesChart.update();
         }
 
-        // Render brands table
-        function renderBrandsTable(brands) {
-            const container = document.getElementById('brandsTable');
-            if (brands.length === 0) {
-                container.innerHTML = '<p class="text-center text-muted">No data available</p>';
-                return;
-            }
+        // Update brands chart
+        function updateBrandsChart(brands) {
+            if (brands.length === 0) return;
 
-            let html = `
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Brand</th>
-                            <th>Sold</th>
-                            <th>Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
+            const labels = brands.map(brand => brand.name);
+            const data = brands.map(brand => brand.totalQuantity);
 
-            brands.forEach(brand => {
-                html += `
-                    <tr>
-                        <td>${brand.name}</td>
-                        <td><span class="badge bg-info">${brand.totalQuantity}</span></td>
-                        <td>₹${brand.totalRevenue.toLocaleString()}</td>
-                    </tr>
-                `;
-            });
-
-            html += '</tbody></table>';
-            container.innerHTML = html;
+            brandsChart.data.labels = labels;
+            brandsChart.data.datasets[0].data = data;
+            brandsChart.update();
         }
 
         // Load recent orders

@@ -19,6 +19,7 @@ const userInfo = async  (req,res)=>{
 
     if(req.query.query){
         const search = new RegExp(req.query.query , "i")
+        // console.log(search)
         filter.name = search;
     }
 

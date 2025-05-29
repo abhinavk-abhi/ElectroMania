@@ -27,7 +27,16 @@ async (req, accessToken, refreshToken, profile, done) => {
         
         
         user = await User.findOne({ email: profile.emails[0].value });
-        
+        console.log(user)
+    if (!user) {
+      return done(null, false);
+    }
+    
+    if (user.isBlocked) {
+      // Instead of returning user, return false to reject authentication
+      return done(null, false, { errorMessage : "You are blocked by the admin." });
+    }
+
         if (user) {
             user.googleId = profile.id;
             await user.save();
@@ -60,6 +69,14 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
     try {
         const user = await User.findById(id); 
+        if (!user) {
+      return done(null, false);
+    }
+    
+    if (user.isBlocked) {
+      // Instead of returning user, return false to reject authentication
+      return done(null, false, { errorMessage : "You are blocked by the admin." });
+    }
         done(null, user);
     } catch (err) {
         done(err);

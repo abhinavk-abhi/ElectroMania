@@ -239,6 +239,17 @@
         box-shadow: 0 6px 15px rgba(77, 68, 173, 0.4);
       }
 
+      .stockOut {
+        background: rgb(230, 153, 132) ;
+        color: black;
+        border: none;
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 3px;
+        font-weight: 100;
+        margin-top: 1.5rem;
+      }
+
       /* Empty Cart Styles */
       .empty-cart {
         display: flex;
@@ -307,6 +318,18 @@
       .payment-methods img:hover {
         opacity: 1;
         transform: translateY(-2px);
+      }
+      .item-status {
+        font-size: 13px;
+        font-weight: 500;
+        padding: 5px 12px;
+        border-radius: 20px;
+        display: inline-block;
+      }
+
+      .status-processing {
+      background-color: #fff8e1;
+      color: #ff8f00;
       }
 
       .social-links a {
@@ -392,6 +415,7 @@
                     +
                   </button>
                 </div>
+                <div class="d-flex flex-column">
                 <button
                   class="remove-btn"
                   data-product-id="<%= item.productId._id %>"
@@ -399,8 +423,13 @@
                   data-item-id="<%= item._id %>"
                   data-index="<%= index %>"
                 >
-                  <i class="fas fa-trash-alt me-1"></i> Remove
+                  <i class="fas fa-trash-alt me-1"></i> 
                 </button>
+                
+                <% if (item.productId.stock <= 0) { %>
+                <div class="item-status status-processing">Item is out of stock</div> 
+                <% } %>
+                </div>
               </div>
             </div>
             <% }) %>
@@ -423,7 +452,20 @@
                 <span class="summary-total">₹<%= cart.items.reduce((total, item) => total + (item.price * item.quantity), 0) %></span>
               </div>
               
+             <%
+              let allInStock = true;
+              cart.items.forEach((each) => {
+                if (each.productId.stock <= 0) {
+                  allInStock = false;
+                }
+              });
+            %>
 
+            <% if (!allInStock) { %>
+              <div class="stockOut">
+                One of the items is out of stock. <br> Remove the item to continue.
+              </div>
+            <% } else { %>
               <button
                 id="checkOutBtn"
                 data-cart-id="<%= cart._id %>"
@@ -431,7 +473,9 @@
                 class="continue-btn"
               >
                 <i class="fas fa-credit-card me-2"></i> Proceed to Checkout
-              </button>
+            </button>
+            <% } %>
+
             </div>
           </div>
         </div>

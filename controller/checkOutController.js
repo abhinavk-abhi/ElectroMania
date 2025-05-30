@@ -150,7 +150,7 @@ const placeOrder = async (req, res) => {
         const finalAmount = totalAmount - discountAmount + deliveryCharge;
 
         const generateOrderId = () => {
-            const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10);
+            const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#', 10);
             return `ORD-${nanoid()}`;
         };
 
@@ -216,6 +216,66 @@ const placeOrder = async (req, res) => {
             }
         }
 
+        if(paymentMethod === "WALLET"){
+            
+            if (coupon) {
+            if (coupon.usageType === 'single-use') {
+                await Coupon.findByIdAndUpdate(couponId, {
+                    $push: { usersUsed: userId },
+                    $inc: { used: 1 }
+                });
+            } else {
+                await Coupon.findByIdAndUpdate(couponId, {
+                    $inc: { used: 1 }
+                })
+            }
+        }
+
+       const value = user.wallet - finalAmount;
+        user.wallet = value;
+        await user.save()
+
+        for (let item of cart.items) {
+            await Product.findOneAndUpdate({ _id: item.productId },
+                { $inc: { stock: -item.quantity } }
+            )
+        }
+
+         const newOrder = new Order({
+            orderId,
+            userId,
+            orderItems: cart.items.map(item => {
+                return {
+                    productId: item.productId,
+                    quantity: item.quantity,
+                    price: item.price
+                }
+            }),
+            deliveryCharge,
+            totalAmount,
+            finalAmount: finalAmount,
+            discount: discountAmount,
+            shippingAddress: selectedAddress,
+            invoiceDate: Date.now(),
+            paymentStatus: "Paid", 
+            paymentMethod
+        });
+
+        await newOrder.save();
+    
+        // Clear cart
+        cart.items = [];
+        await cart.save();
+
+        res.status(200).json({
+            message: "Order placed successfully",
+            orderId: orderId,
+            success: true
+        });
+
+        }
+
+        if(paymentMethod=== "COD"){
         // For COD orders, process normally
         if (coupon) {
             if (coupon.usageType === 'single-use') {
@@ -263,11 +323,12 @@ const placeOrder = async (req, res) => {
         cart.items = [];
         await cart.save();
 
-        res.status(201).json({
+        res.status(200).json({
             message: "Order placed successfully",
             orderId: orderId,
             success: true
         });
+    }
 
     } catch (error) {
         console.log("placeOrder error => " + error)

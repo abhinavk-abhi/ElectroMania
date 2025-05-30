@@ -226,6 +226,7 @@
             </div>
 
             <div id="paymentOptions">
+             <% if(calculatedValues.grandTotal<1000){ %>
               <div class="payment-option">
                 <div class="form-check">
                   <input
@@ -242,8 +243,18 @@
                   </label>
                 </div>
               </div>
+              <% } else { %>
+               <div class="payment-option" style="cursor: not-allowed;">
+                <div class="form-check">
+                <label class="form-check-label text-muted" for="cod" style="cursor: not-allowed; opacity: 0.6; pointer-events: none;">
+                <strong>Cash on Delivery</strong>
+                <p class="mb-0">Cash on delivery is only available up to ₹1000 </p>
+              </label>
+            </div>
+          </div>
+              <% } %>
 
-              <!-- <div class="payment-option">
+              <div class="payment-option">
                 <div class="form-check">
                   <input
                     class="form-check-input payment-radio"
@@ -255,11 +266,11 @@
                   <label class="form-check-label" for="upi">
                     <strong>Wallet</strong>
                     <p class="text-muted mb-0">
-                      Pay using ElectroMania wallet balance
+                      Pay using ElectroMania wallet balance of  ₹<%= user.wallet %>
                     </p>
                   </label>
                 </div>
-              </div> -->
+              </div>
 
               <div class="payment-option">
                 <div class="form-check">
@@ -410,7 +421,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   // FIX: Extract numeric value properly from the total amount text
   let originalTotal = parseFloat(totalAmount.textContent.replace(/[₹,\s]/g, ''));
   
-  console.log("Original total:", originalTotal); // Debug log
 
   //------------------------------------------------------//
 

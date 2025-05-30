@@ -417,7 +417,7 @@
                 </div>
                 <div class="d-flex flex-column">
                 <button
-                  class="remove-btn"
+                  class="remove-btn removeBtn"
                   data-product-id="<%= item.productId._id %>"
                   data-user-id="<%= cart.userId %>"
                   data-item-id="<%= item._id %>"
@@ -530,12 +530,13 @@
 
 
                   const checkOutBtn = document.getElementById('checkOutBtn')
-
+                  if(checkOutBtn){
                   checkOutBtn.addEventListener("click",async()=>{
                       const cartId = checkOutBtn.getAttribute('data-cart-id')
                       const userId = checkOutBtn.getAttribute('data-user-id')
                       window.location.href = `/user/checkout?cartId=${cartId}&userId=${userId}`
                   })
+                }
 
                   const emptyCartIcon = document.querySelector('.empty-cart-icon');
                   if (emptyCartIcon) {
@@ -605,8 +606,8 @@
                   });
 
 
-                  const removeBtn = document.querySelectorAll(".remove-btn")
-
+                  const removeBtn = document.querySelectorAll(".removeBtn")
+                 console.log(removeBtn)
                   removeBtn.forEach(button =>{
                       button.addEventListener("click", async () => {
                           const productId = button.getAttribute('data-product-id');

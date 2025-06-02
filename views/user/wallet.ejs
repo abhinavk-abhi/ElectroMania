@@ -32,10 +32,11 @@
         }
 
         .transaction-card {
-            background-color: #f9f0ff;
+            background-color: #fff;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
 
         .feature-card {
@@ -76,52 +77,361 @@
             padding: 20px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
+
+        .transaction-table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .transaction-table thead {
+            background-color: #563d7c;
+            color: white;
+        }
+
+        .transaction-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .credit-amount {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .debit-amount {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .transaction-type-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .type-refund {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .type-topup {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .type-purchase {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .type-referral {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+
+        .icon-credit {
+            background-color: #d4edda;
+            color: #28a745;
+        }
+
+        .icon-debit {
+            background-color: #f8d7da;
+            color: #dc3545;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
 <body>
-
     <%- include ('../partials/header') %>
 
-        <div class="container-fluid px-4 py-4">
-            <div class="row">
-                <!-- Sidebar -->
-                <div class="col-md-3"><%- include('../partials/profileSidebar')%></div>
+    <div class="container-fluid px-4 py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3"><%- include('../partials/profileSidebar')%></div>
 
-                <!-- Main Content -->
-                <div class="col-md-9">
-                    <!-- Wallet Header -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            <div class="me-3" style="width: 45px; height: 45px;">
-                                <i class="fas fa-wallet text-purple-700" style="font-size: 30px; color: #563d7c;"></i>
-                            </div>
-                            <div>
-                                <h3 class="fw-bold mb-0">Your Wallet</h3>
-                             
-                            </div>
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <!-- Wallet Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3" style="width: 45px; height: 45px;">
+                            <i class="fas fa-wallet text-purple-700" style="font-size: 30px; color: #563d7c;"></i>
                         </div>
-                      
+                        <div>
+                            <h3 class="fw-bold mb-0">Your Wallet</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance and Stats -->
+                <div class="row mb-4">
+                    <!-- Current Balance -->
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="balance-card">
+                            <p class="mb-2 fw-medium">CURRENT BALANCE</p>
+                            <h2 class="fw-bold mb-0">₹ <%= user.wallet || 0 %></h2>
+                        </div>
                     </div>
 
-                    <!-- Balance and Transaction Info -->
-                    <% if (user && user.wallet > 0) { %>
-                    <div class="row mb-4">
-                        <!-- Current Balance -->
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <div class="balance-card">
-                                <p class="mb-2 fw-medium">CURRENT BALANCE</p>
-                                <h2 class="fw-bold mb-0">₹ <%= user.wallet %></h2>
+                    <!-- Transaction Stats -->
+                    <div class="col-md-6">
+                        <div class="stats-card">
+                            <p class="mb-2 fw-medium opacity-75">TOTAL TRANSACTIONS</p>
+                            <h2 class="fw-bold mb-0"><%= user.walletHistory ? user.walletHistory.length : 0 %></h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="transaction-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold mb-0">
+                            <i class="fas fa-history me-2" style="color: #563d7c;"></i>
+                            Transaction History
+                        </h4>
+                    </div>
+
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <select class="form-select" id="typeFilter">
+                                    <option value="">All Types</option>
+                                    <option value="refund">Refund</option>
+                                    <option value="top-up">Top Up</option>
+                                    <option value="purchase">Purchase</option>
+                                    <option value="referral-reward">Referral Reward</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select" id="amountFilter">
+                                    <option value="">All Amounts</option>
+                                    <option value="credit">Credits Only</option>
+                                    <option value="debit">Debits Only</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="date" class="form-control" id="dateFilter" placeholder="Filter by date">
                             </div>
                         </div>
+                    </div>
 
-                    </div> 
+                    <% if (user.walletHistory && user.walletHistory.length > 0) { %>
+                        <!-- Transaction Table -->
+                        <div class="table-responsive">
+                            <table class="table transaction-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 py-3">Transaction</th>
+                                        <th scope="col" class="border-0 py-3 text-center">Type</th>
+                                        <th scope="col" class="border-0 py-3 text-center">Amount</th>
+                                        <th scope="col" class="border-0 py-3 text-center">Date</th>
+                                        <th scope="col" class="border-0 py-3 text-center">Reference</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionTableBody">
+                                    <% user.walletHistory.reverse().forEach(function(transaction) { %>
+                                        <tr class="transaction-row" 
+                                            data-type="<%= transaction.type %>" 
+                                            data-amount="<%= transaction.amount >= 0 ? 'credit' : 'debit' %>"
+                                            data-date="<%= new Date(transaction.date).toISOString().split('T')[0] %>">
+                                            <td class="py-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="transaction-icon <%= transaction.amount >= 0 ? 'icon-credit' : 'icon-debit' %>">
+                                                        <% if (transaction.type === 'refund') { %>
+                                                            <i class="fas fa-undo-alt"></i>
+                                                        <% } else if (transaction.type === 'top-up') { %>
+                                                            <i class="fas fa-plus-circle"></i>
+                                                        <% } else if (transaction.type === 'purchase') { %>
+                                                            <i class="fas fa-shopping-cart"></i>
+                                                        <% } else if (transaction.type === 'referral-reward') { %>
+                                                            <i class="fas fa-gift"></i>
+                                                        <% } else { %>
+                                                            <i class="fas fa-exchange-alt"></i>
+                                                        <% } %>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-medium">
+                                                            <% if (transaction.type === 'refund') { %>
+                                                                Order Refund
+                                                            <% } else if (transaction.type === 'top-up') { %>
+                                                                Wallet Top-up
+                                                            <% } else if (transaction.type === 'purchase') { %>
+                                                                Purchase Payment
+                                                            <% } else if (transaction.type === 'referral-reward') { %>
+                                                                Referral Reward
+                                                            <% } else { %>
+                                                                Wallet Transaction
+                                                            <% } %>
+                                                        </div>
+                                                        <% if (transaction.orderId) { %>
+                                                            <small class="text-muted">Order: <%= transaction.orderId %></small>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="py-3 text-center">
+                                                <span class="transaction-type-badge type-<%= transaction.type.replace('-', '') %>">
+                                                    <%= transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1).replace('-', ' ') %>
+                                                </span>
+                                            </td>
+                                            <td class="py-3 text-center">
+                                                <span class="<%= transaction.amount >= 0 ? 'credit-amount' : 'debit-amount' %>">
+                                                    <%= Number(transaction.amount) >= 0 ? '+' : '' %>₹<%= Math.abs(Number(transaction.amount)) %>
+                                                </span>
+                                            </td>
+                                            <td class="py-3 text-center">
+                                                <div class="fw-medium">
+                                                    <%= new Date(transaction.date).toLocaleDateString('en-IN', { 
+                                                        day: '2-digit', 
+                                                        month: 'short', 
+                                                        year: 'numeric' 
+                                                    }) %>
+                                                </div>
+                                                <small class="text-muted">
+                                                    <%= new Date(transaction.date).toLocaleTimeString('en-IN', { 
+                                                        hour: '2-digit', 
+                                                        minute: '2-digit' 
+                                                    }) %>
+                                                </small>
+                                            </td>
+                                            <td class="py-3 text-center">
+                                                <% if (transaction.transactionId) { %>
+                                                    <small class="text-muted font-monospace">
+                                                        <%= transaction.transactionId.substring(0, 8) %>...
+                                                    </small>
+                                                <% } else { %>
+                                                    <small class="text-muted">-</small>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <!-- Empty State -->
+                        <div class="empty-state">
+                            <i class="fas fa-receipt"></i>
+                            <h5 class="mt-3 mb-2">No Transactions Yet</h5>
+                            <p class="mb-0">Your wallet transaction history will appear here once you start using your wallet.</p>
+                        </div>
                     <% } %>
+                </div>
 
+                <!-- Wallet Tips -->
+                <div class="wallet-tip">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-lightbulb me-2" style="color: #ffc107;"></i>
+                        Wallet Tips
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-shield-alt text-success me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="fw-medium">Secure Payments</h6>
+                                    <p class="mb-0 text-muted small">Your wallet uses bank-grade security for all transactions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-bolt text-warning me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="fw-medium">Instant Refunds</h6>
+                                    <p class="mb-0 text-muted small">Refunds are instantly credited to your wallet balance.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const typeFilter = document.getElementById('typeFilter');
+            const amountFilter = document.getElementById('amountFilter');
+            const dateFilter = document.getElementById('dateFilter');
+            const transactionRows = document.querySelectorAll('.transaction-row');
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            function filterTransactions() {
+                const typeValue = typeFilter.value.toLowerCase();
+                const amountValue = amountFilter.value.toLowerCase();
+                const dateValue = dateFilter.value;
+
+                transactionRows.forEach(row => {
+                    const rowType = row.getAttribute('data-type').toLowerCase();
+                    const rowAmount = row.getAttribute('data-amount').toLowerCase();
+                    const rowDate = row.getAttribute('data-date');
+
+                    let showRow = true;
+
+                    // Type filter
+                    if (typeValue && rowType !== typeValue) {
+                        showRow = false;
+                    }
+
+                    // Amount filter
+                    if (amountValue && rowAmount !== amountValue) {
+                        showRow = false;
+                    }
+
+                    // Date filter
+                    if (dateValue && rowDate !== dateValue) {
+                        showRow = false;
+                    }
+
+                    row.style.display = showRow ? '' : 'none';
+                });
+            }
+
+            typeFilter.addEventListener('change', filterTransactions);
+            amountFilter.addEventListener('change', filterTransactions);
+            dateFilter.addEventListener('change', filterTransactions);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

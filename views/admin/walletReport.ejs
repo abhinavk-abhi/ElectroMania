@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Management - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+        }
+
+        .brand-name {
+            font-family: 'Bellefair', serif;
+            font-size: 28px;
+            font-weight: normal;
+            text-decoration: none;
+            color: #192430;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #f9f9f9;
+            padding: 20px 0;
+            position: fixed;
+            top: 70px;
+            bottom: 0;
+            left: 0;
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: #192430;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            position: relative;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .sidebar a.active {
+            background: #3b6da1;
+            color: white;
+        }
+
+        .sidebar a:hover {
+            background: #d9dbdd;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 250px;
+            margin-top: 70px;
+            padding: 30px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .stats-card.success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+        }
+
+        .stats-card.warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .stats-card.info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .wallet-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .filter-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .transaction-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .transaction-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .transaction-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .credit-amount {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .debit-amount {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .transaction-type-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .type-refund {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .type-topup, .type-top-up {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .type-purchase {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .type-referralreward, .type-referral-reward {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .action-btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border: none;
+            transition: all 0.3s ease;
+            margin: 2px;
+        }
+
+        .btn-add-money {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-deduct-money {
+            background: linear-gradient(135deg, #dc3545, #fd7e14);
+            color: white;
+        }
+
+        .btn-add-money:hover, .btn-deduct-money:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        .pagination .page-link {
+            border-radius: 8px;
+            margin: 0 2px;
+            border: none;
+            color: #667eea;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .tab-content {
+            background: white;
+            border-radius: 0 0 15px 15px;
+            padding: 20px;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 10px 10px 0 0;
+            border: none;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .stats-card {
+                margin-bottom: 15px;
+            }
+
+            .action-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/admin" class="brand-name">ElectroMania</a>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/admin/dashboard"><i class="bi bi-grid"></i> Dashboard</a>
+        <a href="/admin/categories"><i class="bi bi-tag"></i> Categories</a>
+        <a href="/admin/products"><i class="bi bi-box"></i> Products</a>
+        <a href="/admin/customers"><i class="bi bi-people"></i> Customers</a>
+        <a href="/admin/orders"><i class="bi bi-cart"></i> Orders</a>
+        <a href="/admin/coupons"><i class="bi bi-ticket"></i> Coupons</a>
+        <a href="/admin/sales-report"><i class="bi bi-bar-chart"></i> Sales Report</a>
+        <a href="/admin/wallet-management" class="active"><i class="bi bi-credit-card"></i> Wallet</a>
+        <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-wallet me-3"></i>Wallet Management</h2>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-number">₹<%= stats.totalWalletBalance ? stats.totalWalletBalance.toLocaleString('en-IN') : 0 %></div>
+                    <div class="stats-label">Total Wallet Balance</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card success">
+                    <div class="stats-number"><%= stats.totalTransactions || 0 %></div>
+                    <div class="stats-label">Total Transactions</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card info">
+                    <div class="stats-number">₹<%= stats.totalCreditAmount ? stats.totalCreditAmount.toLocaleString('en-IN') : 0 %></div>
+                    <div class="stats-label">Total Credits</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card warning">
+                    <div class="stats-number">₹<%= stats.totalDebitAmount ? stats.totalDebitAmount.toLocaleString('en-IN') : 0 %></div>
+                    <div class="stats-label">Total Debits</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Stats Row -->
+        <div class="row mb-4">
+            <div class="col-lg-2 col-md-4 col-sm-">
+                <div class="wallet-card text-center">
+                    <h5 class="text-primary"><%= stats.totalUsers || 0 %></h5>
+                    <small class="text-muted">Total Users</small>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="wallet-card text-center">
+                    <h5 class="text-success"><%= stats.usersWithBalance || 0 %></h5>
+                    <small class="text-muted">Users with Balance</small>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="wallet-card text-center">
+                    <h5 class="text-info"><%= stats.totalRefunds || 0 %></h5>
+                    <small class="text-muted">Refunds</small>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="wallet-card text-center">
+                    <h5 class="text-danger"><%= stats.totalPurchases || 0 %></h5>
+                    <small class="text-muted">Purchases</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-card">
+            <form method="GET" action="/admin/wallet-management">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Search Users</label>
+                        <input type="text" class="form-control" name="search" value="<%= search %>" placeholder="Name or Email">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Transaction Type</label>
+                        <select class="form-control" name="filterType">
+                            <option value="">All Types</option>
+                            <option value="refund" <%= filterType === 'refund' ? 'selected' : '' %>>Refund</option>
+                            <option value="top-up" <%= filterType === 'top-up' ? 'selected' : '' %>>Top-up</option>
+                            <option value="purchase" <%= filterType === 'purchase' ? 'selected' : '' %>>Purchase</option>
+                            <option value="referral-reward" <%= filterType === 'referral-reward' ? 'selected' : '' %>>Referral Reward</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">From Date</label>
+                        <input type="date" class="form-control" name="dateFrom" value="<%= dateFrom %>">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">To Date</label>
+                        <input type="date" class="form-control" name="dateTo" value="<%= dateTo %>">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Per Page</label>
+                        <select class="form-control" name="limit">
+                            <option value="10" <%= limit == 10 ? 'selected' : '' %>>10</option>
+                            <option value="25" <%= limit == 25 ? 'selected' : '' %>>25</option>
+                            <option value="50" <%= limit == 50 ? 'selected' : '' %>>50</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" id="walletTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">
+                    <i class="fas fa-users me-2"></i>Users & Wallets
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions" type="button" role="tab">
+                    <i class="fas fa-exchange-alt me-2"></i>All Transactions
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="walletTabContent">
+            <!-- Users Tab -->
+            <div class="tab-pane fade show active" id="users" role="tabpanel">
+                <% if (users && users.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table transaction-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Wallet Balance</th>
+                                    <th>Total Transactions</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% users.forEach(user => { %>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-avatar">
+                                                    <%= user.name.charAt(0).toUpperCase() %>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-medium"><%= user.name %></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><%= user.email %></td>
+                                        <td>
+                                            <span class="<%= (user.wallet || 0) > 0 ? 'credit-amount' : 'text-muted' %>">
+                                                ₹<%= (user.wallet || 0).toLocaleString('en-IN') %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                <%= user.walletHistory ? user.walletHistory.length : 0 %> transactions
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-add-money action-btn btn-sm" 
+                                                    onclick="openWalletModal('<%= user._id %>', '<%= user.name %>', 'add')">
+                                                <i class="fas fa-plus me-1"></i>Add Money
+                                            </button>
+                                            <button class="btn btn-deduct-money action-btn btn-sm" 
+                                                    onclick="openWalletModal('<%= user._id %>', '<%= user.name %>', 'deduct')">
+                                                <i class="fas fa-minus me-1"></i>Deduct
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <% if (totalPages > 1) { %>
+                        <nav aria-label="Page navigation" class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                <% if (currentPage > 1) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=<%= currentPage - 1 %>&search=<%= search %>&filterType=<%= filterType %>&dateFrom=<%= dateFrom %>&dateTo=<%= dateTo %>&limit=<%= limit %>">Previous</a>
+                                    </li>
+                                <% } %>
+                                
+                                <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
+                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                        <a class="page-link" href="?page=<%= i %>&search=<%= search %>&filterType=<%= filterType %>&dateFrom=<%= dateFrom %>&dateTo=<%= dateTo %>&limit=<%= limit %>"><%= i %></a>
+                                    </li>
+                                <% } %>
+                                
+                                <% if (currentPage < totalPages) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=<%= currentPage + 1 %>&search=<%= search %>&filterType=<%= filterType %>&dateFrom=<%= dateFrom %>&dateTo=<%= dateTo %>&limit=<%= limit %>">Next</a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        </nav>
+                    <% } %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h4>No Users Found</h4>
+                        <p>No users match your search criteria.</p>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div class="tab-pane fade" id="transactions" role="tabpanel">
+                <% if (allTransactions && allTransactions.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table transaction-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>User</th>
+                                    <th>Amount</th>
+                                    <th>Type</th>
+                                    <th>Transaction ID</th>
+                                    <th>Order ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% allTransactions.forEach(transaction => { %>
+                                    <tr>
+                                        <td>
+                                            <%= new Date(transaction.date).toLocaleDateString('en-IN') %><br>
+                                            <small class="text-muted"><%= new Date(transaction.date).toLocaleTimeString('en-IN') %></small>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-avatar" style="width: 30px; height: 30px; font-size: 12px;">
+                                                    <%= transaction.userName.charAt(0).toUpperCase() %>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-medium"><%= transaction.userName %></div>
+                                                    <small class="text-muted"><%= transaction.userEmail %></small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="<%= transaction.amount >= 0 ? 'credit-amount' : 'debit-amount' %>">
+                                                <%= transaction.amount >= 0 ? '+' : '' %>₹<%= Math.abs(transaction.amount).toLocaleString('en-IN') %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="transaction-type-badge type-<%= transaction.type.replace('-', '') %>">
+                                                <%= transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1).replace('-', ' ') %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <% if (transaction.transactionId) { %>
+                                                <code><%= transaction.transactionId %></code>
+                                            <% } else { %>
+                                                <span class="text-muted">-</span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <% if (transaction.orderId) { %>
+                                                <code><%= transaction.orderId %></code>
+                                            <% } else { %>
+                                                <span class="text-muted">-</span>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% if (allTransactions.length === 50) { %>
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Showing latest 50 transactions. Use filters to narrow down results.
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h4>No Transactions Found</h4>
+                        <p>No transactions match your filter criteria.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Management Modal -->
+    <div class="modal fade" id="walletModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="walletModalTitle">
+                        <i class="fas fa-wallet me-2"></i>Wallet Management
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="walletForm">
+                        <input type="hidden" id="userId" name="userId">
+                        <input type="hidden" id="action" name="action">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">User</label>
+                            <div class="form-control-plaintext fw-medium" id="userName"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount (₹)</label>
+                            <input type="number" class="form-control" id="amount" name="amount" 
+                                   min="1" step="0.01" required placeholder="Enter amount">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="reason" class="form-label">Reason (Optional)</label>
+                            <textarea class="form-control" id="reason" name="reason" rows="3" 
+                                      placeholder="Enter reason for this transaction"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmWalletAction">
+                        <i class="fas fa-check me-2"></i>Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Check URL parameters to show correct tab
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab');
+            
+            if (tab === 'transactions') {
+                const transactionsTab = document.getElementById('transactions-tab');
+                const usersTab = document.getElementById('users-tab');
+                const transactionsPane = document.getElementById('transactions');
+                const usersPane = document.getElementById('users');
+                
+                if (transactionsTab && usersTab && transactionsPane && usersPane) {
+                    usersTab.classList.remove('active');
+                    transactionsTab.classList.add('active');
+                    usersPane.classList.remove('show', 'active');
+                    transactionsPane.classList.add('show', 'active');
+                }
+            }
+        });
+
+        function openWalletModal(userId, userName, action) {
+            document.getElementById('userId').value = userId;
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('action').value = action;
+            document.getElementById('amount').value = '';
+            document.getElementById('reason').value = '';
+            
+            const title = action === 'add' ? 'Add Money to Wallet' : 'Deduct Money from Wallet';
+            document.getElementById('walletModalTitle').innerHTML = 
+                `<i class="fas fa-wallet me-2"></i>${title}`;
+                
+            const confirmBtn = document.getElementById('confirmWalletAction');
+            confirmBtn.className = action === 'add' ? 'btn btn-success' : 'btn btn-danger';
+            confirmBtn.innerHTML = action === 'add' ? 
+                '<i class="fas fa-plus me-2"></i>Add Money' : 
+                '<i class="fas fa-minus me-2"></i>Deduct Money';
+            
+            new bootstrap.Modal(document.getElementById('walletModal')).show();
+        }
+
+        document.getElementById('confirmWalletAction').addEventListener('click', function() {
+            const form = document.getElementById('walletForm');
+            const formData = new FormData(form);
+            const action = formData.get('action');
+            
+            const url = action === 'add' ? '/admin/wallet/add-money' : '/admin/wallet/deduct-money';
+            
+            const data = {
+                userId: formData.get('userId'),
+                amount: parseFloat(formData.get('amount')),
+                reason: formData.get('reason')
+            };
+            
+            if (!data.amount || data.amount <= 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Amount',
+                    text: 'Please enter a valid amount greater than 0'
+                });
+                return;
+            }
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: result.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
+                    bootstrap.Modal.getInstance(document.getElementById('walletModal')).hide();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: result.message
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred while processing the request'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

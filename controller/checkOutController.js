@@ -10,6 +10,7 @@ dotenv.config();
 const { RAZORPAY_ID, RAZORPAY_SECRET } = process.env;
 import Razorpay from 'razorpay'
 import crypto from 'crypto'
+import { type } from 'os'
 
 
 
@@ -233,6 +234,12 @@ const placeOrder = async (req, res) => {
 
        const value = user.wallet - finalAmount;
         user.wallet = value;
+        const walletHistory = {
+            amount : -finalAmount,
+            type : 'purchase',
+            orderId : orderId,
+        }
+        user.walletHistory = walletHistory;
         await user.save()
 
         for (let item of cart.items) {

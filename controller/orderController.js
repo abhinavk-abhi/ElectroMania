@@ -66,16 +66,39 @@ const cancelItem = async (req,res)=>{
 
       
 
-        // if(order.paymentMethod === "ONLINE" && order.paymentStatus === "Paid"){
-        //     await User.findOneAndUpdate(
-        //         {_id : userId},
-        //         {
-        //             $inc : { wallet : refundAmount },
-
-        //         },
-        //         { new : true }
-        //     )
-        // }
+       if(order.paymentMethod === "RAZORPAY" && order.paymentStatus === "Paid"){
+    await User.findOneAndUpdate(
+        {_id : userId},
+        {
+            $inc : { wallet : refundAmount },
+            $push : { 
+                walletHistory : {
+                    amount : refundAmount,
+                    type : 'refund',
+                    orderId : orderId,
+                   
+                }
+            }
+        },
+        { new : true }
+    )
+} else if(order.paymentMethod === "WALLET" && order.paymentStatus === "Paid"){
+    await User.findOneAndUpdate(
+        {_id : userId},
+        {
+            $inc : { wallet : refundAmount },
+            $push : { 
+                walletHistory : {
+                    amount : refundAmount,
+                    type : 'refund',
+                    orderId : orderId,
+                   
+                }
+            }
+        },
+        { new : true }
+    )
+}
 
        
 

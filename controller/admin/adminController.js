@@ -55,15 +55,6 @@ const login = async (req,res)=>{
     }
 }
 
-const loadHome = async (req,res)=>{
-    try {
-        // res.render('admin/dashboard.ejs')
-        res.render('admin/dashboard')
-    } catch (error) {
-        console.error('Error loading admin home page:', error);
-        res.status(500).send('Internal Server Error');
-    }
-}
 
 const loadCustomer = async (req,res)=>{
     try {
@@ -108,7 +99,6 @@ const logout = async (req,res)=>{
 export default { 
                 loadLogin, 
                 login, 
-                loadHome, 
                 loadCustomer , 
                 loadProducts,
                 logout

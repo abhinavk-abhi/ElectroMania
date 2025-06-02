@@ -68,10 +68,31 @@ const userModel = new Schema({
         type : Schema.Types.ObjectId,
         ref : "coupon"
     },
-    wallet : {
-        type : Number,
-        default : 0
-    }
+    wallet: {
+        type: Number,
+        default: 0, 
+    },
+
+    walletHistory: [{
+        amount: Number,              // +ve for credit, -ve for debit
+        type: {
+            type: String,         
+            enum: ['refund', 'top-up', 'purchase','referral-reward'], 
+        },
+        orderId: {
+            type: String,
+            required: false          // Only for refund or purchase type
+        },
+        transactionId: {
+            type: String,
+            required: false          // Razorpay or refund reference
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        },
+    
+    }],
 },{timestamps:true})
 
 export default mongoose.model("User",userModel)

@@ -8,7 +8,25 @@ const loadHome = async (req,res)=>{
     try {
         const limit = 8;
         const user = req.session.user || req.user;
-        const product = await Product.find({}).sort({createdAt : -1}).limit(limit)
+        const product = await Product.aggregate([
+            {
+                $lookup : {
+                    from : 'categories',
+                    localField : 'category',
+                    foreignField : '_id',
+                    as : 'category'
+                }
+            },
+                
+                {$match:{
+                    "category.visibility" : true
+                }},
+
+                {
+                    $limit : limit
+                }
+            
+        ])
 
         if(user){
             const userData = await User.findOne({_id:user})
@@ -107,12 +125,9 @@ const loadShop = async (req,res)=>{
                     as : 'category'
                 }
             },
-            {
-                $unwind : {
-                    path : '$category',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
+           {$match:{
+                    "category.visibility" : true
+                }},
             {$sort : sortQuery},
             {$skip : skip},
             {$limit : limit}

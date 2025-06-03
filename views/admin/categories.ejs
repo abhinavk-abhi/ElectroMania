@@ -719,7 +719,7 @@
                 const editName = document.getElementById("editName").value.trim();
                 const editDescription = document.getElementById("editDescription").value.trim();
                 const editStatus = document.getElementById("editStatus").value;
-               
+                const letterRegex = /^[A-Za-z]+$/;
 
                 let errors = {
                     editName: document.getElementById("editNameError"),
@@ -733,9 +733,20 @@
                     errors.editName.innerText = "Name is required.";
                     hasError = true;
                 }
+
+                if(!letterRegex.test(editName)){
+                    errors.editName.innerText = "Name can only contain letters."
+                    hasError = true
+                }
+
                 if (!editDescription) {
                     errors.editDescription.innerText = "Description is required.";
                     hasError = true;
+                }
+
+                if(!letterRegex.test(editDescription)){
+                    errors.editName.innerText = "Description can only contain letters."
+                    hasError = true
                 }
 
                 if (hasError) return;
@@ -784,6 +795,7 @@
                 const addName = document.getElementById("addName").value.trim();
                 const addDescription = document.getElementById("addDescription").value.trim();
                 const addStatus = document.getElementById("addStatus").value;
+                const letterRegex = /^[A-Za-z]+$/;
 
                 let errors = {
                     addName: document.getElementById("addNameError"),
@@ -797,9 +809,20 @@
                     errors.addName.innerText = "Name is required.";
                     hasError = true;
                 }
+
+                if (!letterRegex.test(addName)){
+                    errors.addName.innerText = "Name can only contain letters."
+                    hasError = true
+                }
+
                 if (!addDescription) {
                     errors.addDescription.innerText = "Description is required.";
                     hasError = true;
+                }
+
+                if(!letterRegex.test(addDescription)){
+                    errors.addDescription.innerText = "Description can only contain letters."
+                    hasError = true
                 }
 
                 if (hasError) return;

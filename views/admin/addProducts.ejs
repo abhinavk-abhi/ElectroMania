@@ -676,7 +676,7 @@
         const stock = document.getElementById("productStock").value.trim()
         const price = document.getElementById("productPrice").value.trim();
         const imageInputs = document.querySelectorAll('input[name="productImages[]"]');
-       
+       const letterRegex = /^[A-Za-z0-9]+$/;
 
         const errors = {
           name: document.getElementById("nameError"),
@@ -700,11 +700,17 @@
         } else if (name.length < 2) {
           errors.name.innerText = "Product name must be at least 2 characters";
           hasError = true;
+        }else if (!letterRegex.test(name)){
+          errors.name.innerText = "Product name can only contain letters and numbers";
+          hasError = true
         }
 
         if (!brand) {
           errors.brand.innerText = "Brand is required";
           hasError = true;
+        }else if (!letterRegex.test(brand)){
+          errors.brand.innerText = "Brand name can only contain letters or numbers"
+          hasError = true
         }
 
         if (!category || category === "Select category") {
@@ -718,6 +724,9 @@
         } else if (description.length < 10) {
           errors.description.innerText = "Description must be at least 10 characters";
           hasError = true;
+        } else if (!letterRegex.test(description)){
+          errors.description.innerText = "Desctription can only contain letters and numbers."
+          hasError = true
         }
 
         if(!stock){

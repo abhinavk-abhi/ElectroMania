@@ -639,12 +639,17 @@ if (editProductForm) {
 // Validation function
 function validateForm() {
     let isValid = true;
+    const letterRegex = /^[A-Za-z0-9]+$/;
+
 
     const productName = document.getElementById("productName").value.trim();
     if (!productName || productName.length < 2) {
         showError("nameError", "Product name is required and must be at least 2 characters.");
         isValid = false;
-    }
+    }else if (!letterRegex.test(productName)){
+         showError("nameError" , "Product name can only contain letters and numbers.")
+         isValid = false
+        }
 
     const productCategory = document.getElementById("productCategory").value;
     if (!productCategory || productCategory === "Select category") {
@@ -655,6 +660,9 @@ function validateForm() {
     if (!brand || brand.length < 2) {
         showError("brandError", "Brand is required and must be at least 2 characters.");
         isValid = false;
+    }else if (!letterRegex.test(brand)){
+      showError("brandError" , "Brand name can only contain letters and numbers")
+      isValid = false
     }
     const price = document.getElementById("productPrice").value;
     if (!price || price <= 0) {
@@ -670,6 +678,9 @@ function validateForm() {
  if (!description || description.length < 15) {
     showError("descriptionError", "Description must be at least 15 characters.");
     isValid = false;
+} else if (!letterRegex.test(description)){
+  showError("descriptionError" , "Description can only contain letters and numbers")
+  isValid = false
 }
     const stock = document.getElementById("productStock").value.trim();
     if (!stock || stock < 0) {

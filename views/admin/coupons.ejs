@@ -840,6 +840,7 @@
                     editMinPrice: document.getElementById("editMinPriceError"),
                     editOfferPrice: document.getElementById("editOfferPriceError"),
                 };
+                const letterRegex = /^[A-Za-z]+$/;
 
                 Object.values(errors).forEach((el) => (el.innerText = ""));
                 let hasError = false;
@@ -848,6 +849,10 @@
                     errors.editName.innerText = "Name is required.";
                     hasError = true;
                 }
+                if(!letterRegex.test(editName)){
+                    errors.editName.innerText =  "Name can only contain letters and numbers";
+                    hasError = true
+                }
                 if (!editCode) {
                     errors.editCode.innerText = "Coupon Code is required.";
                     hasError = true;
@@ -855,6 +860,9 @@
                 if (!editDescription) {
                     errors.editDescription.innerText = "Description is required.";
                     hasError = true;
+                }
+                if(!letterRegex.test(editDescription)){
+                    errors.editDescription.innerText = "Description can only contain letters and numbers."
                 }
                 if (!editStartDate) {
                     errors.editStartDate.innerText = "Start date is required.";

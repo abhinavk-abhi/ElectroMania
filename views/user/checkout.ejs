@@ -253,7 +253,7 @@
             </div>
           </div>
               <% } %>
-
+         <% if(calculatedValues.grandTotal < user.wallet){ %> 
               <div class="payment-option">
                 <div class="form-check">
                   <input
@@ -271,6 +271,7 @@
                   </label>
                 </div>
               </div>
+              <%}%>
 
               <div class="payment-option">
                 <div class="form-check">

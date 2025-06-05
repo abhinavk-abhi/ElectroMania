@@ -383,8 +383,8 @@ const invoice = async (req, res) => {
         
         // Calculate totals
         const subtotal = order.finalAmount || 0     ;
-        // const discount = order.coupon || 0;
-        const deliveryCharge = order.deliveryCharge || 0;
+        const discount = order.discount || 0;
+        const deliveryCharge = order.deliveyCharge || 0;
         const finalAmount = order.finalAmount + deliveryCharge;
 
         // Add summary section
@@ -408,9 +408,9 @@ const invoice = async (req, res) => {
         doc.text('Subtotal:', 370, summaryStartY + 30);
         doc.text(`₹${subtotal.toLocaleString('en-IN')}`, 480, summaryStartY + 30, { align: 'right' });
         
-        // // Discount row
-        // doc.text('Discount:', 370, summaryStartY + 45);
-        // doc.text(`₹${discount.toLocaleString('en-IN')}`, 480, summaryStartY + 45, { align: 'right' });
+        // Discount row
+        doc.text('Discount:', 370, summaryStartY + 45);
+        doc.text(`₹${discount.toLocaleString('en-IN')}`, 480, summaryStartY + 45, { align: 'right' });
         
         // Delivery charge row
         doc.text('Delivery Charge:', 370, summaryStartY + 60);

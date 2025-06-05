@@ -55,16 +55,14 @@
 
         .dropdown-content a {
             color: #333;
-            padding: 10px 20px;
+            padding: 20px;
             text-decoration: none;
             display: block;
             font-size: 14px;
             transition: background-color 0.2s;
         }
 
-        .dropdown-content a:hover {
-            background-color: rgb(156, 132, 132);
-        }
+       
 
         /* Show dropdown when active class is present */
         .dropdown.active .dropdown-content {
@@ -74,7 +72,7 @@
         /* Navbar Styles */
         .navbar {
             z-index: 1001;
-            background-color: #e1d8f1;
+            background-color: #4b449783;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
@@ -148,7 +146,7 @@
             display: flex;
             align-items: center;
             height: 50px;
-            margin: 0 10px;
+            /* margin:px; */
         }
 
         /* Ensure dropdown-toggle (username) also has no underline */
@@ -222,7 +220,7 @@
         }
 
         /* Hero Section Styles */
-        .hero-section {
+        .heroSection {
             background: url('/images/hero.png') center/cover no-repeat;
             background-size: cover;
             height: 400px;
@@ -242,7 +240,7 @@
             font-weight: bold;
         }
 
-        .hero-content {
+        .heroContent{
             position: relative;
             z-index: 2;
             text-align: center;
@@ -252,7 +250,7 @@
         }
 
         /* Main Content Area - FULL WIDTH NOW */
-        .main-wrapper {
+        .main-wraapper {
             background-color: #f9f9f9; /* Light background instead of dark navy */
             width: 100%;
             padding: 0;
@@ -581,12 +579,120 @@
 </head>
 <body data-user-id="<%= user ? user._id : '' %>">
     <!-- Navbar -->
-    <%- include('./partials/header') %>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-3">
+            <!-- Brand -->
+            <a href="/" class="brand-name">ElectroMania</a>
 
-    <div class="main-wrapper">
-        <div class="hero-section">
-            <div class="hero-content">
-                <div class="hero-text">
+            <!-- Hamburger Menu Button - Only visible on mobile/tablet -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Desktop Navbar Content -->
+            <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarContent">
+                <!-- Main Navigation Links -->
+                <ul class="navbar-nav nav-links me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/shop"><i class="fas fa-store"></i> Shop</a>
+                    </li>
+                   
+                </ul>
+
+                <!-- Right Side Elements -->
+                <div class="nav-right d-flex align-items-center">
+                    <!-- Search Bar -->
+                    <form id="searchProductForm" action="/shop" method="get" class="search-container me-3">
+                        <input class="form-control search-bar" type="search" name="result" placeholder="Search products">
+                        <button class="btn search-btn" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+
+                    <!-- Wishlist -->
+                    <a href="/user/wishlist" class="nav-icon-link me-3">
+                        <i class="fas fa-heart"></i>
+                    </a>
+
+                    <!-- Cart -->
+                    <a href="/user/cart" class="nav-icon-link me-3">
+                        <i class="fas fa-shopping-cart"></i>
+                        <% if (locals.cartItemCount && cartItemCount > 0) { %>(<%= cartItemCount %>)<% } %>
+                    </a>
+
+                    <!-- User Menu -->
+                    <% if (locals.user) { %>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" id="userDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdownMenuLink">
+                                <li><a class="dropdown-item w-80" style="color: black;" href="/user/profile">Profile</a></li>
+                                <li><a class="dropdown-item w-80" style="color: black;" href="/user/orders">My Orders</a></li>
+                                <li><a class="dropdown-item w-60" style="color: black;" href="/user/logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    <% } else { %>
+                        <a href="/user/login" class="btn btn-outline-light">Sign In</a>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Mobile/Tablet Offcanvas Sidebar -->
+            <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/shop">
+                                <i class="fas fa-store"></i> Shop
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/wishlist">
+                                <i class="fas fa-heart"></i> Wishlist
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/cart">
+                                <i class="fas fa-shopping-cart"></i> Cart
+                                <% if (locals.cartItemCount && cartItemCount > 0) { %>(<%= cartItemCount %>)<% } %>
+                            </a>
+                        </li>
+                        <% if (locals.user) { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/profile">
+                                    <i class="fas fa-user"></i> Profile
+                                </a>
+                            </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/login">
+                                    <i class="fas fa-sign-in-alt"></i> Sign In
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-wraapper">
+        <div class="heroSection">
+            <div class="heroContent">
+                <div class="heroText">
                     <!-- Hero text content is empty as per original -->
                 </div>
             </div>

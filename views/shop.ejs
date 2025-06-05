@@ -79,23 +79,11 @@
         }
 
         .navbar {
-            z-index: 1001;
             background: #4b449783;
-            padding: 0 20px;
-            /* Reduced side padding */
-            display: flex;
-            justify-content: space-between;
-            /* Changed from space-evenly */
-            align-items: center;
-            color: white;
+            padding: 0.5rem 1rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            height: 80px;
-            box-sizing: border-box;
-            position: relative;
-            top: 0;
         }
-
-        .brand-name {
+ .brand-name {
             font-family: 'Bellefair', serif;
             font-size: 45px;
             font-weight: normal;
@@ -103,7 +91,6 @@
             color: black;
             line-height: 1;
             margin-right: 30px;
-            /* Reduced from 60px */
             display: flex;
             align-items: center;
             height: 100%;
@@ -125,7 +112,6 @@
             position: relative;
             padding-top: 5px;
         }
-
 
         .nav-links a {
             color: white;
@@ -550,65 +536,337 @@
         .sort-container.show .sort-dropdown {
             display: block;
         }
+
+        @media (max-width: 991.98px) {
+            .sidebar.d-lg-block { display: none !important; }
+            .offcanvas { transition: transform 0.3s ease-in-out; }
+            .navbar .nav-right, .navbar .search-container { display: none !important; }
+            /* Filter button styling */
+            .btn-primary.d-lg-none {
+                background-color: #4D44AD;
+                border: none;
+                padding: 10px;
+                font-weight: 500;
+            }
+            /* Offcanvas styling */
+            .offcanvas {
+                max-width: 300px;
+            }
+            /* Product card responsive adjustments */
+            .product-card {
+                width: 100% !important;
+                height: auto !important;
+                min-height: 300px; /* Further optimized height */
+                margin-bottom: 0.5rem;
+                padding: 0.5rem;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+            .image-container {
+                height: 150px !important; /* Optimized height */
+                margin-bottom: 0.5rem;
+                padding: 0.5rem;
+            }
+            .image-container img {
+                max-height: 100%;
+                object-fit: contain;
+            }
+            /* Adjust spacing between cards */
+            .row-cols-2 > .col {
+                padding: 0 4px; /* Tighter spacing */
+            }
+            /* Optimize product title */
+            .product-title {
+                font-size: 0.9rem;
+                height: 32px;
+                margin-bottom: 0.3rem;
+                line-height: 1.2;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            /* Price styling */
+            .price {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            /* Discount price styling */
+            .text-success.fs-4 {
+                font-size: 1.1rem !important;
+            }
+            .text-danger.fs-6 {
+                font-size: 0.85rem !important;
+            }
+            /* Cart button optimization */
+            .btn-add-cart {
+                padding: 0.4rem;
+                font-size: 0.85rem;
+                border-radius: 4px;
+                margin-top: 0.3rem;
+            }
+            /* Wishlist icon adjustment */
+            .wishlist-icon {
+                top: 0.5rem;
+                right: 0.5rem;
+                font-size: 1.1rem;
+            }
+            /* Filter section mobile styling */
+            .filter-section {
+                margin-bottom: 1.5rem;
+            }
+            .filter-section h6 {
+                font-size: 1rem;
+                margin-bottom: 0.75rem;
+            }
+            .filter-section ul li {
+                margin-bottom: 0.5rem;
+            }
+            /* Price range slider mobile styling */
+            .form-range {
+                width: 100%;
+            }
+        }
+
+        /* Product grid responsive adjustments */
+        @media (max-width: 575.98px) {
+            .product-card {
+                margin-bottom: 1rem;
+            }
+            
+            .row-cols-1 > .col {
+                padding: 0 10px;
+            }
+        }
+
+        /* Ensure proper spacing in product grid */
+        .row-cols-2 > .col,
+        .row-cols-md-3 > .col,
+        .row-cols-lg-4 > .col {
+            margin-bottom: 0.75rem;
+        }
+
+        /* Add some breathing room between rows */
+        .g-4 {
+            --bs-gutter-x: 0.5rem;
+            --bs-gutter-y: 0.75rem;
+        }
+
+        /* Card hover effect */
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        /* Offcanvas Sidebar Styles */
+        .offcanvas {
+            background-color: #4b449783;
+            color: white;
+        }
+
+        .offcanvas-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .offcanvas-title {
+            color: black;
+            font-weight: 500;
+        }
+
+        .offcanvas-body .nav-link {
+            color: white;
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .offcanvas-body .nav-link i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .offcanvas-body .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 992px) {
+            .nav-links {
+                margin: 0 auto;
+            }
+
+            .nav-links .nav-link {
+                color: white;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+
+            .nav-right {
+                gap: 1rem;
+            }
+
+            .search-container {
+                width: 240px;
+                background: white;
+                border-radius: 4px;
+                padding: 0.25rem;
+            }
+        }
+
+        @media (max-width : 425px){
+           .brand-name {
+            font-family: 'Bellefair', serif;
+            font-size: 20px;
+            font-weight: normal;
+            text-decoration: none;
+            color: black;
+            line-height: 1;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            /* padding-top: 5px; */
+        }
+        }
     </style>
 </head>
 
 <body data-user-id="<%= user ? user._id : '' %>">
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <a href="/" class="brand-name">ElectroMania</a>
-        <div class="nav-links">
-            <a href="/" style="color: black;">Home</a>
-            <div class="dropdown">
-                <a href="/shop" style="color: black;">Shop</a>
-            </div>
-            <a href="/offers" style="color: black;">Deals/Offers</a>
-        </div>
-        <div class="nav-right">
-            <!-- <div class="search-container">
-                <input type="search" class="search-bar" placeholder="Search products...">
-                <button class="search-btn"><i class="bi bi-search" style="font-size: 18px;"></i></button>
-            </div> -->
-            <form id="searchProductForm" action="/shop" method="get" class="d-flex">
-                <input type="hidden" name="category" value="<%= appliedFilters && appliedFilters.category ? appliedFilters.category : '' %>">
-                <input type="hidden" name="price" value="<%= appliedFilters && appliedFilters.price ? appliedFilters.price : '' %>">
-                <input type="hidden" name="brand" value="<%= appliedFilters && appliedFilters.brand ? appliedFilters.brand : '' %>">
-                <input type="hidden" name="availability" value="<%= appliedFilters && appliedFilters.availability ? appliedFilters.availability : '' %>">
-                <input type="hidden" name="sort" value="<%= appliedFilters && appliedFilters.sort ? appliedFilters.sort : 'newest' %>">
-            
-                <input class="form-control me-2" type="search" name="result" placeholder="Search products"
-                    value="<%= appliedFilters && appliedFilters.result ? appliedFilters.result : '' %>">
-                <button class="btn" type="submit" style="background-color: #beb8f2;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form>
-            <a href="/user/wishlist" style="color: white; font-size: 22px;"><i class="fas fa-heart"></i></a>
-            <a href="/user/cart" style="color: white; font-size: 22px;"><i class="fas fa-shopping-cart"></i></a>
-            <div class="d-none d-lg-flex align-items-center">
-                <% if (locals.user) { %>
-                    <div class="dropdown">
-                        <a class="btn dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i> <%= locals.user.name %>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" style="color: black;" href="/user/profile">Profile</a></li>
-                            <li><a class="dropdown-item" style="color: black;" href="/user/logout">Logout</a></li>
-                        </ul>
-                    </div>
-                <% } else { %>
-                    <a href="/user/login" class="btn btn-outline-light">Sign in</a>
+       <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-3">
+            <!-- Brand -->
+            <a href="/" class="brand-name">ElectroMania</a>
+
+            <!-- Hamburger Menu Button - Only visible on mobile/tablet -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Desktop Navbar Content -->
+            <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarContent">
+                <!-- Main Navigation Links -->
+                <ul class="navbar-nav nav-links me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/shop"><i class="fas fa-store"></i> Shop</a>
+                    </li>
                    
-                <% } %>
+                </ul>
+
+                <!-- Right Side Elements -->
+                <div class="nav-right d-flex align-items-center">
+                    <!-- Search Bar -->
+                    <form id="searchProductForm" action="/shop" method="get" class="search-container me-3">
+                        <input type="hidden" name="category" value="<%= appliedFilters && appliedFilters.category ? appliedFilters.category : '' %>">
+                        <input type="hidden" name="price" value="<%= appliedFilters && appliedFilters.price ? appliedFilters.price : '' %>">
+                        <input type="hidden" name="brand" value="<%= appliedFilters && appliedFilters.brand ? appliedFilters.brand : '' %>">
+                        <input type="hidden" name="availability" value="<%= appliedFilters && appliedFilters.availability ? appliedFilters.availability : '' %>">
+                        <input type="hidden" name="sort" value="<%= appliedFilters && appliedFilters.sort ? appliedFilters.sort : 'newest' %>">
+                        
+                        <input class="form-control search-bar" type="search" name="result" placeholder="Search products"
+                            value="<%= appliedFilters && appliedFilters.result ? appliedFilters.result : '' %>">
+                        <button class="btn search-btn" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+
+                    <!-- Wishlist -->
+                    <a href="/user/wishlist" class="nav-icon-link me-3">
+                        <i class="fas fa-heart"></i>
+                    </a>
+
+                    <!-- Cart -->
+                    <a href="/user/cart" class="nav-icon-link me-3">
+                        <i class="fas fa-shopping-cart"></i>
+                        <% if (locals.cartItemCount && cartItemCount > 0) { %>(<%= cartItemCount %>)<% } %>
+                    </a>
+
+                    <!-- User Menu -->
+                    <% if (locals.user) { %>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" id="userDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdownMenuLink">
+                                <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+                                <li><a class="dropdown-item" href="/user/orders">My Orders</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    <% } else { %>
+                        <a href="/user/login" class="btn btn-outline-light">Sign In</a>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Mobile/Tablet Offcanvas Sidebar - Hidden on desktop -->
+            <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/shop">
+                                <i class="fas fa-store"></i> Shop
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/wishlist">
+                                <i class="fas fa-heart"></i> Wishlist
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/cart">
+                                <i class="fas fa-shopping-cart"></i> Cart
+                                <% if (locals.cartItemCount && cartItemCount > 0) { %>(<%= cartItemCount %>)<% } %>
+                            </a>
+                        </li>
+                        <% if (locals.user) { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/profile">
+                                    <i class="fas fa-user"></i> Profile
+                                </a>
+                            </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/login">
+                                    <i class="fas fa-sign-in-alt"></i> Sign In
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="container-fluid px-4">
         <div class="row">
-            <!-- Sidebar -->
+            <!-- Sidebar: Offcanvas for mobile/tablet, visible on desktop -->
             <div class="col-lg-2">
-                <div class="sidebar">
+                <!-- Filter Button for mobile/tablet -->
+                <button class="btn btn-primary d-lg-none mb-3 w-100 mt-3 type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters">
+                    <i class="bi bi-funnel"></i> Filter
+                </button>
+                <!-- Sidebar (desktop) -->
+                <div class="sidebar d-none d-lg-block">
                     <div class="filter-title">Filter Items</div>
                     <form id="filterForm" action="/shop" method="get">
                         <!-- Preserve search and sorting -->
@@ -675,6 +933,77 @@
                     </form>
                     </div>
                 </div>
+                <!-- Offcanvas Sidebar (mobile/tablet) -->
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Filter Items</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <form id="filterFormMobile" action="/shop" method="get">
+                            <!-- Preserve search and sorting -->
+                            <input type="hidden" name="result" value="<%= appliedFilters && appliedFilters.result ? appliedFilters.result : '' %>">
+                            <input type="hidden" name="sort" value="<%= appliedFilters && appliedFilters.sort ? appliedFilters.sort : 'newest' %>">
+
+                            <!-- Category Filter -->
+                            <div class="filter-section">
+                                <h6>Category</h6>
+                                <ul class="list-unstyled">
+                                    <% category.forEach(cat=> { %>
+                                        <li>
+                                            <input type="checkbox" name="category" value="<%= cat.name %>" <%=appliedFilters &&
+                                                appliedFilters.category && appliedFilters.category.includes(cat.name)
+                                                ? "checked" : "" %>>
+                                            <%= cat.name %>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+
+                            <!-- Price Filter -->
+                            <div class="filter-section">
+                                <h6>Price Range</h6>
+                                <input type="range" class="form-range custom-range" min="0" max="100000" step="1000" id="priceRangeMobile" name="price"
+                                value="<%= appliedFilters && appliedFilters.price ? appliedFilters.price : 50000 %>">
+                                <div class="d-flex justify-content-between fw-bold">
+                                    <small id="minValueMobile">₹0</small>
+                                    <small id="currValueMobile">₹<%= appliedFilters && appliedFilters.price ? appliedFilters.price : 50000 %></small>
+                                    <small id="maxValueMobile">₹10,0000</small>
+                                </div>
+                            </div>
+
+                            <!-- Brand Filter -->
+                            <div class="filter-section">
+                                <h6>Brands</h6>
+                                <ul class="list-unstyled">
+                                    <% 
+                                        const mobileUniqueBrands = [...new Set(brand)];
+                                        mobileUniqueBrands.forEach(brand => { 
+                                    %>
+                                        <li>
+                                            <input type="checkbox" name="brand" value="<%= brand %>"
+                                                <%= appliedFilters && appliedFilters.brand && appliedFilters.brand.includes(brand) ? "checked" : "" %>>
+                                            <%= brand %>
+                                        </li>
+                                    <% }); %>
+                                </ul>
+
+                                <ul class="list-unstyled">
+                                    <h6>Availability</h6>
+                                    <li>
+                                        <input type="checkbox" name="availability" value="outOfStock"
+                                            <%= appliedFilters && appliedFilters.availability ? "checked" : "" %>>
+                                        Include out of Stock
+                                    </li>
+                                </ul>
+                                <br>
+                                <button type="submit" class="btn text-black w-100" style="background-color: #e1d3e5; border-radius: 28px;">
+                                    Apply Filters
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <!-- Product Grid -->
@@ -702,7 +1031,7 @@
                     </div>
                 </div>
 
-                <div class="row row-cols-1 row-cols-md-auto g-4 justify-content-start mt-4">
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-start mt-4">
                     <% products.forEach(product=> { %>
                         <div class="col">
                            
@@ -996,7 +1325,25 @@ addToWishlistBtns.forEach(button => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle desktop price range
+    const priceRange = document.getElementById('priceRange');
+    const currValue = document.getElementById('currValue');
+    if (priceRange && currValue) {
+        priceRange.addEventListener('input', function() {
+            currValue.textContent = '₹' + this.value;
+        });
+    }
 
+    // Handle mobile price range
+    const priceRangeMobile = document.getElementById('priceRangeMobile');
+    const currValueMobile = document.getElementById('currValueMobile');
+    if (priceRangeMobile && currValueMobile) {
+        priceRangeMobile.addEventListener('input', function() {
+            currValueMobile.textContent = '₹' + this.value;
+        });
+    }
+});
 
     </script>
 </body>

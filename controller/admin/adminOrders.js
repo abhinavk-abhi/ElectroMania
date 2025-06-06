@@ -182,7 +182,15 @@ const orderReturn = async (req,res)=>{
             const userUpdate = await User.findOneAndUpdate(
                 {_id : userId },
                 {
-                    $inc : { wallet : refundAmount }
+                    $inc : { wallet : refundAmount },
+                    $push : { 
+                    walletHistory : {
+                    amount : refundAmount,
+                    type : 'refund',
+                    orderId : orderId,
+                   
+                }
+            }
                 },
                 {new : true}
             );

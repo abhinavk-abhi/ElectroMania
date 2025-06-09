@@ -21,6 +21,17 @@ const getDashboard = async (req, res) => {
         const bestSellingProducts = await getBestSellingProducts();
         const bestSellingCategories = await getBestSellingCategories();
         const bestSellingBrands = await getBestSellingBrands();
+        const users = await User.countDocuments();
+        const orders = await Order.find({paymentStatus :  "Paid"})
+        let totalSales = 0;
+        for(let order of orders){
+            totalSales += order.finalAmount;
+        }
+        const totalOrders = await Order.countDocuments({paymentStatus :  "Paid"});
+        let totalProducts = 0 ;
+        for(let order of orders){
+            totalProducts += order.orderItems.quantity;
+        }
         
         // Get recent orders
         const recentOrders = await getRecentOrders();
@@ -33,7 +44,11 @@ const getDashboard = async (req, res) => {
             bestSellingCategories,
             bestSellingBrands,
             recentOrders,
-            currentPeriod: period
+            currentPeriod: period,
+            users,
+            totalSales,
+            totalOrders,
+            totalProducts
         });
         
     } catch (error) {

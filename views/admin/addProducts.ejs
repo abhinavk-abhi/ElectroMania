@@ -676,7 +676,7 @@
         const stock = document.getElementById("productStock").value.trim()
         const price = document.getElementById("productPrice").value.trim();
         const imageInputs = document.querySelectorAll('input[name="productImages[]"]');
-       const letterRegex = /^[A-Za-z0-9]+$/;
+       const letterRegex = /^[A-Za-z\s]+$/;
 
         const errors = {
           name: document.getElementById("nameError"),

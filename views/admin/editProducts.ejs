@@ -639,7 +639,7 @@ if (editProductForm) {
 // Validation function
 function validateForm() {
     let isValid = true;
-    const letterRegex = /^[A-Za-z0-9]+$/;
+    const letterRegex =/^[A-Za-z\s]+$/;
 
 
     const productName = document.getElementById("productName").value.trim();

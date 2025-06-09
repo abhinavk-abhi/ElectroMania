@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .illustration {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5 3.9 4 4 0 0 1-5-3.9 4 4 0 0 1-5-3.9A10 10 0 0 0 12 2z"/><path d="M8 16s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>');
+            background-image: url(https://res.cloudinary.com/dgqjnkio4/image/upload/v1749480683/electromania_products/rep1nfn1eudmemnbrpip.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -43,11 +43,11 @@
                 <!-- Left side - Content -->
                 <div class="p-8 md:p-12 md:w-1/2 flex flex-col justify-center">
                     <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center pulse">
+                        <!-- <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center pulse">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
-                        </div>
+                        </div> -->
                         <h1 class="ml-4 text-2xl font-bold text-gray-800">Payment Failed</h1>
                     </div>
                     
@@ -71,14 +71,14 @@
                         <a href="/shop" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors text-center">
                             Continue Shopping
                         </a>
-                        <a href="/user/checkout?cartId=<%= cartId %>&userId=<%= userId %>" class="px-6 py-3 bg-red-600 rounded-lg text-white font-medium hover:bg-red-700 transition-colors text-center shadow-sm shake">
+                        <a href="/user/checkout?cartId=<%= cartId %>&userId=<%= userId %>" style="background-color: rgb(12, 12, 176);" class="px-6 py-3 rounded-lg text-white font-medium transition-colors text-center shadow-sm shake">
                             Try Again
                         </a>
                     </div>
                 </div>
                 
                 <!-- Right side - Illustration -->
-                <div class="md:w-1/2 bg-gradient-to-br from-red-50 to-pink-50 flex items-center justify-center p-8 md:p-12">
+                <div class="md:w-1/2 flex items-center justify-center p-8 md:p-12">
                     <div class="illustration w-full h-64 md:h-full relative">
                       <img src="../../public/images/paymentError.svg" alt="">
                         <div class="absolute bottom-0 left-0 right-0 text-center text-gray-400 text-sm">

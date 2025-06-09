@@ -795,7 +795,7 @@
                 const addName = document.getElementById("addName").value.trim();
                 const addDescription = document.getElementById("addDescription").value.trim();
                 const addStatus = document.getElementById("addStatus").value;
-                const letterRegex = /^[A-Za-z]+$/;
+                const letterRegex = /^[A-Za-z\s]+$/;
 
                 let errors = {
                     addName: document.getElementById("addNameError"),

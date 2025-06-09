@@ -176,19 +176,133 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
+
+        /* Sidebar Toggle Container */
+        .sidebar-toggle-container {
+            position: static;
+            top: 80px;
+            left: 0;
+            right: 0;
+            padding: 10px 15px;
+          
+            z-index: 1020;
+        }
+
+        /* Mobile Toggle Button */
+        .sidebar-toggle {
+            background-color: #5b3f64;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+
+        }
+
+        .sidebar-toggle:hover {
+            background-color: #4a334f;
+            transform: translateY(-1px);
+        }
+
+        /* Offcanvas Sidebar */
+        .offcanvas {
+            background-color: white;
+            max-width: 280px;
+        }
+
+        .offcanvas-header {
+            border-bottom: 1px solid #eee;
+            padding: 1rem;
+        }
+
+        .offcanvas-title {
+            color: #5b3f64;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            .container-fluid {
+                padding: 0;
+            }
+
+            .row {
+                margin: 0;
+            }
+
+            .col-md-9 {
+                margin-top: 120px; /* Space for navbar + toggle container */
+            }
+
+            .p-4 {
+                padding: 1rem !important;
+            }
+        }
+
+        /* Tablet specific adjustments */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .col-md-9 {
+                padding: 1.5rem !important;
+            }
+        }
+
+        /* Ensure proper spacing on larger screens */
+        @media (min-width: 992px) {
+            .sidebar-toggle-container {
+                display: none;
+            }
+            
+            .col-md-9 {
+                margin-top: 0;
+            }
+        }
+
+        /* Additional responsive adjustments */
+        @media (max-width: 576px) {
+            .d-flex.gap-3 {
+                flex-direction: column;
+                gap: 1rem !important;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
 <body>
     <%- include ('../partials/header') %>
 
+    <!-- Add this right after the header include -->
+    <div class="sidebar-toggle-container">
+        <button class="btn btn-primary d-md-none d-lg-none sidebar-toggle w-20" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" aria-controls="profileSidebar">
+            <i class="fas fa-bars"></i> 
+        </button>
+    </div>
+
+    <!-- Add the offcanvas sidebar -->
+    <div class="offcanvas offcanvas-start d-md-none d-lg-none" tabindex="-1" id="profileSidebar" aria-labelledby="profileSidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="profileSidebarLabel">Profile Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <%- include('../partials/profileSidebar') %>
+        </div>
+    </div>
+
     <div class="container-fluid px-4 py-4">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-md-3"><%- include('../partials/profileSidebar')%></div>
+            <div class="col-md-4 d-none d-md-block"><%- include('../partials/profileSidebar')%></div>
 
             <!-- Main Content -->
-            <div class="col-md-9">
+            <div class="col-md-8 col-12">
                 <!-- Wallet Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="d-flex align-items-center">

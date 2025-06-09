@@ -367,6 +367,7 @@
             border-radius: 4px;
             margin-bottom: 15px;
             cursor: pointer;
+            margin: 30px 0 0 10px ;
         }
         
         /* Responsive adjustments */
@@ -427,16 +428,29 @@
     <!-- Include the header partial -->
     <%- include('../partials/header') %>
     
-    <!-- Main content container with sidebar -->
-    <div class="main-container">
-        <!-- Mobile sidebar toggle button -->
-        <button class="sidebar-toggle" id="sidebarToggle">
+    <!-- Add this right after the navbar and before the main-container -->
+    <div class="sidebar-toggle-container">
+        <button class="btn btn-primary d-lg-none sidebar-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" aria-controls="profileSidebar">
             <i class="fas fa-bars"></i> Menu
         </button>
-        
-        <!-- Sidebar container -->
-        <div class="sidebar-container" id="sidebarContainer">
+    </div>
+    
+    <!-- Main content container with sidebar -->
+    <div class="main-container">
+        <!-- Desktop Sidebar -->
+        <div class="sidebar-container d-none d-lg-block">
             <%- include('../partials/profileSidebar') %>
+        </div>
+
+        <!-- Mobile/Tablet Offcanvas Sidebar -->
+        <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="profileSidebar" aria-labelledby="profileSidebarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="profileSidebarLabel">Profile Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <%- include('../partials/profileSidebar') %>
+            </div>
         </div>
         
         <!-- Content container -->

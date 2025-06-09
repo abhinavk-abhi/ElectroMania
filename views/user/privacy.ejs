@@ -20,245 +20,465 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
+<style>
+
+    /* Main container and form adjustments */
+    .container-fluid {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .row {
+        margin: 0;
+        width: 100%;
+        max-width: 1200px; /* Maximum width for content */
+    }
+
+    /* Form container adjustments */
+    .col-md-9 {
+        width: 100%;
+        padding: 1rem !important;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Form content adjustments */
+    .p-4.h-100 {
+        width: 100%;
+        max-width: 800px; /* Maximum width for form */
+        margin: 0 auto;
+        padding: 2rem !important;
+        background-color: #ffffff;
+        border-radius: 12px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 991.98px) {
+        .col-md-9 {
+            margin-top: 120px;
+            padding: 1rem !important;
+            width: 100%;
+        }
+
+        .p-4.h-100 {
+            width: 90%; /* Take up 90% of the screen width */
+            margin: 0 auto;
+            padding: 1.5rem !important;
+        }
+
+        /* Ensure form takes full width */
+        form#changePasswordForm {
+            width: 100%;
+        }
+
+        /* Make form inputs full width */
+        .form-control {
+            width: 100%;
+            font-size: 16px; /* Better for mobile input */
+            padding: 12px; /* Larger touch target */
+        }
+
+        /* Make labels more visible */
+        .form-label {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+    }
+
+    /* Tablet specific adjustments */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        .col-md-9 {
+            padding: 1.5rem !important;
+        }
+
+        .p-4.h-100 {
+            padding: 2rem !important;
+            max-width: 600px; /* Slightly smaller on tablets */
+        }
+    }
+
+    /* Mobile specific adjustments */
+    @media (max-width: 767.98px) {
+        .col-md-9 {
+            padding: 0.5rem !important;
+            margin-top: 120px;
+        }
+
+        .p-4.h-100 {
+            width: 95%; /* Take up more width on mobile */
+            margin: 0 auto;
+            padding: 1.5rem !important;
+        }
+
+        /* Increase form title size */
+        h4.mb-4 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Increase form input sizes */
+        .form-control {
+            font-size: 16px;
+            padding: 14px;
+            margin-bottom: 1rem;
+        }
+
+        /* Increase label sizes */
+        .form-label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        /* Increase spacing between form groups */
+        .mb-4 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Stack buttons vertically */
+        .d-flex.gap-3 {
+            flex-direction: column;
+            gap: 1rem !important;
+            width: 100%;
+        }
+
+        /* Increase button sizes */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Make error messages more visible */
+        .small.text-danger {
+            font-size: 14px;
+            margin-top: 6px;
+        }
+    }
+
+    /* Ensure proper spacing on larger screens */
+    @media (min-width: 992px) {
+        .sidebar-toggle-container {
+            display: none;
+        }
+        
+        .col-md-9 {
+            margin-top: 0;
+            padding: 2rem !important;
+        }
+
+        .p-4.h-100 {
+            padding: 2rem !important;
+        }
+    }
+
+    /* For Google user content */
+    .d-flex.flex-column.justify-content-center.align-items-center {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem !important;
+        background-color: #ffffff;
+        border-radius: 12px;
+    }
+
+    @media (max-width: 767.98px) {
+        .d-flex.flex-column.justify-content-center.align-items-center {
+            width: 95%;
+            margin: 120px auto 0;
+            padding: 1.5rem !important;
+        }
+
+        /* Adjust Google user content for mobile */
+        .d-flex.flex-column.justify-content-center.align-items-center h5 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .d-flex.flex-column.justify-content-center.align-items-center p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .d-flex.flex-column.justify-content-center.align-items-center .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .form-class {
+            width: 200px;
+            height: 500px;
+        }
+    }
+</style>
+
 <body>
     <!-- Navbar -->
     <%- include('../partials/header') %>
 
-        <main class="container mt-4">
-            <div class="row">
+    <!-- Add this right after the navbar and before the main container -->
+    <div class="sidebar-toggle-container">
+        <button class="btn btn-primary d-lg-none sidebar-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" aria-controls="profileSidebar">
+            <i class="fas fa-bars"></i> Menu
+        </button>
+    </div>
 
+    <!-- Add this right after the toggle button -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="profileSidebar" aria-labelledby="profileSidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="profileSidebarLabel">Profile Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <%- include('../partials/profileSidebar') %>
+        </div>
+    </div>
+
+    <main class="container-fluid mt-4">
+        <div class="row">
+            <!-- Desktop Sidebar -->
+            <div class="col-md-3 col-lg-4 d-none d-lg-block">
                 <%- include('../partials/profileSidebar') %>
-
-                <% if (!user.googleId) { %>
-                    <div class="col-md-9 col-lg-10 col-xl-9 p-4">
-                        <div class="p-4 h-100" style="border-radius: 12px; background-color: #ffffff;">
-                            <h4 class="mb-4" style="color: #5b3f64;">Change Password</h4>
-
-                            <form id="changePasswordForm">
-                                <!-- Old Password -->
-                                <div class="mb-4">
-                                    <label for="oldPassword" class="form-label">Old Password</label>
-                                    <input type="password" id="oldPassword" name="oldPassword"
-                                        class="form-control form-control-sm" placeholder="Enter your old password">
-                                    <div id="oldPasswordError" class="small text-danger"></div>
-                                </div>
-
-                                <!-- New Password -->
-                                <div class="mb-4">
-                                    <label for="newPassword" class="form-label">New Password</label>
-                                    <input type="password" id="newPassword" name="newPassword"
-                                        class="form-control form-control-sm" placeholder="Enter your new password">
-                                    <div id="newPasswordError" class="small text-danger"></div>
-                                </div>
-
-                                <!-- Confirm New Password -->
-                                <div class="mb-4">
-                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                    <input type="password" id="confirmPassword" name="confirmPassword"
-                                        class="form-control form-control-sm" placeholder="Confirm your new password">
-                                    <div id="confirmPasswordError" class="small text-danger"></div>
-                                </div>
-
-                                <!-- Buttons -->
-                                <div class="d-flex gap-3 align-items-center mt-5">
-                                    <button type="submit" class="btn btn-primary"
-                                        style="background-color: #5b3f64; border: none;">Change Password</button>
-                                    <button type="button" class="btn btn-secondary"
-                                        onclick="window.history.back();">Cancel</button>
-                                </div>
-
-                            </form>
-
-                        </div>
-                    </div>
-                 <% } else { %>
-                    <div class="col-md-9 col-lg-10 col-xl-9 p-0">
-                        <div class="d-flex flex-column justify-content-center align-items-center text-center w-100"
-                            style="min-height: 60vh; padding: 40px 20px; border-radius: 12px;">
-                            
-                            <img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" alt="Google Icon"
-                                class="mb-4" style="width: 60px; max-width: 100%;">
-                            
-                            <h5 class="mb-3" style="font-size: 1.2rem;">You're logged in with Google</h5>
-                            
-                            <p class="mb-4" style="max-width: 320px;">Password changes are not applicable for Google login users.</p>
-                    
-                            <a href="/user/profile" class="btn btn-dark px-4">Back to Profile</a>
-                        </div>
-                    </div>
-                <% } %>
             </div>
-        </main>
 
-        <script>
-            const changePasswordForm = document.getElementById('changePasswordForm');
-        
-            if (changePasswordForm) {
-                changePasswordForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-        
-                    const oldPassword = document.getElementById('oldPassword').value.trim();
-                    const newPassword = document.getElementById('newPassword').value.trim();
-                    const confirmPassword = document.getElementById('confirmPassword').value.trim();
-        
-                    const errors = {
-                        oldPassword: document.getElementById("oldPasswordError"),
-                        newPassword: document.getElementById("newPasswordError"),
-                        confirmPassword: document.getElementById("confirmPasswordError"),
-                    };
-        
-                    const oldPasswordInput = document.getElementById('oldPassword');
-                    const newPasswordInput = document.getElementById('newPassword');
-                    const confirmPasswordInput = document.getElementById('confirmPassword');
-        
-                    let hasError = false;
-        
-                    // Old Password Validation
-                    if (!oldPassword) {
-                        errors.oldPassword.innerText = "Please enter old password";
-                        oldPasswordInput.classList.add("is-invalid");
-                        hasError = true;
-                    }
-        
-                    // New Password Validation
-                    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{6,}$/;
-                    if (!newPassword) {
-                        errors.newPassword.innerText = "Please enter a new password";
-                        newPasswordInput.classList.add("is-invalid");
-                        hasError = true;
-                    } else if (!strongPasswordRegex.test(newPassword)) {
-                        errors.newPassword.innerText =
-                            "Password must be 6+ chars, incl. uppercase, lowercase, number & special (@$!%*?&#^)";
-                        newPasswordInput.classList.add("is-invalid");
-                        hasError = true;
-                    }
-        
-                    // Confirm Password Validation
-                    if (!confirmPassword) {
-                        errors.confirmPassword.innerText = "Please confirm your new password";
-                        confirmPasswordInput.classList.add("is-invalid");
-                        hasError = true;
-                    } else if (newPassword !== confirmPassword) {
-                        errors.confirmPassword.innerText = "Passwords do not match";
-                        confirmPasswordInput.classList.add("is-invalid");
-                        hasError = true;
-                    }
-        
-                    if (hasError) return;
-        
-                    const privacyData = { oldPassword, newPassword };
-        
-                    try {
-                        const response = await fetch('/user/privacy', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(privacyData)
-                        });
-        
-                        const data = await response.json();
-        
-                        if (!response.ok) {
-                            Swal.fire({
-                                icon: "error",
-                                text: data.error,
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: "success",
-                                text: data.message,
-                                timer: 2000,
-                                showConfirmButton: false
-                            }).then(() => {
-                                window.location.reload();
-                            });
-                        }
-                    } catch (error) {
-                        console.error(error);
+            <!-- Main Content -->
+            <% if (!user.googleId) { %>
+                <div class="col-md-12 col-lg-8 col-sm-12 p-4">
+                    <div class="p-4 h-100 form-class" style="border-radius: 12px; background-color: #ffffff;">
+                        <h4 class="mb-4" style="color: #5b3f64;">Change Password</h4>
+
+                        <form id="changePasswordForm">
+                            <!-- Old Password -->
+                            <div class="mb-4">
+                                <label for="oldPassword" class="form-label">Old Password</label>
+                                <input type="password" id="oldPassword" name="oldPassword"
+                                    class="form-control form-control-sm" placeholder="Enter your old password">
+                                <div id="oldPasswordError" class="small text-danger"></div>
+                            </div>
+
+                            <!-- New Password -->
+                            <div class="mb-4">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword"
+                                    class="form-control form-control-sm" placeholder="Enter your new password">
+                                <div id="newPasswordError" class="small text-danger"></div>
+                            </div>
+
+                            <!-- Confirm New Password -->
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword"
+                                    class="form-control form-control-sm" placeholder="Confirm your new password">
+                                <div id="confirmPasswordError" class="small text-danger"></div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-flex gap-3 align-items-center mt-5">
+                                <button type="submit" class="btn btn-primary"
+                                    style="background-color: #5b3f64; border: none;">Change Password</button>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="window.history.back();">Cancel</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+             <% } else { %>
+                <div class="col-md-9 col-lg-10 p-4">
+                    <div class="d-flex flex-column justify-content-center align-items-center text-center w-100"
+                        style="min-height: 60vh; padding: 40px 20px; border-radius: 12px; background-color: #ffffff;">
+                        
+                        <img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" alt="Google Icon"
+                            class="mb-4" style="width: 60px; max-width: 100%;">
+                        
+                        <h5 class="mb-3" style="font-size: 1.2rem;">You're logged in with Google</h5>
+                        
+                        <p class="mb-4" style="max-width: 320px;">Password changes are not applicable for Google login users.</p>
+                
+                        <a href="/user/profile" class="btn btn-dark px-4">Back to Profile</a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+    <script>
+        const changePasswordForm = document.getElementById('changePasswordForm');
+    
+        if (changePasswordForm) {
+            changePasswordForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+    
+                const oldPassword = document.getElementById('oldPassword').value.trim();
+                const newPassword = document.getElementById('newPassword').value.trim();
+                const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    
+                const errors = {
+                    oldPassword: document.getElementById("oldPasswordError"),
+                    newPassword: document.getElementById("newPasswordError"),
+                    confirmPassword: document.getElementById("confirmPasswordError"),
+                };
+    
+                const oldPasswordInput = document.getElementById('oldPassword');
+                const newPasswordInput = document.getElementById('newPassword');
+                const confirmPasswordInput = document.getElementById('confirmPassword');
+    
+                let hasError = false;
+    
+                // Old Password Validation
+                if (!oldPassword) {
+                    errors.oldPassword.innerText = "Please enter old password";
+                    oldPasswordInput.classList.add("is-invalid");
+                    hasError = true;
+                }
+    
+                // New Password Validation
+                const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{6,}$/;
+                if (!newPassword) {
+                    errors.newPassword.innerText = "Please enter a new password";
+                    newPasswordInput.classList.add("is-invalid");
+                    hasError = true;
+                } else if (!strongPasswordRegex.test(newPassword)) {
+                    errors.newPassword.innerText =
+                        "Password must be 6+ chars, incl. uppercase, lowercase, number & special (@$!%*?&#^)";
+                    newPasswordInput.classList.add("is-invalid");
+                    hasError = true;
+                }
+    
+                // Confirm Password Validation
+                if (!confirmPassword) {
+                    errors.confirmPassword.innerText = "Please confirm your new password";
+                    confirmPasswordInput.classList.add("is-invalid");
+                    hasError = true;
+                } else if (newPassword !== confirmPassword) {
+                    errors.confirmPassword.innerText = "Passwords do not match";
+                    confirmPasswordInput.classList.add("is-invalid");
+                    hasError = true;
+                }
+    
+                if (hasError) return;
+    
+                const privacyData = { oldPassword, newPassword };
+    
+                try {
+                    const response = await fetch('/user/privacy', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(privacyData)
+                    });
+    
+                    const data = await response.json();
+    
+                    if (!response.ok) {
                         Swal.fire({
                             icon: "error",
-                            text: "An error occurred. Please try again.",
+                            text: data.error,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "success",
+                            text: data.message,
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.reload();
                         });
                     }
-                });
-            }
-        
-            // Old Password Check on Blur
-            document.getElementById('oldPassword').addEventListener('blur', async () => {
-                const input = document.getElementById('oldPassword');
-                const errorDiv = document.getElementById("oldPasswordError");
-                const oldPassword = input.value.trim();
-        
-                errorDiv.innerText = "";
-                input.classList.remove("is-valid", "is-invalid");
-        
-                if (!oldPassword) return;
-        
-                try {
-                    const response = await fetch('/user/check-old-password', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ oldPassword })
-                    });
-        
-                    const data = await response.json();
-        
-                    if (data.valid) {
-                        input.classList.add("is-valid");
-                    } else {
-                        input.classList.add("is-invalid");
-                        errorDiv.innerText = "Old password is incorrect";
-                    }
                 } catch (error) {
-                    console.error("Password check failed:", error);
+                    console.error(error);
+                    Swal.fire({
+                        icon: "error",
+                        text: "An error occurred. Please try again.",
+                    });
                 }
             });
-        
-            // New Password Validation on Blur
-            document.getElementById('newPassword').addEventListener('blur', () => {
-                const input = document.getElementById('newPassword');
-                const errorDiv = document.getElementById("newPasswordError");
-                const newPassword = input.value.trim();
-                const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{6,}$/;
-        
-                errorDiv.innerText = "";
-                input.classList.remove("is-valid", "is-invalid");
-        
-                if (!newPassword) {
-                    errorDiv.innerText = "Please enter a new password";
-                    input.classList.add("is-invalid");
-                } else if (!strongPasswordRegex.test(newPassword)) {
-                    errorDiv.innerText =
-                        "Password must be 6+ chars, incl. uppercase, lowercase, number & special (@$!%*?&#^)";
-                    input.classList.add("is-invalid");
-                } else {
+        }
+    
+        // Old Password Check on Blur
+        document.getElementById('oldPassword').addEventListener('blur', async () => {
+            const input = document.getElementById('oldPassword');
+            const errorDiv = document.getElementById("oldPasswordError");
+            const oldPassword = input.value.trim();
+    
+            errorDiv.innerText = "";
+            input.classList.remove("is-valid", "is-invalid");
+    
+            if (!oldPassword) return;
+    
+            try {
+                const response = await fetch('/user/check-old-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ oldPassword })
+                });
+    
+                const data = await response.json();
+    
+                if (data.valid) {
                     input.classList.add("is-valid");
-                }
-            });
-        
-            // Confirm Password Validation on Blur
-            document.getElementById('confirmPassword').addEventListener('blur', () => {
-                const input = document.getElementById('confirmPassword');
-                const errorDiv = document.getElementById("confirmPasswordError");
-                const confirmPassword = input.value.trim();
-                const newPassword = document.getElementById('newPassword').value.trim();
-        
-                errorDiv.innerText = "";
-                input.classList.remove("is-valid", "is-invalid");
-        
-                if (!confirmPassword) {
-                    errorDiv.innerText = "Please confirm your new password";
-                    input.classList.add("is-invalid");
-                } else if (newPassword !== confirmPassword) {
-                    errorDiv.innerText = "Passwords do not match";
-                    input.classList.add("is-invalid");
                 } else {
-                    input.classList.add("is-valid");
+                    input.classList.add("is-invalid");
+                    errorDiv.innerText = "Old password is incorrect";
                 }
-            });
-        </script>
-                
+            } catch (error) {
+                console.error("Password check failed:", error);
+            }
+        });
+    
+        // New Password Validation on Blur
+        document.getElementById('newPassword').addEventListener('blur', () => {
+            const input = document.getElementById('newPassword');
+            const errorDiv = document.getElementById("newPasswordError");
+            const newPassword = input.value.trim();
+            const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{6,}$/;
+    
+            errorDiv.innerText = "";
+            input.classList.remove("is-valid", "is-invalid");
+    
+            if (!newPassword) {
+                errorDiv.innerText = "Please enter a new password";
+                input.classList.add("is-invalid");
+            } else if (!strongPasswordRegex.test(newPassword)) {
+                errorDiv.innerText =
+                    "Password must be 6+ chars, incl. uppercase, lowercase, number & special (@$!%*?&#^)";
+                input.classList.add("is-invalid");
+            } else {
+                input.classList.add("is-valid");
+            }
+        });
+    
+        // Confirm Password Validation on Blur
+        document.getElementById('confirmPassword').addEventListener('blur', () => {
+            const input = document.getElementById('confirmPassword');
+            const errorDiv = document.getElementById("confirmPasswordError");
+            const confirmPassword = input.value.trim();
+            const newPassword = document.getElementById('newPassword').value.trim();
+    
+            errorDiv.innerText = "";
+            input.classList.remove("is-valid", "is-invalid");
+    
+            if (!confirmPassword) {
+                errorDiv.innerText = "Please confirm your new password";
+                input.classList.add("is-invalid");
+            } else if (newPassword !== confirmPassword) {
+                errorDiv.innerText = "Passwords do not match";
+                input.classList.add("is-invalid");
+            } else {
+                input.classList.add("is-valid");
+            }
+        });
+    </script>
+            
+   
 </body>

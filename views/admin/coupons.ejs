@@ -840,7 +840,7 @@
                     editMinPrice: document.getElementById("editMinPriceError"),
                     editOfferPrice: document.getElementById("editOfferPriceError"),
                 };
-                const letterRegex = /^[A-Za-z]+$/;
+                const letterRegex =/^[A-Za-z\s]+$/;
 
                 Object.values(errors).forEach((el) => (el.innerText = ""));
                 let hasError = false;

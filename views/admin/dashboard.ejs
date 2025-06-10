@@ -286,12 +286,154 @@
                 margin-bottom: 20px;
             }
         }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            color: #192430;
+            font-size: 24px;
+            padding: 0;
+            margin-right: 15px;
+            background: none;
+            border: none;
+        }
+
+        .sidebar-toggle:hover {
+            color: #3b6da1;
+        }
+
+        /* Offcanvas Sidebar */
+        .offcanvas {
+            background: #f9f9f9;
+        }
+
+        .offcanvas-header {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .offcanvas-title {
+            color: #192430;
+            font-weight: 600;
+        }
+
+        /* Responsive Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #f9f9f9;
+            padding: 20px 0;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 30px 30px;
+            flex: 1;
+        }
+
+        /* Chart Containers */
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Media Queries */
+        @media (max-width: 991.98px) {
+            .main-content {
+                margin-left: 0;
+                padding: 80px 20px 20px;
+            }
+
+            .chart-container {
+                height: 350px;
+            }
+
+            .dashboard-card {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .brand-name {
+                font-size: 22px;
+            }
+
+            .nav-right {
+                gap: 10px;
+            }
+
+            .nav-right input {
+                width: 120px;
+            }
+
+            .filter-select, .export-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            .chart-container {
+                height: 300px;
+                padding: 15px;
+            }
+
+            .dashboard-title {
+                font-size: 20px;
+            }
+
+            .dashboard-card h5 {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .chart-container {
+                height: 250px;
+            }
+
+            .nav-right input {
+                display: none;
+            }
+
+            .filter-select {
+                width: 100px;
+            }
+        }
+
+        /* Additional responsive adjustments for charts */
+        @media (max-width: 991.98px) {
+            .col-md-4 .chart-container {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .col-md-4 .chart-container {
+                height: 250px;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <a href="/admin" class="brand-name">ElectroMania</a>
+        <div class="d-flex align-items-center">
+            <button class="btn btn-link d-lg-none sidebar-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+                <i class="bi bi-list"></i>
+            </button>
+            <a href="/admin" class="brand-name">ElectroMania</a>
+        </div>
         <div class="nav-right">
             <select class="filter-select" id="periodFilter" onchange="updateDashboard()">
                 <option value="daily">Daily</option>
@@ -303,8 +445,29 @@
         </div>
     </nav>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
+    <!-- Update the sidebar to be offcanvas on mobile -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="sidebar">
+                <a href="/admin/dashboard" class="active"><i class="bi bi-grid"></i> Dashboard</a>
+                <a href="/admin/categories"><i class="bi bi-tag"></i> Categories</a>
+                <a href="/admin/products"><i class="bi bi-box"></i> Products</a>
+                <a href="/admin/customers"><i class="bi bi-people"></i> Customers</a>
+                <a href="/admin/orders"><i class="bi bi-cart"></i> Orders</a>
+                <a href="/admin/coupons"><i class="bi bi-ticket"></i> Coupons</a>
+                <a href="/admin/sales-report"><i class="bi bi-bar-chart"></i> Sales Report</a>
+                <a href="/admin/wallet-management"><i class="bi bi-credit-card"></i>Wallet</a>
+                <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keep the original sidebar for desktop -->
+    <div class="sidebar d-none d-lg-block">
         <a href="/admin/dashboard" class="active"><i class="bi bi-grid"></i> Dashboard</a>
         <a href="/admin/categories"><i class="bi bi-tag"></i> Categories</a>
         <a href="/admin/products"><i class="bi bi-box"></i> Products</a>
@@ -312,7 +475,7 @@
         <a href="/admin/orders"><i class="bi bi-cart"></i> Orders</a>
         <a href="/admin/coupons"><i class="bi bi-ticket"></i> Coupons</a>
         <a href="/admin/sales-report"><i class="bi bi-bar-chart"></i> Sales Report</a>
-        <a href="/admin//wallet-management"><i class="bi bi-credit-card"></i>Wallet</a>
+        <a href="/admin/wallet-management"><i class="bi bi-credit-card"></i>Wallet</a>
         <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
     </div>
 

@@ -151,10 +151,212 @@
       .apply-coupon-btn:hover {
         background-color: #b13f7d;
       }
+
+      /* Responsive Checkout Container */
+      .checkout-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Responsive Checkout Section */
+      .checkout-section {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      /* Responsive Media Queries */
+      @media (max-width: 991.98px) {
+        .checkout-container {
+          padding: 15px;
+        }
+
+        .checkout-section {
+          padding: 15px;
+        }
+
+        /* Make address and payment sections stack on mobile */
+        .checkout-section.d-flex {
+          flex-direction: column;
+        }
+
+        .checkout-section.w-50 {
+          width: 100% !important;
+          margin-bottom: 20px;
+        }
+
+        /* Adjust product items for mobile */
+        .product-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .product-image {
+          width: 100%;
+          height: 200px;
+          margin-bottom: 10px;
+        }
+
+        .product-details {
+          padding: 0;
+          margin-bottom: 10px;
+        }
+
+        .product-price {
+          text-align: left;
+          margin-top: 10px;
+        }
+
+        /* Make coupon section full width on mobile */
+        .coupon-section.w-50 {
+          width: 100% !important;
+        }
+
+        /* Adjust price details for better mobile view */
+        .price-details {
+          margin-top: 20px;
+        }
+      }
+
+      @media (max-width: 767.98px) {
+        .checkout-container {
+          padding: 10px;
+        }
+
+        .checkout-section {
+          padding: 15px;
+        }
+
+        /* Adjust address cards for mobile */
+        .address-card {
+          padding: 10px;
+        }
+
+        /* Make payment options more compact on mobile */
+        .payment-option {
+          padding: 10px;
+        }
+      }
+
+      /* Add these styles for the menu button and offcanvas */
+      .sidebar-toggle-container {
+        position: static;
+        top: 80px;
+        left: 0;
+        right: 0;
+        padding: 10px 15px;
+        z-index: 1020;
+      }
+
+      .sidebar-toggle {
+        background-color: #5b3f64;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        color: white;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+      }
+
+      .sidebar-toggle:hover {
+        background-color: #4a334f;
+        transform: translateY(-1px);
+      }
+
+      .home-btn {
+        background-color: #5b3f64;
+        border: none;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+
+      .home-btn:hover {
+        background-color: #4a334f;
+        color: white;
+        transform: translateY(-1px);
+      }
+
+      .offcanvas {
+        background-color: #4b449783;
+        color: white;
+      }
+
+      .offcanvas-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .offcanvas-title {
+        color: white;
+      }
+
+      .btn-close {
+        filter: brightness(0) invert(1);
+      }
+
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .mobile-nav-item {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mobile-nav-item:hover {
+        opacity: 0.8;
+        color: white;
+      }
     </style>
   </head>
   <body>
     <%- include ('../partials/header') %>
+
+    <div class="sidebar-toggle-container">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="/" class="btn btn-outline-primary d-lg-none home-btn">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="/user/cart" class="btn btn-outline-danger d-lg-none home-btn">
+              <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="navbarOffcanvasLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="mobile-nav-links">
+                <a href="/" class="mobile-nav-item">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="/shop" class="mobile-nav-item">
+                    <i class="fas fa-shopping-bag"></i> Shop
+                </a>
+            </div>
+        </div>
+    </div>
 
     <div class="checkout-container">
       <h1 class="mb-4">Checkout</h1>
@@ -611,29 +813,30 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   //-------------------------------------------------------------------//
 
-  // Function to handle payment failure
-  function handlePaymentFailure(orderId, error) {
-    // Update order status to payment failed on server
-    fetch("/user/updatePaymentFailure", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        orderId: orderId,
-        error: error
-      }),
-    }).then(response => response.json())
-      .then(data => {
-        // Redirect to payment failure page regardless of server response
-        window.location.href = "/user/paymentFailure?orderId=" + orderId;
-      })
-      .catch(err => {
-        console.error("Error updating payment failure:", err);
-        // Still redirect to failure page even if server update fails
-        window.location.href = "/user/paymentFailure?orderId=" + orderId;
-      });
-  }
+
+// Function to handle payment failure
+function handlePaymentFailure(orderId, error) {
+  // Update order status to payment failed on server
+  fetch("/user/updatePaymentFailure", {  // Updated endpoint name
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      orderId: orderId,
+      error: error
+    }),
+  }).then(response => response.json())
+    .then(data => {
+      // Redirect to payment failure page regardless of server response
+      window.location.href = "/user/paymentFailure?orderId=" + orderId;
+    })
+    .catch(err => {
+      console.error("Error updating payment failure:", err);
+      // Still redirect to failure page even if server update fails
+      window.location.href = "/user/paymentFailure?orderId=" + orderId;
+    });
+}
 
   // Function to handle Razorpay payment
   function handleRazorpayPayment(orderData, orderDetails) {

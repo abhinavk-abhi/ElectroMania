@@ -10,9 +10,6 @@ dotenv.config();
 const { RAZORPAY_ID, RAZORPAY_SECRET } = process.env;
 import Razorpay from 'razorpay'
 import crypto from 'crypto'
-import { type } from 'os'
-
-
 
 const loadCheckOut = async (req,res)=>{
     try {
@@ -53,8 +50,6 @@ const loadCheckOut = async (req,res)=>{
         console.log(error)
     }
 }
-
-
 
 // Initialize Razorpay instance
 const razorpay = new Razorpay({
@@ -170,7 +165,7 @@ const placeOrder = async (req, res) => {
                     }
                 });
 
-                // Create order in pending state for Razorpay
+                // Create order in PENDING state for Razorpay (DON'T mark as Paid yet)
                 const newOrder = new Order({
                     orderId,
                     userId,
@@ -185,11 +180,13 @@ const placeOrder = async (req, res) => {
                     totalAmount,
                     finalAmount: finalAmount,
                     discount: discountAmount,
+                    couponId: couponId || null, // Store coupon ID for later processing
                     shippingAddress: selectedAddress,
                     invoiceDate: Date.now(),
-                    paymentStatus: "Paid",
+                    paymentStatus: "Pending", // Keep as Pending until payment is verified
                     paymentMethod,
-                    razorpayOrderId: razorpayOrder.id
+                    razorpayOrderId: razorpayOrder.id,
+                    orderStatus: "Payment Pending" // Add order status
                 });
 
                 await newOrder.save();
@@ -343,7 +340,6 @@ const placeOrder = async (req, res) => {
     }
 }
 
-
 const verifyPayment = async (req, res) => {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature, orderId } = req.body;
@@ -359,7 +355,7 @@ const verifyPayment = async (req, res) => {
         const isAuthentic = expectedSignature === razorpay_signature;
 
         if (isAuthentic) {
-            // Find the order and update payment status
+            // Find the order
             const order = await Order.findOne({ orderId: orderId });
             
             if (!order) {
@@ -368,6 +364,7 @@ const verifyPayment = async (req, res) => {
 
             // Update order with payment details
             order.paymentStatus = "Paid";
+            order.orderStatus = "Confirmed"; // Update order status
             order.razorpayPaymentId = razorpay_payment_id;
             order.razorpaySignature = razorpay_signature;
             await order.save();
@@ -410,10 +407,13 @@ const verifyPayment = async (req, res) => {
             });
 
         } else {
-            // Payment verification failed
+            // Payment verification failed - Update order status
             await Order.findOneAndUpdate(
                 { orderId: orderId },
-                { paymentStatus: "Failed" }
+                { 
+                    paymentStatus: "Failed",
+                    orderStatus: "Payment Failed"
+                }
             );
 
             res.status(400).json({
@@ -444,34 +444,63 @@ const orderSuccess = async (req,res)=>{
     }
 }
 
-const failureUpdate = async (req, res) => {
-  try {
-    const { orderId, error } = req.body;
-    // Update order status to 'Payment Failed'
-    await Order.findByIdAndUpdate(orderId, { 
-      paymentStatus: 'Failed',
-      paymentError: error,
-      orderStatus: 'Payment Failed'
-    });
-    res.json({ success: true });
-  } catch (err) {
-    res.json({ success: false, error: err.message });
-  }
+const updatePaymentFailure = async (req, res) => {
+    try {
+        const { orderId, error } = req.body;
+        
+        // First, find the order
+        let order = await Order.findOne({ orderId: orderId });
+        
+        if (!order) {
+            return res.status(404).json({ success: false, error: "Order not found" });
+        }
+
+        // Update the order items
+        order.orderItems.forEach(item => {
+            item.deliveryStatus = "Failed";
+        });
+
+        // Update other fields and save
+        order.paymentStatus = 'Failed';
+        order.orderStatus = 'Payment Failed';
+        order.paymentError = error;
+        
+        await order.save();
+
+        res.json({ success: true, message: "Order status updated to failed" });
+        
+    } catch (error) {
+        console.error("Update payment failure error:", error);
+        res.status(500).json({ success: false, error: error.message });
+    }
 }
 
-const failurePage = async (req, res) => {
-  const { orderId } = req.query;
-  const userId = req.session.user._id || req.user._id
-  const cart = await Cart.findOne({userId : userId})
-  const cartId = cart._id;
-  res.render('user/paymentFailed', { cartId,userId });
+const paymentFailedPage = async (req, res) => {
+    try {
+        const { orderId } = req.query;
+        const userId = req.session.user._id || req.user._id;
+        const cart = await Cart.findOne({ userId: userId });
+        const cartId = cart ? cart._id : null;
+        
+        res.render('user/paymentFailed', { 
+            cartId,
+            userId,
+            orderId 
+        });
+    } catch (error) {
+        console.error("Payment failed page error:", error);
+        res.redirect('/user/cart');
+    }
 }
+
+
 
 export default {
     loadCheckOut,
     placeOrder,
     orderSuccess,
     verifyPayment,
-    failureUpdate,
-    failurePage
+    updatePaymentFailure,
+    paymentFailedPage,
+   
 }

@@ -34,7 +34,7 @@ const orderModel = new Schema({
     deliveryStatus : {
         type : String,
         default : "Pending",
-        enum : ["Pending","Processing","Shipped", "Out for delivery","Delivered", "Cancelled","Return Request", "Returned"]
+        enum : ["Pending","Processing","Shipped", "Out for delivery","Delivered", "Cancelled","Return Request", "Returned","Failed"]
     },
 
     returnedAt: { type: Date, default: null },

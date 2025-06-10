@@ -231,6 +231,11 @@
     border-radius: 20px;
     display: inline-block;
   }
+
+  .status-failed {
+    background-color: rgb(230, 72, 72);
+    color: white;
+  }
   
   .status-delivered {
     background-color: #e6f7f0;
@@ -540,6 +545,8 @@
                   Cancel Order
                 </button>
               
+              <% } else if(item.deliveryStatus === "Failed") { %>
+                <div class="item-status status-failed"><%= item.deliveryStatus %> </div>
               <% } else { %>
                 <div class="item-status"><%= item.deliveryStatus %></div>
               <% } %>
@@ -575,7 +582,13 @@
                     <div class="mb-2 discount-value">
                       -₹<%= order.discount || 0 %>
                     </div>
-                    <div class="mt-3 total-value">₹<%= order.finalAmount %></div>
+                      <% order.orderItems.forEach((item)=>{ %>
+                      <%  if(item.deliveryStatus === "Failed") { %>
+                    <div class="mt-3 total-value text-muted text-decoration line-through ">₹<%= order.finalAmount %></div>
+                    <% } else { %>
+                    <div class="mt-3 total-value ">₹<%= order.finalAmount %></div>
+                     <% } %>
+                    <% }) %>
                   </div>
                 </div>
               </div>

@@ -229,15 +229,23 @@ const placeOrder = async (req, res) => {
             }
         }
 
-       const value = user.wallet - finalAmount;
-        user.wallet = value;
-        const walletHistory = {
-            amount : -finalAmount,
-            type : 'purchase',
-            orderId : orderId,
-        }
-        user.walletHistory = walletHistory;
-        await user.save()
+    //    const value = user.wallet - finalAmount;
+    //     user.wallet = value;
+    //     const walletHistory = {
+    //         amount : -finalAmount,
+    //         type : 'purchase',
+    //         orderId : orderId,
+    //     }
+        await User.findOneAndUpdate({_id : user._id},{
+            $inc : {wallet : -finalAmount},
+            $push : {
+                 walletHistory : {
+                    amount : -finalAmount,
+                    type : "purchase",
+                    orderId : orderId
+                 }
+            }
+        })
 
         for (let item of cart.items) {
             await Product.findOneAndUpdate({ _id: item.productId },

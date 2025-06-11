@@ -365,8 +365,6 @@
         }
 
 
-       
-
         .banner-section h2 {
             font-size: 2em;
             margin-bottom: 15px;
@@ -467,6 +465,24 @@
             cursor: pointer;
         }
 
+
+          @media (max-width: 991.98px) {
+            .sidebar.d-lg-block { display: none !important; }
+            .offcanvas { transition: transform 0.3s ease-in-out; }
+            .navbar .nav-right, .navbar .search-container { display: none !important; }
+            /* Filter button styling */
+            .btn-primary.d-lg-none {
+                background-color: #4D44AD;
+                border: none;
+                padding: 10px;
+                font-weight: 500;
+            }
+            /* Offcanvas styling */
+            .offcanvas {
+                max-width: 300px;
+            }
+        }
+
         /* Responsive Design */
         @media (max-width: 1200px) {
             .item-card {
@@ -531,7 +547,7 @@
             }
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 575.98px) {
             .item-card {
                 width: 100%; /* 1 per row on mobile */
             }
@@ -543,6 +559,15 @@
             .banner-section h2 {
                 font-size: 1.5em;
             }
+
+               .offcanvas-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+         .offcanvas-title {
+            color: black;
+            font-weight: 500;
+        }
             
             .footer-content {
                 grid-template-columns: 1fr;
@@ -559,7 +584,72 @@
             .hero-section {
                 height: 300px;
             }
+
+               .offcanvas-body .nav-link {
+            color: white;
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
+
+        .offcanvas-body .nav-link i {
+            width: 24px;
+            text-align: center;
+        }
+
+               .offcanvas-body .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Update the offcanvas sidebar styles in home.ejs */
+        .offcanvas {
+            width: 300px !important; /* Default width for tablet and above */
+        }
+
+        .offcanvas-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .offcanvas-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #192430;
+        }
+
+        .offcanvas-body {
+            padding: 20px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 767.98px) {
+            .offcanvas {
+                width: 280px !important;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .offcanvas {
+                width: 300px !important; /* Increased width for mobile */
+            }
+        }
+
+        @media (max-width: 425px) {
+            .offcanvas {
+                width: 320px !important; /* Even wider for smaller mobile screens */
+            }
+        }
+
+        @media (max-width: 375px) {
+            .offcanvas {
+                width: 340px !important; /* Maximum width for very small screens */
+            }
+        }
+    }
     </style>
 </head>
 <body data-user-id="<%= user ? user._id : '' %>">
@@ -626,7 +716,7 @@
                 </div>
             </div>
 
-            <!-- Mobile/Tablet Offcanvas Sidebar -->
+             <!-- Mobile/Tablet Offcanvas Sidebar - Hidden on desktop -->
             <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>

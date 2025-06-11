@@ -13,40 +13,41 @@ const userIdGenerator = async () => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL : "https://electromania.shop/google/callback" , 
+    callbackURL: "https://electromania.shop/google/callback",
     // callbackURL: 'http://localhost:7003/google/callback',
-    passReqToCallback : true,
+    passReqToCallback: true,
 },
 async (req, accessToken, refreshToken, profile, done) => {
     try {
-        
+        // First, check if user already has Google ID linked
         let user = await User.findOne({ googleId: profile.id });
         
         if (user) {
+            // User found with Google ID - check if blocked
+            if (user.isBlocked) {
+                return done(null, false, { errorMessage: "You are blocked by the admin." });
+            }
+            req.session.user = user;
             return done(null, user);
         }
         
-        
+        // Check if user exists with this email (but no Google ID)
         user = await User.findOne({ email: profile.emails[0].value });
-        console.log(user)
-    if (!user) {
-  return done(null, false, { message: "No account found with this email." });
-}
-
-    
-    if (user.isBlocked) {
-      // Instead of returning user, return false to reject authentication
-      return done(null, false, { errorMessage : "You are blocked by the admin." });
-    }
-
+        
         if (user) {
+            // User exists with email but no Google ID
+            if (user.isBlocked) {
+                return done(null, false, { errorMessage: "You are blocked by the admin." });
+            }
+            
+            // Link Google ID to existing account
             user.googleId = profile.id;
             await user.save();
-            req.session.user =  user;
+            req.session.user = user;
             return done(null, user);
         }
         
-      
+        // No user found - create new user
         const userId = await userIdGenerator();
         user = new User({
             name: profile.displayName,
@@ -59,6 +60,7 @@ async (req, accessToken, refreshToken, profile, done) => {
         await user.save();
         req.session.user = user;
         return done(null, user);
+        
     } catch (error) {
         return done(error, null);
     }
@@ -70,15 +72,16 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await User.findById(id); 
+        const user = await User.findById(id);
+        
         if (!user) {
-      return done(null, false);
-    }
-    
-    if (user.isBlocked) {
-      // Instead of returning user, return false to reject authentication
-      return done(null, false, { errorMessage : "You are blocked by the admin." });
-    }
+            return done(null, false);
+        }
+        
+        if (user.isBlocked) {
+            return done(null, false, { errorMessage: "You are blocked by the admin." });
+        }
+        
         done(null, user);
     } catch (err) {
         done(err);

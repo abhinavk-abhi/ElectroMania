@@ -13,7 +13,8 @@ const userIdGenerator = async () => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:7003/google/callback',
+    callbackURL : "https://electromania.shop/google/callback" , 
+    // callbackURL: 'http://localhost:7003/google/callback',
     passReqToCallback : true,
 },
 async (req, accessToken, refreshToken, profile, done) => {

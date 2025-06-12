@@ -280,13 +280,13 @@
 
     <!-- Add this right after the header include -->
     <div class="sidebar-toggle-container">
-        <button class="btn btn-primary d-md-none d-lg-none sidebar-toggle w-20" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" aria-controls="profileSidebar">
+        <button class="btn btn-primary  d-lg-none sidebar-toggle w-20" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" aria-controls="profileSidebar">
             <i class="fas fa-bars"></i> 
         </button>
     </div>
 
     <!-- Add the offcanvas sidebar -->
-    <div class="offcanvas offcanvas-start d-md-none d-lg-none" tabindex="-1" id="profileSidebar" aria-labelledby="profileSidebarLabel">
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="profileSidebar" aria-labelledby="profileSidebarLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="profileSidebarLabel">Profile Menu</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -299,10 +299,10 @@
     <div class="container-fluid px-4 py-4">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-md-4 d-none d-md-block"><%- include('../partials/profileSidebar')%></div>
+            <div class="col-md-4 d-none "><%- include('../partials/profileSidebar')%></div>
 
             <!-- Main Content -->
-            <div class="col-md-8 col-12">
+            <div class="col-md-12 col-12">
                 <!-- Wallet Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="d-flex align-items-center">

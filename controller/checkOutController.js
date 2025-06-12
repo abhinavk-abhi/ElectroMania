@@ -229,13 +229,6 @@ const placeOrder = async (req, res) => {
             }
         }
 
-    //    const value = user.wallet - finalAmount;
-    //     user.wallet = value;
-    //     const walletHistory = {
-    //         amount : -finalAmount,
-    //         type : 'purchase',
-    //         orderId : orderId,
-    //     }
         await User.findOneAndUpdate({_id : user._id},{
             $inc : {wallet : -finalAmount},
             $push : {

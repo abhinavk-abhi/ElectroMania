@@ -1,4 +1,6 @@
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="/css/profile-section.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -54,6 +56,18 @@
         background-color: #ffffff;
         border-radius: 12px;
     }
+
+           .sidebar-toggle {
+            display: none;
+            background-color: #6B46C1;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            margin: 30px 0 0 10px ;
+        }
 
     /* Responsive Design */
     @media (max-width: 991.98px) {
@@ -212,8 +226,19 @@
         }
 
         .form-class {
-            width: 200px;
+            width: 600px;
             height: 500px;
+        }
+    }
+
+    @media (max-width : 425.8px){
+        .form-class {
+            width: 90%;
+            height: 600px;
+        }
+        
+        .sidebar-toggle {
+            width: 10%;
         }
     }
 </style>
@@ -225,7 +250,7 @@
     <!-- Add this right after the navbar and before the main container -->
     <div class="sidebar-toggle-container">
         <button class="btn btn-primary d-lg-none sidebar-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" aria-controls="profileSidebar">
-            <i class="fas fa-bars"></i> Menu
+            <i class="fas fa-bars"></i> 
         </button>
     </div>
 

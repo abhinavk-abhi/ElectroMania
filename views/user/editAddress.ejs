@@ -307,7 +307,7 @@
             if (!zipCode) {
                 errors.zipCode.innerText = "Zip Code is required";
                 hasError = true;
-            } else if (!/^\d{5,6}$/.test(zipCode)) {
+            } else if (!/^\d{6}$/.test(zipCode)) {
                 errors.zipCode.innerText = "Zip Code must be 5-6 digits";
                 hasError = true;
             }
